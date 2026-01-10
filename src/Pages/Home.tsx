@@ -11,7 +11,7 @@ export default function Home() {
                         <p className="py-6">
                             Your personal inventory management system.
                         </p>
-                        <button className="btn btn-primary">Get Started</button>
+                        <a href="/about" className="btn btn-secondary">Learn More</a>
                     </div>
                 </div>
             </div>
