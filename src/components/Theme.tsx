@@ -1,9 +1,21 @@
+import { useState } from "react";
+
 export default function Theme() {
+    const [isChecked, setIsChecked] = useState(() => {
+        const saved = localStorage.getItem("isChecked");
+        return saved ? JSON.parse(saved) : false;
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.checked;
+        setIsChecked(value);
+        localStorage.setItem("isChecked", JSON.stringify(value));
+    };
+
     return (
         <label className="swap swap-rotate">
             {/* this hidden checkbox controls the state */}
-            <input type="checkbox" className="theme-controller" value="night" />
-
+            <input type="checkbox" className="theme-controller" value="night" checked={isChecked} onChange={handleChange} />
             {/* sun icon */}
             <svg
                 className="swap-off h-10 w-10 fill-current"
