@@ -1,10 +1,10 @@
 
-import LoginNavbar from "../components/LoginNavbar";
+import Navbar from "../components/Navbar";
 
 export default function About() {
     return (
         <div>
-            <LoginNavbar />
+            <Navbar />
 
             <div className="hero min-h-screen bg-base-200">
                 <div className="hero-content text-center">

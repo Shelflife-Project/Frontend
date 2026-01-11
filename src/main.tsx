@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm.tsx'
 import Home from './Pages/Home.tsx'
 import Login from './Pages/Login.tsx'
 import About from './Pages/About.tsx'
+import SignUp from './Pages/SignUp.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')!).render(
       <Route path='/' element={<Home />} />
       <Route path='/login' element={<Login />} />
       <Route path='/about' element={<About />} />
+      <Route path='/signup' element={<SignUp />} />
     </Routes>
   </BrowserRouter>,
 )

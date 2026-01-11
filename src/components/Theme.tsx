@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Theme() {
     const [isChecked, setIsChecked] = useState(() => {
@@ -6,10 +6,18 @@ export default function Theme() {
         return saved ? JSON.parse(saved) : false;
     });
 
+    useEffect(() => {
+        // Apply or remove the dark class on the root element so the theme persists
+        if (isChecked) document.documentElement.classList.add("dark");
+        else document.documentElement.classList.remove("dark");
+    }, [isChecked]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.checked;
         setIsChecked(value);
         localStorage.setItem("isChecked", JSON.stringify(value));
+        if (value) document.documentElement.classList.add("dark");
+        else document.documentElement.classList.remove("dark");
     };
 
     return (

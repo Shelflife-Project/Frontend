@@ -1,10 +1,10 @@
 import LoginForm from "../components/LoginForm";
-import LoginNavbar from "../components/LoginNavbar";
+import Navbar from "../components/Navbar";
 
 export default function Login() {
     return (
         <>
-            <LoginNavbar />
+            <Navbar />
             <LoginForm />
         </>
     )
