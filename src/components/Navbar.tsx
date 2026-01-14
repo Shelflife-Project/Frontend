@@ -1,4 +1,5 @@
 import Theme from "./Theme";
+import UserIcon from "./UserIconDropdown";
 
 export default function Navbar() {
     return (
@@ -24,7 +25,7 @@ export default function Navbar() {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a href="/login" className="btn btn-secondary">Login</a>
+                <UserIcon />
             </div>
         </div>
     )
