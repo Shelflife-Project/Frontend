@@ -1,5 +1,5 @@
 import Theme from "./Theme";
-import UserIcon from "./UserIconDropdown";
+import UserIconDropdown from "./UserIconDropdown";
 
 export default function Navbar() {
     return (
@@ -25,7 +25,7 @@ export default function Navbar() {
                 </ul>
             </div>
             <div className="navbar-end">
-                <UserIcon />
+                <UserIconDropdown />
             </div>
         </div>
     )
