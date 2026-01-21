@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getCurrentUser } from "../Fetch_APIs/autentication";
-import type { User } from "../Types/User";
-import LogoutButton from "./LogoutButton";
+import { getCurrentUser } from "../../Fetch_APIs/autentication";
+import type { User } from "../../Types/User";
+import LogoutButton from "../LogoutButton";
 import UserIcon from "./UserIcon";
 
 export default function UserIconDropdown() {

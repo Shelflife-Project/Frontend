@@ -1,5 +1,5 @@
 import Theme from "./Theme";
-import UserIconDropdown from "./UserIconDropdown";
+import UserIconDropdown from "./Dashboard/UserIconDropdown";
 
 export default function Navbar() {
     return (
