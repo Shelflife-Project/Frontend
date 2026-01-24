@@ -1,12 +1,12 @@
-import { useNavigate } from "react-router";
 import { login } from "../Fetch_APIs/autentication";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginForm() {
-    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const { refreshAuth } = useAuth();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -14,7 +14,7 @@ export default function LoginForm() {
 
         try {
             await login(email, password);
-            navigate("/dashboard");
+            refreshAuth();
         } catch (err) {
             setError("Invalid email or password");
         }

@@ -1,19 +1,14 @@
 import { useNavigate } from "react-router";
 import LoginForm from "../components/LoginForm";
 import Navbar from "../components/Navbar";
-import { getCurrentUser } from "../Fetch_APIs/autentication";
-import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
     const navigate = useNavigate();
+    const { isLoggedIn } = useAuth();
 
-    useEffect(() => {
-        getCurrentUser()
-            .then(user => {
-                if (user)
-                    navigate("/dashboard", { replace: true })
-            });
-    }, []);
+    if (isLoggedIn)
+        navigate("/dashboard", { replace: true })
 
     return (
         <>
