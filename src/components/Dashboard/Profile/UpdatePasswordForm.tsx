@@ -6,15 +6,27 @@ export default function UpdatePasswordForm() {
     const [oldPass, setOldPass] = useState("");
     const [password, setPassword] = useState("");
     const [repeat, setRepeat] = useState("");
-    const { user, refreshAuth } = useAuth();
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
+    const { user } = useAuth();
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         if (!user)
             return;
 
-        await UpdatePassword(oldPass, password, repeat);
-        refreshAuth();
+        try {
+            await UpdatePassword(oldPass, password, repeat);
+            setSuccess("Password updated successfully!");
+            setError(null);
+
+            setOldPass("");
+            setPassword("");
+            setRepeat("");
+        } catch (err: any) {
+            setError(err.oldPassword || err.newPassword || err.newPasswordRepeat || err.error || "An unexpected error occurred.");
+            setSuccess(null);
+        }
     };
 
     return (
@@ -41,8 +53,9 @@ export default function UpdatePasswordForm() {
                 value={repeat}
                 onChange={(e) => setRepeat(e.target.value)}
             />
+            {error && <p className="text-error text-sm">{error}</p>}
+            {success && <p className="text-success text-sm">{success}</p>}
             <button className="btn btn-error w-fit">Update Password</button>
         </form>
     );
-
 }

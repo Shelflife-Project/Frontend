@@ -8,7 +8,7 @@ export async function UploadPFP(formData: FormData, userId: number) {
     });
 
     if (!res.ok) {
-        throw new Error("Failed to upload profile picture");
+        throw res.json();
     }
 }
 
@@ -21,7 +21,7 @@ export async function UpdateUsername(username: string, userId: number) {
     });
 
     if (!res.ok) {
-        throw new Error("Failed to update username");
+        throw res.json();
     }
 
     return res.json();
@@ -36,7 +36,7 @@ export async function UpdateEmail(email: string, userId: number) {
     });
 
     if (!res.ok) {
-        throw new Error("Failed to update email");
+        throw res.json();
     }
 
     return res.json();
@@ -51,7 +51,7 @@ export async function UpdatePassword(oldPassword: string, newPassword: string, n
     });
 
     if (!res.ok) {
-        throw new Error("Failed to update password");
+        throw res.json();
     }
 
     return res.json();

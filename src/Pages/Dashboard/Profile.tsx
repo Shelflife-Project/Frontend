@@ -28,16 +28,19 @@ export default function Profile() {
 
             <div className="flex items-center gap-4 mb-4">
                 <input
+                    id="fileInput"
                     type="file"
                     accept="image/*"
                     className="hidden"
                     onChange={handlePfpChange}
                 />
-                <div className="avatar">
-                    <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                        <UserIcon />
+                <label htmlFor="fileInput" className="cursor-pointer">
+                    <div className="avatar">
+                        <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                            <UserIcon />
+                        </div>
                     </div>
-                </div>
+                </label>
                 <p className="font-lg font-bold">{user?.username}</p>
             </div>
 
