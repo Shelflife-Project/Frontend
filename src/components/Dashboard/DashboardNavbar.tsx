@@ -8,7 +8,7 @@ export default function DashboardNavbar() {
     const tabs = [
         {
             label: "Storages",
-            path: "/dashboard/",
+            path: "/dashboard",
             icon: (
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-boxes" viewBox="0 0 16 16">
                     <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v3.5a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2.001-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 12.57V9.075a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zm2.146 1.479L12 3.075v3.994L8.898 9.129zm-6.908 7.068L3.75 8.848l3.898 2.212v3.994l-5.5-3.142zM9.5 9.753l3.898-2.212v3.994l-3.898 2.212z" />
