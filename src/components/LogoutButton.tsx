@@ -1,12 +1,12 @@
-import { useNavigate } from "react-router";
 import { logout } from "../Fetch_APIs/autentication";
+import { useAuth } from "../context/AuthContext";
 
 export default function LogoutButton() {
-    const navigate = useNavigate();
+    const { refreshAuth } = useAuth();
 
     async function handleLogout() {
         await logout();
-        navigate("/login", { replace: true });
+        refreshAuth();
     }
 
     return <button onClick={handleLogout} className="btn btn-error btn-sm">Logout</button>

@@ -6,6 +6,7 @@ interface AuthContextType {
     user: User | null;
     isLoggedIn: boolean;
     loading: boolean;
+    refreshAuth: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -13,24 +14,24 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-    
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const currentUser = await getCurrentUser();
-                setUser(currentUser);
-            } catch {
-                setUser(null);
-            } finally {
-                setLoading(false);
-            }
-        };
 
+    const checkAuth = async () => {
+        try {
+            const currentUser = await getCurrentUser();
+            setUser(currentUser);
+        } catch {
+            setUser(null);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         checkAuth();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, isLoggedIn: !!user, loading }}>
+        <AuthContext.Provider value={{ user, isLoggedIn: !!user, loading, refreshAuth: checkAuth }}>
             {children}
         </AuthContext.Provider>
     );

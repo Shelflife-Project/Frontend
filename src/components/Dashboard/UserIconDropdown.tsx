@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
-import { getCurrentUser } from "../../Fetch_APIs/autentication";
-import type { User } from "../../Types/User";
 import LogoutButton from "../LogoutButton";
 import UserIcon from "./UserIcon";
+import { useAuth } from "../../context/AuthContext";
 
 export default function UserIconDropdown() {
-    const [user, setUser] = useState<User | null>(null);
-
-    useEffect(() => {
-        getCurrentUser()
-            .then(setUser)
-    }, []);
+    const { user } = useAuth();
 
     if (!user)
         return <a href="/login" className="btn btn-secondary">Login</a>;
