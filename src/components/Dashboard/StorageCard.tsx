@@ -11,10 +11,9 @@ export default function StorageCard({ storage, onDelete }: { storage: Storage; o
     };
 
     return (
-        <div className="card card-bordered bg-base-100 w-full">
+        <div className="card card-bordered bg-base-300 w-full">
             <div className="card-body">
                 <h2 className="card-title text-2xl">{storage.name}</h2>
-                <p className="text-gray-600">Manage your items in this storage</p>
                 <div className="grid grid-cols-3 gap-2 mt-4">
                     <button className="btn btn-sm sm:btn-md btn-success">Members</button>
                     <button className="btn btn-sm sm:btn-md btn-primary">View Items</button>

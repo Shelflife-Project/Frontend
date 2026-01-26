@@ -32,7 +32,7 @@ export default function Storages() {
         <>
             <div className="p-8 pb-32 text-center">
                 <h1 className="text-3xl font-bold mb-4">Storages</h1>
-                <p className="text-gray-600 mb-8">Manage your storage locations here.</p>
+                <p className="text-gray-600 mb-8">Manage your storages here</p>
 
                 {storages.length > 0 && (
                     <div className="flex flex-col items-center gap-6 max-w-2xl mx-auto">

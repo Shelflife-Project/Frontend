@@ -47,7 +47,7 @@ export default function DashboardNavbarBottom() {
     return (
         <>
             <div className="fixed bottom-0 left-0 right-0 mt-10 flex justify-center z-50 shadow-lg py-2 sm:py-3 md:py-4 overflow-x-auto">
-                <div role="tablist" className="tabs tabs-box gap-1 sm:gap-2 flex-nowrap">
+                <div role="tablist" className="tabs bg-base-300 tabs-box gap-1 sm:gap-2 flex-nowrap">
                     {tabs.map((tab) => (
                         <Link
                             key={tab.path}
