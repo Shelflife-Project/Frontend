@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
-import { getCurrentUser } from "../Fetch_APIs/autentication";
-import type { User } from "../Types/User";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "../LogoutButton";
 import UserIcon from "./UserIcon";
+import { useAuth } from "../../context/AuthContext";
+import { Link } from "react-router";
 
 export default function UserIconDropdown() {
-    const [user, setUser] = useState<User | null>(null);
-
-    useEffect(() => {
-        getCurrentUser()
-            .then(setUser)
-    }, []);
+    const { user } = useAuth();
 
     if (!user)
-        return <a href="/login" className="btn btn-secondary">Login</a>;
+        return <Link to="/login" className="btn btn-secondary">Login</Link>;
 
     return <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
@@ -24,8 +18,8 @@ export default function UserIconDropdown() {
         <ul
             tabIndex={-1}
             className="menu dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/profile">Profile</a></li>
+            <li><Link to="/dashboard">Dashboard</Link></li>
+            <li><Link to="/dashboard/profile">Profile</Link></li>
             <li><LogoutButton /></li>
         </ul>
     </div>

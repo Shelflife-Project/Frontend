@@ -1,5 +1,6 @@
 import Theme from "./Theme";
-import UserIcon from "./UserIconDropdown";
+import UserIconDropdown from "./Dashboard/UserIconDropdown";
+import { Link } from "react-router";
 
 export default function Navbar() {
     return (
@@ -12,20 +13,20 @@ export default function Navbar() {
                     <ul
                         tabIndex={-1}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/about">About</a></li>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/about">About</Link></li>
                     </ul>
                 </div>
                 <Theme />
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About</a></li>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/about">About</Link></li>
                 </ul>
             </div>
             <div className="navbar-end">
-                <UserIcon />
+                <UserIconDropdown />
             </div>
         </div>
     )

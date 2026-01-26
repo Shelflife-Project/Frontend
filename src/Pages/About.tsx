@@ -1,4 +1,5 @@
 
+import { Link } from "react-router";
 import Navbar from "../components/Navbar";
 
 export default function About() {
@@ -35,7 +36,7 @@ export default function About() {
                             suggestions or find a bug, please reach out via the contact link on the homepage.
                         </p>
 
-                        <a href="/" className="btn btn-secondary">Back to Homepage</a>
+                        <Link to="/" className="btn btn-secondary">Back to Homepage</Link>
                     </div>
                 </div>
             </div>
