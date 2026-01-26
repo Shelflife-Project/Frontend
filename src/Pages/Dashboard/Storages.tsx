@@ -1,32 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import StorageCard from "../../components/Dashboard/StorageCard";
+import type { Storage } from "../../Types/Storage";
+import { CreateStorage, GetStorages } from "../../Fetch_APIs/Storage";
 
 export default function Storages() {
     const [showForm, setShowForm] = useState(false);
-    const [storageData, setStorageData] = useState({
-        name: ""
-    });
+    const [storages, setStorages] = useState<Storage[]>([]);
+    const [newStorageName, setNewStorageName] = useState("");
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setStorageData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+    const fetchStorages = () => {
+        GetStorages().then((data) => {
+            setStorages(data);
+        });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!storageData.name) return;
-        console.log("Storage data:", storageData);
-        setStorageData({ name: ""});
+        if (!newStorageName) return;
+
+        await CreateStorage(newStorageName);
+        fetchStorages();
+        setNewStorageName("");
         setShowForm(false);
     };
+
+    useEffect(() => {
+        fetchStorages();
+    }, []);
 
     return (
         <>
             <div className="p-8 pb-32 text-center">
                 <h1 className="text-3xl font-bold mb-4">Storages</h1>
-                <p className="text-gray-600">Manage your storage locations here.</p>
+                <p className="text-gray-600 mb-8">Manage your storage locations here.</p>
+
+                {storages.length > 0 && (
+                    <div className="flex flex-col items-center gap-6 max-w-2xl mx-auto">
+                        {storages.map((storage) => (
+                            <StorageCard storage={storage} onDelete={fetchStorages} />
+                        ))}
+                    </div>
+                )}
+
+                {storages.length === 0 && (
+                    <p className="text-gray-400">No storages created yet. Click the + button to create one!</p>
+                )}
             </div>
 
             {showForm && (
@@ -39,8 +57,8 @@ export default function Storages() {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="form-control">
                                 <div className="inline-grid *:[grid-area:1/1]">
-                                    <div className={`status ${storageData.name ? 'status-success' : 'status-error'} animate-ping me-2`}></div>
-                                    <div className={`status ${storageData.name ? 'status-success' : 'status-error'} me-2`}></div>
+                                    <div className={`status ${newStorageName ? 'status-success' : 'status-error'} animate-ping me-2`}></div>
+                                    <div className={`status ${newStorageName ? 'status-success' : 'status-error'} me-2`}></div>
                                 </div>
                                 <label className="label">
                                     <span className="label-text font-semibold me-2">Storage Name</span>
@@ -51,8 +69,8 @@ export default function Storages() {
                                     name="name"
                                     placeholder="e.g., Kitchen Pantry"
                                     className="input input-bordered"
-                                    value={storageData.name}
-                                    onChange={handleInputChange}
+                                    value={newStorageName}
+                                    onChange={(e) => setNewStorageName(e.target.value)}
                                     required
                                 />
                             </div>
@@ -60,8 +78,8 @@ export default function Storages() {
                             <div className="flex gap-3 mt-6">
                                 <button
                                     type="submit"
-                                    disabled={!storageData.name}
-                                    className={`btn flex-1 ${storageData.name ? 'btn-info' : 'btn-disabled'}`}
+                                    disabled={!newStorageName}
+                                    className={`btn flex-1 ${newStorageName ? 'btn-info' : 'btn-disabled'}`}
                                 >
                                     Create Storage
                                 </button>
