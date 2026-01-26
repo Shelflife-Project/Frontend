@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
-import { signup } from "../Fetch_APIs/autentication";
+import { signup } from "../apis/Authentication";
 
 export default function SignUpForm() {
     const navigate = useNavigate();

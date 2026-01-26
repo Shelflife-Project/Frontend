@@ -1,4 +1,4 @@
-import type { Storage } from "../Types/Storage";
+import type { Storage } from "../types/Storage";
 
 const API_URL = "http://localhost:8080/api/storages";
 

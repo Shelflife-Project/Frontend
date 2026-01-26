@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import StorageCard from "../../components/Dashboard/StorageCard";
-import type { Storage } from "../../Types/Storage";
-import { CreateStorage, GetStorages } from "../../Fetch_APIs/Storage";
-import CreateButton from "../../components/Dashboard/CreateButton";
+import StorageCard from "../../components/dashboard/StorageCard";
+import type { Storage } from "../../types/Storage";
+import { CreateStorage, GetStorages } from "../../apis/Storage";
+import CreateButton from "../../components/dashboard/CreateButton";
 
 export default function Storages() {
     const [showForm, setShowForm] = useState(false);

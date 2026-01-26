@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { UpdatePassword } from "../../../Fetch_APIs/User";
+import { UpdatePassword } from "../../../apis/User";
 import { useAuth } from "../../../context/AuthContext";
 
 export default function UpdatePasswordForm() {

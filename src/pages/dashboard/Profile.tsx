@@ -1,7 +1,7 @@
-import UpdateUsernameForm from "../../components/Dashboard/Profile/UpdateUsernameForm";
-import UpdateEmailForm from "../../components/Dashboard/Profile/UpdateEmailForm";
-import UpdatePasswordForm from "../../components/Dashboard/Profile/UpdatePasswordForm";
-import UploadPFPForm from "../../components/Dashboard/Profile/UploadPFPForm";
+import UpdateUsernameForm from "../../components/dashboard/profile/UpdateUsernameForm";
+import UpdateEmailForm from "../../components/dashboard/profile/UpdateEmailForm";
+import UpdatePasswordForm from "../../components/dashboard/profile/UpdatePasswordForm";
+import UploadPFPForm from "../../components/dashboard/profile/UploadPFPForm";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Profile() {

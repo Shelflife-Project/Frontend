@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent } from "react";
 import { useAuth } from "../../../context/AuthContext";
-import { UploadPFP } from "../../../Fetch_APIs/User";
+import { UploadPFP } from "../../../apis/User";
 import UserIcon from "../UserIcon";
 
 export default function UploadPFPForm() {

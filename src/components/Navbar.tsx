@@ -1,5 +1,5 @@
 import Theme from "./Theme";
-import UserIconDropdown from "./Dashboard/UserIconDropdown";
+import UserIconDropdown from "./dashboard/UserIconDropdown";
 import { Link } from "react-router";
 
 export default function Navbar() {

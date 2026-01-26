@@ -1,4 +1,4 @@
-import { login } from "../Fetch_APIs/autentication";
+import { login } from "../apis/Authentication";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";

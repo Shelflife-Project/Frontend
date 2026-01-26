@@ -1,4 +1,4 @@
-import { logout } from "../Fetch_APIs/autentication";
+import { logout } from "../apis/Authentication";
 import { useAuth } from "../context/AuthContext";
 
 export default function LogoutButton() {

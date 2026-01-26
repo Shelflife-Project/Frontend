@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { UpdateEmail } from "../../../Fetch_APIs/User";
+import { UpdateEmail } from "../../../apis/User";
 import { useAuth } from "../../../context/AuthContext";
 
 export default function UpdateEmailForm() {

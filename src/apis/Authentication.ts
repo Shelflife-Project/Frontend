@@ -1,4 +1,4 @@
-import type { User } from "../Types/User";
+import type { User } from "../types/User";
 
 const API_URL = 'http://localhost:8080/api/auth';
 

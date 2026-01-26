@@ -1,10 +1,10 @@
 import { Routes, Route, } from 'react-router';
-import DashboardNavbar from "../../components/Dashboard/DashboardNavbar";
+import DashboardNavbar from "../../components/dashboard/DashboardNavbar";
 import Storages from "./Storages";
 import Products from "./Products";
 import Notifications from "./Notifications";
 import Profile from "./Profile";
-import DashboardNavbarBottom from '../../components/Dashboard/DashboardNavbarBottom';
+import DashboardNavbarBottom from '../../components/dashboard/DashboardNavbarBottom';
 
 export default function Dashboard() {
     return (

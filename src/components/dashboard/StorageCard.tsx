@@ -1,5 +1,5 @@
-import { DeleteStorage } from "../../Fetch_APIs/Storage";
-import type { Storage } from "../../Types/Storage";
+import { DeleteStorage } from "../../apis/Storage";
+import type { Storage } from "../../types/Storage";
 
 export default function StorageCard({ storage, onDelete }: { storage: Storage; onDelete: () => void }) {
     const handleDelete = async () => {
