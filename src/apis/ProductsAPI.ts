@@ -7,10 +7,17 @@ export async function GetProducts(): Promise<Product[]> {
         method: "GET",
         credentials: "include",
     });
-    
+
     if (!res.ok) {
         return [];
     }
 
     return res.json();
+}
+
+export async function DeleteProduct(id: number) {
+    await fetch(API_URL + "/" + id, {
+        method: "DELETE",
+        credentials: "include",
+    });
 }
