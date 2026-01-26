@@ -4,6 +4,7 @@ import Storages from "./Storages";
 import Products from "./Products";
 import Notifications from "./Notifications";
 import Profile from "./Profile";
+import DashboardNavbarBottom from '../../components/Dashboard/DashboardNavbarBottom';
 
 export default function Dashboard() {
     return (
@@ -15,6 +16,7 @@ export default function Dashboard() {
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/profile" element={<Profile />} />
         </Routes>
+        <DashboardNavbarBottom />
         </>
     )
 }

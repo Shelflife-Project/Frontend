@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { signup } from "../Fetch_APIs/autentication";
 
@@ -60,7 +60,7 @@ export default function SignUpForm() {
                             <input required type="password" className={`input ${fieldErrors.passwordRepeat ? 'input-error' : ''}`} placeholder="Repeat Password" value={passwordRepeat} onChange={(e) => setPasswordRepeat(e.target.value)} />
                             {fieldErrors.passwordRepeat && <p className="text-red-500 text-sm mt-1">{fieldErrors.passwordRepeat}</p>}
  
-                            <div><a className="link link-hover" href="/login">Already have an account?</a></div>
+                            <div><Link className="link link-hover" to="/login">Already have an account?</Link></div>
                             <button className="btn btn-neutral mt-4" type="submit">Sign Up</button>
                             {generalError && <p className="text-red-500 mt-2">{generalError}</p>}
                         </form>

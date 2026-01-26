@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Navbar from "../components/Navbar";
 
 export default function Home() {
@@ -11,7 +12,7 @@ export default function Home() {
                         <p className="py-6">
                             Your personal inventory management system.
                         </p>
-                        <a href="/about" className="btn btn-secondary">Learn More</a>
+                        <Link to="/about" className="btn btn-secondary">Learn More</Link>
                     </div>
                 </div>
             </div>

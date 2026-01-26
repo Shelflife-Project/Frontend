@@ -1,6 +1,7 @@
 import { login } from "../Fetch_APIs/autentication";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
@@ -33,8 +34,7 @@ export default function LoginForm() {
                             <input type="email" className="input" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                             <label className="label">Password</label>
                             <input type="password" className="input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                            <div><a className="link link-hover" href="/signup">Don't have an account?</a></div>
-                            <div><a className="link link-hover">Forgot password?</a></div>
+                            <div><Link className="link link-hover" to="/signup">Don't have an account?</Link></div>
                             <button className="btn btn-neutral mt-4" type="submit">Login</button>
                             {error && <p className="text-red-500 mt-2">{error}</p>}
                         </form>
