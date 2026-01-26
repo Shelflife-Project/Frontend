@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { DeleteProduct, GetProducts } from "../../../apis/ProductsAPI";
 import { useAuth } from "../../../context/AuthContext";
 import type { Product } from "../../../types/Product";
-import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, getPaginationRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 
 export default function ProductTable() {
     const [data, setData] = useState<Product[]>([]);
@@ -49,7 +49,7 @@ export default function ProductTable() {
                 const product = row.original;
                 if (product.ownerId === user?.id)
                     return (
-                        <div className="space-x-2">
+                        <div className="grid grid-cols-2 gap-2">
                             <button className="btn btn-sm btn-primary">Edit</button>
                             <button className="btn btn-sm btn-error" onClick={() => deleteProductHandler(row.original.id)}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
@@ -67,41 +67,83 @@ export default function ProductTable() {
     const table = useReactTable({
         data,
         columns,
-        getCoreRowModel: getCoreRowModel()
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        initialState: {
+            pagination: {
+                pageSize: 10,
+            },
+        },
     });
 
     return (
-        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-            <table className="table">
-                <thead>
-                    {table.getHeaderGroups().map(headerGroup => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map(header => (
-                                <th key={header.id}>
-                                    {flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
-                                    )}
-                                </th>
-                            ))}
-                        </tr>
+        <>
+            <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mb-2">
+                <table className="table">
+                    <thead>
+                        {table.getHeaderGroups().map(headerGroup => (
+                            <tr key={headerGroup.id}>
+                                {headerGroup.headers.map(header => (
+                                    <th key={header.id}>
+                                        {flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                        )}
+                                    </th>
+                                ))}
+                            </tr>
+                        ))}
+                    </thead>
+                    <tbody>
+                        {table.getRowModel().rows.map(row => (
+                            <tr key={row.id}>
+                                {row.getVisibleCells().map(cell => (
+                                    <td key={cell.id}>
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <button
+                        className="btn btn-sm"
+                        onClick={() => table.previousPage()}
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        {"<"}
+                    </button>
+                    <button
+                        className="btn btn-sm"
+                        onClick={() => table.nextPage()}
+                        disabled={!table.getCanNextPage()}
+                    >
+                        {">"}
+                    </button>
+                    <p className="text-sm select-none">
+                        {"Page " + (table.getState().pagination.pageIndex + 1) + " of " + table.getPageCount()}
+                    </p>
+                </div>
+
+                <select
+                    className="select select-sm w-fit"
+                    value={table.getState().pagination.pageSize}
+                    onChange={e => table.setPageSize(Number(e.target.value))}
+                >
+                    {[10, 25, 50, 100].map(size => (
+                        <option key={size} value={size}>
+                            Show {size}
+                        </option>
                     ))}
-                </thead>
-                <tbody>
-                    {table.getRowModel().rows.map(row => (
-                        <tr key={row.id}>
-                            {row.getVisibleCells().map(cell => (
-                                <td key={cell.id}>
-                                    {flexRender(
-                                        cell.column.columnDef.cell,
-                                        cell.getContext()
-                                    )}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                </select>
+            </div>
+        </>
     );
 }
