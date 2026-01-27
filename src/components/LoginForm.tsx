@@ -16,8 +16,8 @@ export default function LoginForm() {
         try {
             await login(email, password);
             refreshAuth();
-        } catch (err) {
-            setError("Invalid email or password");
+        } catch (err: any) {
+            setError(err.message);
         }
     }
     return (

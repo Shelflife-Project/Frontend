@@ -20,8 +20,12 @@ export async function UpdateUsername(username: string, userId: number) {
         credentials: "include"
     });
 
-    if (!res.ok) {
+    if (res.status == 400) {
         throw res.json();
+    }
+
+    if (!res.ok) {
+        throw new Error("Couldn't update username")
     }
 
     return res.json();
@@ -35,8 +39,12 @@ export async function UpdateEmail(email: string, userId: number) {
         credentials: "include"
     });
 
-    if (!res.ok) {
+    if (res.status == 400) {
         throw res.json();
+    }
+
+    if (!res.ok) {
+        throw new Error("Couldn't update email")
     }
 
     return res.json();
@@ -50,8 +58,12 @@ export async function UpdatePassword(oldPassword: string, newPassword: string, n
         credentials: "include"
     });
 
-    if (!res.ok) {
+    if (res.status == 400) {
         throw res.json();
+    }
+
+    if (!res.ok) {
+        throw new Error("Couldn't update password")
     }
 
     return res.json();

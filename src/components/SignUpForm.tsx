@@ -8,7 +8,7 @@ export default function SignUpForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
-    const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
+    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
     const [generalError, setGeneralError] = useState("");
 
     async function handleSubmit(e: React.FormEvent) {
@@ -25,12 +25,8 @@ export default function SignUpForm() {
             await signup(username, email, password, passwordRepeat);
             navigate("/login");
         } catch (err: any) {
-            try {
-                const errorData = JSON.parse(err?.message || "{}");
-                setFieldErrors(errorData);
-            } catch {
-                setGeneralError(err?.message || "Signup failed");
-            }
+            setGeneralError(err.message || err.error || "");
+            setFieldErrors(err);
         }
     }
 
@@ -59,7 +55,7 @@ export default function SignUpForm() {
                             <label className="label">Repeat Password</label>
                             <input required type="password" className={`input ${fieldErrors.passwordRepeat ? 'input-error' : ''}`} placeholder="Repeat Password" value={passwordRepeat} onChange={(e) => setPasswordRepeat(e.target.value)} />
                             {fieldErrors.passwordRepeat && <p className="text-red-500 text-sm mt-1">{fieldErrors.passwordRepeat}</p>}
- 
+
                             <div><Link className="link link-hover" to="/login">Already have an account?</Link></div>
                             <button className="btn btn-neutral mt-4" type="submit">Sign Up</button>
                             {generalError && <p className="text-red-500 mt-2">{generalError}</p>}

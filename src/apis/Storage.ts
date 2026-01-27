@@ -8,6 +8,11 @@ export async function GetStorages(): Promise<Storage[]> {
         credentials: "include",
     });
 
+    if (!res.ok) {
+        console.error("Couldn't get storages");
+        return [];
+    }
+
     return res.json();
 }
 
@@ -20,6 +25,14 @@ export async function CreateStorage(name: string): Promise<Storage> {
         },
         body: JSON.stringify({ name }),
     });
+
+    if (res.status == 400) {
+        throw res.json();
+    }
+
+    if (!res.ok) {
+        throw new Error("Couldn't create storage")
+    }
     
     return res.json();
 }
