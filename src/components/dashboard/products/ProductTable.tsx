@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { DeleteProduct, GetProducts } from "../../../apis/ProductsAPI";
 import { useAuth } from "../../../context/AuthContext";
 import type { Product } from "../../../types/Product";
-import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
 
 export default function ProductTable() {
     const [data, setData] = useState<Product[]>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
+    const [globalFilter, setGlobalFilter] = useState("");
     const { user } = useAuth();
 
     const getProducts = () => {
@@ -47,6 +48,7 @@ export default function ProductTable() {
         {
             header: "Actions",
             enableSorting: false,
+            enableGlobalFilter: false,
             cell: ({ row }) => {
                 const product = row.original;
                 if (product.ownerId === user?.id)
@@ -69,9 +71,11 @@ export default function ProductTable() {
         columns,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        onGlobalFilterChange: setGlobalFilter,
         onSortingChange: setSorting,
-        state: { sorting },
+        state: { sorting, globalFilter },
         initialState: {
             pagination: {
                 pageSize: 10,
@@ -81,6 +85,8 @@ export default function ProductTable() {
 
     return (
         <>
+            <input type="text" onChange={e => table.setGlobalFilter(e.target.value)} className="input input-bordered mb-2 w-fit" placeholder="Search" />
+
             <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mb-2">
                 <table className="table">
                     <thead>
