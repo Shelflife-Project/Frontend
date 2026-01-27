@@ -13,13 +13,12 @@ export default function CreateProductForm() {
 
         try {
             await CreateProduct(name, category, barcode, expiration);
+            fetchProducts();
+            setShowForm(false);
         } catch (err: any) {
             setGeneralError(err.message || err.error || "");
             setFieldErrors(err);
         }
-
-        fetchProducts();
-        setShowForm(false);
     };
 
     const [showForm, setShowForm] = useState(false);
