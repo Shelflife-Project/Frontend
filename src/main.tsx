@@ -1,13 +1,24 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
 import { BrowserRouter, Routes, Route } from 'react-router'
+import Home from './pages/Home.tsx'
+import Login from './pages/Login.tsx'
+import About from './pages/About.tsx'
+import SignUp from './pages/SignUp.tsx'
+import Dashboard from './pages/dashboard/Dashboard.tsx'
+import { AuthProvider } from './context/AuthContext.tsx'
+import { ProtectedRoute } from './components/ProtectedRoute.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path='/' element={<App />} />
-      <Route path='/test' element={<p>Test</p>} />
-    </Routes>
-  </BrowserRouter>,
+  <AuthProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/signup' element={<SignUp />} />
+        <Route path='/dashboard/*' element={<ProtectedRoute element={<Dashboard />} />} />
+      </Routes>
+    </BrowserRouter>
+  </AuthProvider>,
 )
