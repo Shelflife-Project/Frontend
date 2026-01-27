@@ -1,32 +1,23 @@
-import { useEffect, useMemo, useState } from "react";
-import { DeleteProduct, GetProducts } from "../../../apis/ProductsAPI";
+import { useMemo, useState } from "react";
+import { DeleteProduct } from "../../../apis/ProductsAPI";
 import { useAuth } from "../../../context/AuthContext";
 import type { Product } from "../../../types/Product";
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
+import { useProduct } from "../../../context/ProductContext";
 
 export default function ProductTable() {
-    const [data, setData] = useState<Product[]>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [globalFilter, setGlobalFilter] = useState("");
     const { user } = useAuth();
-
-    const getProducts = () => {
-        GetProducts().then(products => {
-            setData(products);
-        });
-    };
+    const { products, fetchProducts } = useProduct();
 
     const deleteProductHandler = async (id: number) => {
         const confirmDelete = confirm("Are you sure you want to delete this product?");
         if (confirmDelete) {
             await DeleteProduct(id);
-            getProducts();
+            fetchProducts();
         }
     };
-
-    useEffect(() => {
-        getProducts();
-    }, []);
 
     const columns = useMemo<ColumnDef<Product>[]>(() => [
         {
@@ -67,7 +58,7 @@ export default function ProductTable() {
     ], [])
 
     const table = useReactTable({
-        data,
+        data: products,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),

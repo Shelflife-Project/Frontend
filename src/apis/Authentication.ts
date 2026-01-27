@@ -23,10 +23,12 @@ export async function signup(username: string, email: string, password: string, 
         body: JSON.stringify({ username, email, password, passwordRepeat }),
     });
 
-    if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Signup failed");
+    if (res.status == 400) {
+        throw await res.json();
     }
+
+    if (!res.ok)
+        throw new Error("Couldn't sign up");
 }
 
 export async function logout() {
@@ -44,7 +46,7 @@ export async function getCurrentUser(): Promise<User | null> {
         credentials: "include"
     });
 
-    if (res.status != 200)
+    if (!res.ok)
         return null;
 
     return res.json();
