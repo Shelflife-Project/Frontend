@@ -2,10 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { DeleteProduct, GetProducts } from "../../../apis/ProductsAPI";
 import { useAuth } from "../../../context/AuthContext";
 import type { Product } from "../../../types/Product";
-import { flexRender, getCoreRowModel, getPaginationRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
 
 export default function ProductTable() {
     const [data, setData] = useState<Product[]>([]);
+    const [sorting, setSorting] = useState<SortingState>([]);
     const { user } = useAuth();
 
     const getProducts = () => {
@@ -45,16 +46,15 @@ export default function ProductTable() {
         },
         {
             header: "Actions",
+            enableSorting: false,
             cell: ({ row }) => {
                 const product = row.original;
                 if (product.ownerId === user?.id)
                     return (
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-2 gap-2 min-w-max">
                             <button className="btn btn-sm btn-primary">Edit</button>
                             <button className="btn btn-sm btn-error" onClick={() => deleteProductHandler(row.original.id)}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
-                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                                </svg>
+                                Delete
                             </button>
                         </div>
                     );
@@ -68,7 +68,10 @@ export default function ProductTable() {
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        onSortingChange: setSorting,
+        state: { sorting },
         initialState: {
             pagination: {
                 pageSize: 10,
@@ -84,11 +87,15 @@ export default function ProductTable() {
                         {table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
                                 {headerGroup.headers.map(header => (
-                                    <th key={header.id}>
-                                        {flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
+                                    <th key={header.id} className="cursor-pointer" onClick={header.column.getToggleSortingHandler()}>
+                                        <div className="space-x-2">
+                                            {flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                            {header.column.getIsSorted() === "asc" && "↑"}
+                                            {header.column.getIsSorted() === "desc" && "↓"}
+                                        </div>
                                     </th>
                                 ))}
                             </tr>
