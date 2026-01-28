@@ -10,8 +10,8 @@ import { AuthProvider } from './context/AuthContext.tsx'
 import { ProtectedRoute } from './components/ProtectedRoute.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <AuthProvider>
-    <BrowserRouter>
+  <BrowserRouter>
+    <AuthProvider>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
@@ -19,6 +19,6 @@ createRoot(document.getElementById('root')!).render(
         <Route path='/signup' element={<SignUp />} />
         <Route path='/dashboard/*' element={<ProtectedRoute element={<Dashboard />} />} />
       </Routes>
-    </BrowserRouter>
-  </AuthProvider>,
+    </AuthProvider>
+  </BrowserRouter>
 )
