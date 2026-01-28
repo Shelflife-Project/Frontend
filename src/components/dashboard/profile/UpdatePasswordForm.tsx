@@ -24,7 +24,7 @@ export default function UpdatePasswordForm() {
             setPassword("");
             setRepeat("");
         } catch (err: any) {
-            setError(err.oldPassword || err.newPassword || err.newPasswordRepeat || err.error || "An unexpected error occurred.");
+            setError(err.oldPassword || err.newPassword || err.newPasswordRepeat || err.error || err);
             setSuccess(null);
         }
     };

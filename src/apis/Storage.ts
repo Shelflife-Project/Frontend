@@ -27,7 +27,7 @@ export async function CreateStorage(name: string): Promise<Storage> {
     });
 
     if (res.status == 400) {
-        throw res.json();
+        throw await res.json();
     }
 
     if (!res.ok) {

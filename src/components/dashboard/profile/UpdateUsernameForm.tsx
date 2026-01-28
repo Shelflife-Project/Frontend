@@ -21,7 +21,7 @@ export default function UpdateUsernameForm() {
             
             setUsername("");
         } catch (err: any) {
-            setError(err.username || err.error || "An unexpected error occurred.");
+            setError(err.username || err.error || err);
             setSuccess(null);
         }
     };
