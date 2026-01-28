@@ -8,7 +8,7 @@ export async function UploadPFP(formData: FormData, userId: number) {
     });
 
     if (!res.ok) {
-        throw res.json();
+        throw await res.json();
     }
 }
 
@@ -21,14 +21,12 @@ export async function UpdateUsername(username: string, userId: number) {
     });
 
     if (res.status == 400) {
-        throw res.json();
+        throw await res.json();
     }
 
     if (!res.ok) {
         throw new Error("Couldn't update username")
     }
-
-    return res.json();
 }
 
 export async function UpdateEmail(email: string, userId: number) {
@@ -40,14 +38,12 @@ export async function UpdateEmail(email: string, userId: number) {
     });
 
     if (res.status == 400) {
-        throw res.json();
+        throw await res.json();
     }
 
     if (!res.ok) {
         throw new Error("Couldn't update email")
     }
-
-    return res.json();
 }
 
 export async function UpdatePassword(oldPassword: string, newPassword: string, newPasswordRepeat: string) {
@@ -59,12 +55,10 @@ export async function UpdatePassword(oldPassword: string, newPassword: string, n
     });
 
     if (res.status == 400) {
-        throw res.json();
+        throw await res.json();
     }
 
     if (!res.ok) {
         throw new Error("Couldn't update password")
     }
-
-    return res.json();
 }

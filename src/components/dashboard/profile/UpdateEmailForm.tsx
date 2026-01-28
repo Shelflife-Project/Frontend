@@ -20,7 +20,7 @@ export default function UpdateEmailForm() {
             
             setEmail("");
         } catch (err: any) {
-            setError(err.email || err.error || "An unexpected error occurred.");
+            setError(err.email || err.error || err);
             setSuccess(null);
         }
     };
