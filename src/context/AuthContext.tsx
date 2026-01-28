@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { getCurrentUser } from '../apis/Authentication';
 import type { User } from '../types/User';
+import { useLocation } from 'react-router';
 
 interface AuthContextType {
     user: User | null;
@@ -14,6 +15,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const location = useLocation();
 
     const checkAuth = async () => {
         try {
@@ -28,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         checkAuth();
-    }, []);
+    }, [location]);
 
     return (
         <AuthContext.Provider value={{ user, isLoggedIn: !!user, loading, refreshAuth: checkAuth }}>
