@@ -24,7 +24,7 @@ export function StorageItemProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         fetchItems();
         setLoading(false);
-    }, []);
+    }, [storageId]);
 
     return (
         <StorageItemContext.Provider value={{ items, loading, fetchItems, setStorageId }}>
