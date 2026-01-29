@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import StorageCard from "../../components/dashboard/StorageCard";
-import type { Storage } from "../../types/Storage";
-import { CreateStorage, GetStorages } from "../../apis/Storage";
+import { CreateStorage } from "../../apis/StorageAPI";
 import CreateButton from "../../components/dashboard/CreateButton";
+import { useStorage } from "../../context/StorageContext";
 
 export default function Storages() {
+    const { storages, fetchStorages } = useStorage();
     const [showForm, setShowForm] = useState(false);
-    const [storages, setStorages] = useState<Storage[]>([]);
     const [newStorageName, setNewStorageName] = useState("");
-
-    const fetchStorages = () => {
-        GetStorages().then((data) => {
-            setStorages(data);
-        });
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,10 +19,6 @@ export default function Storages() {
         setShowForm(false);
     };
 
-    useEffect(() => {
-        fetchStorages();
-    }, []);
-
     return (
         <>
             <div className="p-8 pb-32 text-center">
@@ -38,7 +28,7 @@ export default function Storages() {
                 {storages.length > 0 && (
                     <div className="flex flex-col items-center gap-6 max-w-2xl mx-auto">
                         {storages.map((storage) => (
-                            <StorageCard storage={storage} onDelete={fetchStorages} />
+                            <StorageCard storage={storage} />
                         ))}
                     </div>
                 )}

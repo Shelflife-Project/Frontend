@@ -1,12 +1,16 @@
-import { DeleteStorage } from "../../apis/Storage";
+import { Link } from "react-router";
+import { DeleteStorage } from "../../apis/StorageAPI";
 import type { Storage } from "../../types/Storage";
+import { useStorage } from "../../context/StorageContext";
 
-export default function StorageCard({ storage, onDelete }: { storage: Storage; onDelete: () => void }) {
+export default function StorageCard({ storage }: { storage: Storage; }) {
+    const { fetchStorages } = useStorage();
+
     const handleDelete = async () => {
         const confirmDelete = window.confirm("Are you sure you want to delete this storage?");
         if (confirmDelete) {
             await DeleteStorage(storage.id);
-            onDelete();
+            fetchStorages();
         }
     };
 
@@ -23,7 +27,7 @@ export default function StorageCard({ storage, onDelete }: { storage: Storage; o
                 </div>
                 <div className="grid grid-cols-3 gap-2 mt-4">
                     <a className="btn btn-sm sm:btn-md btn-success">Members</a>
-                    <a className="btn btn-sm sm:btn-md btn-primary">View Items</a>
+                    <Link className="btn btn-sm sm:btn-md btn-primary" to={"/dashboard/storages/" + storage.id}>View Items</Link>
                     <button onClick={handleDelete} className="btn btn-sm sm:btn-md btn-error">
                         Delete
                     </button>
