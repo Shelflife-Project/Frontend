@@ -6,13 +6,27 @@ import Notifications from "./Notifications";
 import Profile from "./Profile";
 import DashboardNavbarBottom from '../../components/dashboard/DashboardNavbarBottom';
 import { ProductProvider } from '../../context/ProductContext';
+import { StorageProvider } from '../../context/StorageContext';
+import Items from './Items';
+import { StorageItemProvider } from '../../context/StorageItemContext';
 
 export default function Dashboard() {
     return (
         <>
             <DashboardNavbar />
             <Routes>
-                <Route path="/" element={<Storages />} />
+                <Route path="/" element={
+                    <StorageProvider>
+                        <Storages />
+                    </StorageProvider>
+                } />
+
+                <Route path="storages/:id" element={
+                    <StorageItemProvider>
+                        <Items />
+                    </StorageItemProvider>
+                } />
+
                 <Route path="/products" element={
                     <ProductProvider>
                         <Products />
