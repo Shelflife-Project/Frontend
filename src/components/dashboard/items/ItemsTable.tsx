@@ -4,12 +4,12 @@ import type { StorageItem } from "../../../types/StorageItem";
 import { DeleteItem } from "../../../apis/StorageItemsAPI";
 
 export default function ItemsTable() {
-    const { items, fetchItems } = useStorageItem();
+    const { items, fetchItems, storageId } = useStorageItem();
 
-    const deleteItemHandler = async (storage_id: number, item_id: number) => {
+    const deleteItemHandler = async (item_id: number) => {
         const confirmDelete = confirm("Are you sure you want to remove this item?");
         if (confirmDelete) {
-            await DeleteItem(storage_id, item_id);
+            await DeleteItem(storageId, item_id);
             fetchItems();
         }
     };
@@ -39,7 +39,7 @@ export default function ItemsTable() {
                 return (
                     <div className="grid grid-cols-2 gap-2 min-w-max">
                         <button className="btn btn-sm btn-primary">Edit</button>
-                        <button className="btn btn-sm btn-error" onClick={() => deleteItemHandler(item.storage_id, item.id)}>
+                        <button className="btn btn-sm btn-error" onClick={() => deleteItemHandler(item.id)}>
                             Delete
                         </button>
                     </div>

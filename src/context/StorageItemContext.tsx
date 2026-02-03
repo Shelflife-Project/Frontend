@@ -5,6 +5,7 @@ import { GetItems } from '../apis/StorageItemsAPI';
 interface StorageItemContextType {
     items: StorageItem[];
     loading: boolean;
+    storageId: number;
     fetchItems: () => Promise<void>;
     setStorageId: (id: number) => void;
 }
@@ -27,7 +28,7 @@ export function StorageItemProvider({ children }: { children: ReactNode }) {
     }, [storageId]);
 
     return (
-        <StorageItemContext.Provider value={{ items, loading, fetchItems, setStorageId }}>
+        <StorageItemContext.Provider value={{ items, loading, storageId, fetchItems, setStorageId }}>
             {children}
         </StorageItemContext.Provider>
     );

@@ -17,9 +17,8 @@ export async function GetItems(storageId: number): Promise<StorageItem[]> {
 }
 
 export async function DeleteItem(storage_id: number, item_id: number) {
-
     await fetch(API_URL + storage_id + "/items/" + item_id, {
-        method: "GET",
+        method: "DELETE",
         credentials: "include",
     });
 }
