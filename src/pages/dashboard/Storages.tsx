@@ -28,7 +28,7 @@ export default function Storages() {
                 {storages.length > 0 && (
                     <div className="flex flex-col items-center gap-6 max-w-2xl mx-auto">
                         {storages.map((storage) => (
-                            <StorageCard storage={storage} />
+                            <StorageCard key={storage.id} storage={storage} />
                         ))}
                     </div>
                 )}
