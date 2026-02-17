@@ -6,7 +6,7 @@ interface ProtectedRouteProps {
     element: React.ReactNode;
 }
 
-export function ProtectedRoute({ element }: ProtectedRouteProps) {
+export function UnProtectedRoute({ element }: ProtectedRouteProps) {
     const { getMe, isLoading, user } = useAuth();
 
     useEffect(() => {
@@ -19,8 +19,8 @@ export function ProtectedRoute({ element }: ProtectedRouteProps) {
         </div>;
     }
 
-    if (!user) {
-        return <Navigate to="/login" replace />;
+    if (user) {
+        return <Navigate to="/dashboard" replace />;
     }
 
     return element;

@@ -1,6 +1,6 @@
+import { useAuth } from "shelflife-react-hooks";
 import LogoutButton from "../LogoutButton";
 import UserIcon from "./UserIcon";
-import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router";
 
 export default function UserIconDropdown() {

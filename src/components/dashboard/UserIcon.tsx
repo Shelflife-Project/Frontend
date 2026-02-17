@@ -1,4 +1,4 @@
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "shelflife-react-hooks";
 
 const URL = "http://localhost:8080/api/users/";
 
