@@ -4,7 +4,12 @@ import UserIcon from "./UserIcon";
 import { Link } from "react-router";
 
 export default function UserIconDropdown() {
-    const { user } = useAuth();
+    const { user, isLoading } = useAuth();
+
+    if (isLoading)
+        return <div className="flex justify-center items-center min-h-screen">
+            <span className="loading loading-spinner loading-lg"></span>
+        </div>;
 
     if (!user)
         return <Link to="/login" className="btn btn-secondary">Login</Link>;

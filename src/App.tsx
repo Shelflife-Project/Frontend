@@ -1,38 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import { Link } from 'react-router'
+import { Route, Routes } from "react-router";
+import { useAuth } from "shelflife-react-hooks";
+import { UnProtectedRoute } from "./components/UnProtectedRoute";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import Login from "./pages/Login";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import { useEffect } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+    const { getMe } = useAuth();
 
-  return (
-    <>
-      <div>
-        <Link to="https://vite.dev" target="_blank">
-          <img src={viteLogo} alt="Vite logo" />
-        </Link>
-        <Link to="https://react.dev" target="_blank">
-          <img src={reactLogo} alt="React logo" />
-        </Link>
-      </div>
-      <h1>Vite + React</h1>
-      <div>
-        <button className='btn btn-primary' onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p>
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        getMe();
+    }, [])
 
-
-
+    return (
+        <Routes>
+            <Route path='/' element={<Home />} />
+            {
+                /*<Route path='/about' element={<About />} />
+                <Route path='/signup' element={<SignUp />} />
+                <Route path='/dashboard/*' element={<ProtectedRoute element={<Dashboard />} />} />
+                */
+            }
+            <Route path='/login' element={<UnProtectedRoute element={<Login />} />} />
+            <Route path='/dashboard/*' element={<ProtectedRoute element={<Navbar />} />} />
+        </Routes>
+    )
 }
-
-export default App
