@@ -11,8 +11,12 @@ export default function App() {
     const { getMe } = useAuth();
 
     useEffect(() => {
-        getMe();
-    }, [])
+        const fetchUser = async () => {
+            await getMe();
+        };
+
+        fetchUser();
+    }, [getMe]);
 
     return (
         <Routes>
@@ -26,5 +30,5 @@ export default function App() {
             <Route path='/login' element={<UnProtectedRoute element={<Login />} />} />
             <Route path='/dashboard/*' element={<ProtectedRoute element={<Navbar />} />} />
         </Routes>
-    )
+    );
 }
