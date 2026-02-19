@@ -1,15 +1,17 @@
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "shelflife-react-hooks";
+import { useAuth, type UpdateUserError } from "shelflife-react-hooks";
 
 export default function UpdateEmailForm() {
     const [email, setEmail] = useState("");
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string>("");
     const { user, changeMe, getMe } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
+        setError("");
+
         if (!user)
             return;
 
@@ -19,6 +21,9 @@ export default function UpdateEmailForm() {
             await getMe();
             navigate("/login", { replace: true })
         } catch (err: any) {
+            const update = err as UpdateUserError
+            if (update.email)
+                setError(update.email);
         }
     };
 

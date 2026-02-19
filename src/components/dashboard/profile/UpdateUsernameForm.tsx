@@ -1,25 +1,29 @@
 import { useState } from "react";
-import { useAuth } from "shelflife-react-hooks";
+import { useAuth, type UpdateUserError } from "shelflife-react-hooks";
 
 export default function UpdateUsernameForm() {
     const { user, changeMe } = useAuth();
 
     const [username, setUsername] = useState("");
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
+    const [error, setError] = useState<string>("");
+    const [success, setSuccess] = useState<string>("");
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
+
         if (!user)
             return;
 
         try {
             await changeMe({ username });
             setSuccess("Username updated successfully!");
-            setError(null);
-
             setUsername("");
         } catch (err: any) {
+            const update = err as UpdateUserError;
+            if (update.username)
+                setError(update.username);
         }
     };
 

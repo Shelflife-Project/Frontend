@@ -1,28 +1,32 @@
 import { useState } from "react";
-import { useAuth } from "shelflife-react-hooks";
+import { useAuth, type ChangePasswordErrorResponse } from "shelflife-react-hooks";
 
 export default function UpdatePasswordForm() {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [newPasswordRepeat, setNewPasswordRepeat] = useState("");
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
+    const [error, setError] = useState<string>("");
+    const [success, setSuccess] = useState<string>("");
     const { user, changePassword } = useAuth();
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
+
         if (!user)
             return;
 
         try {
             await changePassword({ oldPassword, newPassword, newPasswordRepeat });
             setSuccess("Password updated successfully!");
-            setError(null);
 
             setOldPassword("");
             setNewPassword("");
             setNewPasswordRepeat("");
         } catch (err: any) {
+            const pass = err as ChangePasswordErrorResponse;
+            setError(pass.oldPassword || pass.newPassword || pass.newPasswordRepeat || "");
         }
     };
 
