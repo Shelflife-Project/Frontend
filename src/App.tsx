@@ -22,8 +22,8 @@ export default function App() {
 
     return (
         <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/about' element={<About />} />
+            <Route path='/' element={<UnProtectedRoute user={user} element={<Home />} />} />
+            <Route path='/about' element={<UnProtectedRoute user={user} element={<About />} />} />
             <Route path='/login' element={<UnProtectedRoute user={user} element={<Login />} />} />
             <Route path='/signup' element={<UnProtectedRoute user={user} element={<SignUp />} />} />
             <Route path='/dashboard/*' element={<ProtectedRoute user={user} element={<Dashboard />} />} />
