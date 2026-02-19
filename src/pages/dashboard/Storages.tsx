@@ -1,25 +1,19 @@
 import { useEffect, useState } from "react";
 import StorageCard from "../../components/dashboard/StorageCard";
-import type { Storage } from "../../types/Storage";
-import { CreateStorage, GetStorages } from "../../apis/Storage";
 import CreateButton from "../../components/dashboard/CreateButton";
+import { useStorages } from "shelflife-react-hooks";
 
 export default function Storages() {
+    const { storages, fetchStorages, createStorage } = useStorages();
+
     const [showForm, setShowForm] = useState(false);
-    const [storages, setStorages] = useState<Storage[]>([]);
     const [newStorageName, setNewStorageName] = useState("");
 
-    const fetchStorages = () => {
-        GetStorages().then((data) => {
-            setStorages(data);
-        });
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         if (!newStorageName) return;
 
-        await CreateStorage(newStorageName);
+        await createStorage({ name: newStorageName });
         fetchStorages();
         setNewStorageName("");
         setShowForm(false);
@@ -38,7 +32,7 @@ export default function Storages() {
                 {storages.length > 0 && (
                     <div className="flex flex-col items-center gap-6 max-w-2xl mx-auto">
                         {storages.map((storage) => (
-                            <StorageCard key={storage.id} storage={storage} onDelete={fetchStorages} />
+                            <StorageCard key={storage.id} storage={storage} />
                         ))}
                     </div>
                 )}

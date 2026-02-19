@@ -1,16 +1,17 @@
-import { DeleteStorage } from "../../apis/Storage";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth, useStorages } from "shelflife-react-hooks";
 import type { Storage } from "../../types/Storage";
 
-export default function StorageCard({ storage, onDelete }: { storage: Storage; onDelete: () => void }) {
+export default function StorageCard({ storage }: { storage: Storage; }) {
     const { user } = useAuth();
+    const { deleteStorage, fetchStorages } = useStorages();
+
     const deleteButtonValue = storage.owner.id === user?.id || user?.admin ? "Delete" : "Leave";
 
     const handleDelete = async () => {
         const confirmDelete = window.confirm("Are you sure you want to " + deleteButtonValue + " this storage?");
         if (confirmDelete) {
-            await DeleteStorage(storage.id);
-            onDelete();
+            await deleteStorage(storage.id);
+            fetchStorages();
         }
     };
 
