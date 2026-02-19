@@ -1,24 +1,24 @@
-import { useState, type FormEvent } from "react";
-import { UpdateUsername } from "../../../apis/User";
-import { useAuth } from "../../../context/AuthContext";
+import { useState } from "react";
+import { useAuth, useUsers } from "shelflife-react-hooks";
 
 export default function UpdateUsernameForm() {
+    const { user } = useAuth();
+    const { updateUser } = useUsers();
+
     const [username, setUsername] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
-    const { user, refreshAuth } = useAuth();
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         if (!user)
             return;
 
         try {
-            await UpdateUsername(username, user.id);
-            refreshAuth();
+            await updateUser(user.id, { username });
             setSuccess("Username updated successfully!");
             setError(null);
-            
+
             setUsername("");
         } catch (err: any) {
             setError(err.username || err.error || err);
