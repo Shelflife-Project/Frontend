@@ -10,7 +10,7 @@ import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/dashboard/Dashboard";
 
 export default function App() {
-    const { getMe } = useAuth();
+    const { getMe, user } = useAuth();
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -18,15 +18,15 @@ export default function App() {
         };
 
         fetchUser();
-    }, [getMe]);
+    }, []);
 
     return (
         <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/about' element={<About />} />
-            <Route path='/login' element={<UnProtectedRoute element={<Login />} />} />
-            <Route path='/signup' element={<UnProtectedRoute element={<SignUp />} />} />
-            <Route path='/dashboard/*' element={<ProtectedRoute element={<Dashboard />} />} />
+            <Route path='/login' element={<UnProtectedRoute user={user} element={<Login />} />} />
+            <Route path='/signup' element={<UnProtectedRoute user={user} element={<SignUp />} />} />
+            <Route path='/dashboard/*' element={<ProtectedRoute user={user} element={<Dashboard />} />} />
         </Routes>
     );
 }
