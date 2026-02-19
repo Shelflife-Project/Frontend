@@ -1,3 +1,5 @@
+import UpdateEmailForm from "../../components/dashboard/profile/UpdateEmailForm";
+import UpdatePasswordForm from "../../components/dashboard/profile/UpdatePasswordForm";
 import UpdateUsernameForm from "../../components/dashboard/profile/UpdateUsernameForm";
 import UploadPFPForm from "../../components/dashboard/profile/UploadPFPForm";
 import { useAuth } from "shelflife-react-hooks";
@@ -16,10 +18,8 @@ export default function Profile() {
 
             <div className="grid md:grid-cols-3 gap-2">
                 <UpdateUsernameForm />
-                {/*
-                    <UpdateEmailForm />
-                    <UpdatePasswordForm />
-                */}
+                <UpdatePasswordForm />
+                <UpdateEmailForm />
             </div>
         </div>
     );
