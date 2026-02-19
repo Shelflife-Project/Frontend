@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { useAuth } from "shelflife-react-hooks";
+import { useAuth, type LoginErrorResponse } from "shelflife-react-hooks";
 
 export default function LoginForm() {
     const { login } = useAuth();
@@ -16,10 +16,11 @@ export default function LoginForm() {
         try {
             await login({ email, password });
         } catch (err: any) {
-            setError(err.message);
+            const login = err as LoginErrorResponse;
+            setError(login.error || err.message);
         }
     }
-    
+
     return (
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content flex-col lg:flex-row-reverse">
