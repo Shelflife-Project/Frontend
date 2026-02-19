@@ -1,35 +1,36 @@
-import { useState, type FormEvent } from "react";
-import { useProduct } from "../../../context/ProductContext"
+import { useEffect, useState } from "react";
 import CreateButton from "../CreateButton";
-import { CreateProduct } from "../../../apis/ProductsAPI";
+import { useProducts } from "shelflife-react-hooks";
 
 export default function CreateProductForm() {
-    const { fetchProducts } = useProduct();
-
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        setFieldErrors({});
-        setGeneralError("");
-
-        try {
-            await CreateProduct(name, category, barcode, expiration);
-            fetchProducts();
-            setShowForm(false);
-        } catch (err: any) {
-            setGeneralError(err.message || err.error || "");
-            setFieldErrors(err);
-        }
-    };
+    const { fetchProducts, createProduct } = useProducts();
 
     const [showForm, setShowForm] = useState(false);
 
     const [name, setName] = useState("");
     const [category, setCategory] = useState("");
     const [barcode, setBarcode] = useState("");
-    const [expiration, setExpiration] = useState(1);
+    const [expirationDaysDelta, setExpirationDaysDelta] = useState(1);
 
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
     const [generalError, setGeneralError] = useState("");
+
+    const handleSubmit = async (e: React.SubmitEvent) => {
+        e.preventDefault();
+        setFieldErrors({});
+        setGeneralError("");
+
+        try {
+            await createProduct({ name, category, barcode, expirationDaysDelta });
+            fetchProducts();
+            setShowForm(false);
+        } catch (err: any) {
+        }
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, [])
 
     return (
         <>
@@ -101,8 +102,8 @@ export default function CreateProductForm() {
                                     name="expiration"
                                     placeholder="e.g., Bread"
                                     className={"input input-bordered w-auto" + (fieldErrors.expirationDaysDelta ? " input-error" : "")}
-                                    value={expiration}
-                                    onChange={(e) => setExpiration(parseInt(e.target.value))}
+                                    value={expirationDaysDelta}
+                                    onChange={(e) => setExpirationDaysDelta(parseInt(e.target.value))}
                                     min={1}
                                     required
                                 />
