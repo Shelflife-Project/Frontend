@@ -38,6 +38,7 @@ export default function UpdatePasswordForm() {
                 className="input input-bordered w-full"
                 placeholder="Old password"
                 value={oldPassword}
+                required
                 onChange={(e) => setOldPassword(e.target.value)}
             />
             <input
@@ -45,6 +46,7 @@ export default function UpdatePasswordForm() {
                 className="input input-bordered w-full"
                 placeholder="New password"
                 value={newPassword}
+                required
                 onChange={(e) => setNewPassword(e.target.value)}
             />
             <input
@@ -52,11 +54,12 @@ export default function UpdatePasswordForm() {
                 className="input input-bordered w-full"
                 placeholder="New password repeated"
                 value={newPasswordRepeat}
+                required
                 onChange={(e) => setNewPasswordRepeat(e.target.value)}
             />
             {error && <p className="text-error text-sm">{error}</p>}
             {success && <p className="text-success text-sm">{success}</p>}
-            <button className="btn btn-error w-fit">Update Password</button>
+            <button className={`btn btn-error w-fit mt-auto ${oldPassword === "" || newPassword === "" || newPasswordRepeat === "" ? "btn-disabled" : ""}`}>Update Password</button>
         </form>
     );
 }

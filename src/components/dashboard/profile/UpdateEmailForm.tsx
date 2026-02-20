@@ -32,13 +32,14 @@ export default function UpdateEmailForm() {
             <h2 className="font-semibold">Change Email</h2>
             <input
                 type="email"
-                className="input input-bordered w-full"
+                className={`input input-bordered w-full ${error ? "input-error" : ""}`}
                 placeholder="New email"
                 value={email}
+                required
                 onChange={(e) => setEmail(e.target.value)}
             />
             {error && <p className="text-error text-sm">{error}</p>}
-            <button className="btn btn-primary w-fit mt-auto">Update Email</button>
+            <button className={`btn btn-primary w-fit mt-auto ${email === "" ? "btn-disabled" : ""}`}>Update Email</button>
         </form>
     );
 }
