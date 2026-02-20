@@ -15,14 +15,6 @@ export default function Dashboard() {
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/products" element={<Products />} />
-                {
-                    /*<Route path="/products" element={
-                    <ProductProvider>
-                        <Products />
-                    </ProductProvider>
-                } />*/
-
-                }
             </Routes>
             <div className="h-20" />
             <DashboardNavbarBottom />

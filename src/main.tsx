@@ -6,13 +6,15 @@ import App from './App.tsx'
 import { BrowserRouter } from 'react-router'
 import { StrictMode } from 'react'
 
+const baseUrl = "http://localhost:8080";
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider baseUrl={'http://localhost:8080'} tokenStorage={localStorageAdapter} initialToken={await localStorageAdapter.getItem("auth_token")}>
-        <UserProvider baseUrl={'http://localhost:8080'}>
-          <StorageProvider baseUrl={'http://localhost:8080'}>
-            <ProductProvider baseUrl={'http://localhost:8080'}>
+      <AuthProvider baseUrl={baseUrl} tokenStorage={localStorageAdapter} initialToken={await localStorageAdapter.getItem("auth_token")}>
+        <UserProvider baseUrl={baseUrl}>
+          <StorageProvider baseUrl={baseUrl}>
+            <ProductProvider baseUrl={baseUrl}>
               <App />
             </ProductProvider>
           </StorageProvider>

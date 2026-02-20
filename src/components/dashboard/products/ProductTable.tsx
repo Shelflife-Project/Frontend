@@ -21,7 +21,7 @@ export default function ProductTable() {
         }
     };
 
-    const columns = useMemo<ColumnDef<Product>[]>(() => [
+    const columns = useMemo<ColumnDef<Product>[] | any>(() => [
         {
             accessorKey: "name",
             header: "Name",
@@ -42,7 +42,7 @@ export default function ProductTable() {
             header: "Actions",
             enableSorting: false,
             enableGlobalFilter: false,
-            cell: ({ row }) => {
+            cell: ({ row }: { row: Row<Product> }) => {
                 const product = row.original;
                 if (product.ownerId === user?.id)
                     return (
