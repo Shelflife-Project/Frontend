@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import StorageCard from "../../components/dashboard/StorageCard";
-import CreateButton from "../../components/dashboard/CreateButton";
+import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButton";
 import { useStorages } from "shelflife-react-hooks";
 import FormPopUp from "../../components/FormPopUp";
 import CreateStorageForm from "../../components/storage/NewForm";
@@ -8,14 +8,13 @@ import CreateStorageForm from "../../components/storage/NewForm";
 export default function Storages() {
     const { storages, fetchStorages } = useStorages();
 
-
     useEffect(() => {
         fetchStorages();
     }, []);
 
     return (
         <>
-            <div className="p-8 pb-32 text-center">
+            <div className="p-8 text-center">
                 <h1 className="text-3xl font-bold mb-4">Storages</h1>
                 <p className="text-gray-600 mb-8">Manage your storages here</p>
 
@@ -32,7 +31,7 @@ export default function Storages() {
                 )}
             </div>
 
-            <FormPopUp button={<CreateButton  onClick={() => {}}/>} >
+            <FormPopUp button={<CreateButtonWithOutClick />} >
                 <CreateStorageForm />
             </FormPopUp>
         </>

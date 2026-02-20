@@ -5,16 +5,16 @@ type Props = {}
 
 export default function CreateStorageForm({ }: Props) {
     const { createStorage, fetchStorages } = useStorages();
-     const [newStorageName, setNewStorageName] = useState("");
-    
-        const handleSubmit = async (e: React.SubmitEvent) => {
-            e.preventDefault();
-            if (!newStorageName) return;
-    
-            await createStorage({ name: newStorageName });
-            fetchStorages();
-            setNewStorageName(""); 
-        };
+    const [newStorageName, setNewStorageName] = useState("");
+
+    const handleSubmit = async (e: React.SubmitEvent) => {
+        e.preventDefault();
+        if (!newStorageName) return;
+
+        await createStorage({ name: newStorageName });
+        fetchStorages();
+        setNewStorageName("");
+    };
 
     return (
         <>
