@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import CreateButton from "../CreateButton";
 import { useProducts } from "shelflife-react-hooks";
 
@@ -25,7 +25,7 @@ export default function CreateProductForm() {
                 name,
                 category,
                 barcode: barcode || undefined,
-                expirationDaysDelta: expiration,
+                expirationDaysDelta: expirationDaysDelta,
             });
             fetchProducts();
             setShowForm(false);
