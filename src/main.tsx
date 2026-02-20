@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { AuthProvider, StorageProvider, UserProvider } from 'shelflife-react-hooks'
+import { AuthProvider, ProductProvider, StorageProvider, UserProvider } from 'shelflife-react-hooks'
 import { localStorageAdapter } from './LocalStorageAdapter.ts'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router'
@@ -12,7 +12,9 @@ createRoot(document.getElementById('root')!).render(
       <AuthProvider baseUrl={'http://localhost:8080'} tokenStorage={localStorageAdapter} initialToken={await localStorageAdapter.getItem("auth_token")}>
         <UserProvider baseUrl={'http://localhost:8080'}>
           <StorageProvider baseUrl={'http://localhost:8080'}>
-            <App />
+            <ProductProvider baseUrl={'http://localhost:8080'}>
+              <App />
+            </ProductProvider>
           </StorageProvider>
         </UserProvider>
       </AuthProvider>

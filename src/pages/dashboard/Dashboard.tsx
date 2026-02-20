@@ -4,6 +4,7 @@ import Storages from "./Storages";
 import DashboardNavbarBottom from '../../components/dashboard/DashboardNavbarBottom';
 import Notifications from './Notifications';
 import Profile from './Profile';
+import Products from './Products';
 
 export default function Dashboard() {
     return (
@@ -13,6 +14,7 @@ export default function Dashboard() {
                 <Route path="/" element={<Storages />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/products" element={<Products />} />
                 {
                     /*<Route path="/products" element={
                     <ProductProvider>

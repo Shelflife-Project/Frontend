@@ -1,10 +1,9 @@
 import { useState, type FormEvent } from "react";
-import { useProduct } from "../../../context/ProductContext"
 import CreateButton from "../CreateButton";
-import { CreateProduct } from "../../../apis/ProductsAPI";
+import { useProducts } from "shelflife-react-hooks";
 
 export default function CreateProductForm() {
-    const { fetchProducts } = useProduct();
+    const { fetchProducts, createProduct } = useProducts();
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -12,7 +11,12 @@ export default function CreateProductForm() {
         setGeneralError("");
 
         try {
-            await CreateProduct(name, category, barcode, expiration);
+            await createProduct({
+                name,
+                category,
+                barcode: barcode || undefined,
+                expirationDaysDelta: expiration,
+            });
             fetchProducts();
             setShowForm(false);
         } catch (err: any) {
@@ -134,7 +138,7 @@ export default function CreateProductForm() {
 
             {showForm && (
                 <div
-                    className="fixed inset-0 backdrop-blur-sm z-40"
+                    className="fixed inset-0 backdrop-blur-sm bg-black/50 z-40"
                     onClick={() => setShowForm(false)}
                 />
             )}
