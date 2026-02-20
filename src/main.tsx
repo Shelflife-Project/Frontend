@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { AuthProvider, ProductProvider, StorageProvider, UserProvider } from 'shelflife-react-hooks'
+import { AuthProvider, ProductProvider, StorageItemProvider, StorageMemberProvider, StorageProvider, UserProvider } from 'shelflife-react-hooks'
 import { localStorageAdapter } from './LocalStorageAdapter.ts'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router'
@@ -15,7 +15,11 @@ createRoot(document.getElementById('root')!).render(
         <UserProvider baseUrl={baseUrl}>
           <StorageProvider baseUrl={baseUrl}>
             <ProductProvider baseUrl={baseUrl}>
-              <App />
+              <StorageMemberProvider baseUrl={baseUrl}>
+                <StorageItemProvider baseUrl={baseUrl} >
+                <App />
+                </StorageItemProvider>
+              </StorageMemberProvider>
             </ProductProvider>
           </StorageProvider>
         </UserProvider>

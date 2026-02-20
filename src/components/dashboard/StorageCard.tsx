@@ -1,7 +1,7 @@
-import { useAuth, useStorages } from "shelflife-react-hooks";
-import type { Storage } from "../../types/Storage";
+import { useAuth, useStorages, type Storage } from "shelflife-react-hooks";
 import FormPopUp from "../FormPopUp";
 import SettingsForm from "../storage/SettingsFrom";
+import MembersPopUp from "../storage/MembersPopUp";
 
 export default function StorageCard({ storage }: { storage: Storage; }) {
     const { user } = useAuth();
@@ -42,7 +42,9 @@ export default function StorageCard({ storage }: { storage: Storage; }) {
                     <SettingsForm storage={storage}/>
                 </FormPopUp>
                 <div className="grid grid-cols-3 gap-2 mt-4">
-                    <a className="btn btn-sm sm:btn-md btn-success">Members</a>
+                    <FormPopUp button={<a className="btn btn-sm sm:btn-md btn-success w-full">Members</a>}>
+                        <MembersPopUp storage={storage} />
+                    </FormPopUp>
                     <a className="btn btn-sm sm:btn-md btn-primary">Items</a>
                     <button onClick={handleDelete} className="btn btn-sm sm:btn-md btn-error">
                         {deleteButtonValue}
