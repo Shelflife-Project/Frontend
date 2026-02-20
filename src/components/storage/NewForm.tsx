@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useStorages } from "shelflife-react-hooks";
 
-type Props = {}
+type Props = {
+    onSuccess?: () => void;
+}
 
-export default function CreateStorageForm({ }: Props) {
+export default function CreateStorageForm({ onSuccess }: Props) {
     const { createStorage, fetchStorages } = useStorages();
     const [newStorageName, setNewStorageName] = useState("");
 
@@ -12,8 +14,12 @@ export default function CreateStorageForm({ }: Props) {
         if (!newStorageName) return;
 
         await createStorage({ name: newStorageName });
+
         fetchStorages();
         setNewStorageName("");
+
+        if (onSuccess)
+            onSuccess();
     };
 
     return (

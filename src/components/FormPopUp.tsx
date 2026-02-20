@@ -1,4 +1,4 @@
-import { useState, type PropsWithChildren, type ReactNode } from "react";
+import { cloneElement, isValidElement, useState, type PropsWithChildren, type ReactNode } from "react";
 
 type Props = {
     button: ReactNode;
@@ -7,18 +7,22 @@ type Props = {
 export default function FormPopUp({ children, button }: PropsWithChildren<Props>) {
     const [showForm, setShowForm] = useState(false);
 
+    const close = () => setShowForm(false);
+
     return (
         <>
             {showForm && (
                 <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-11/12 max-w-150 overflow-y-auto">
                     <div className="bg-base-100 rounded-lg shadow-xl p-6 md:p-8">
-                        
-                        {children}
+
+                        {isValidElement(children)
+                            ? cloneElement(children, { onSuccess: close })
+                            : children}
 
                         <div className="flex gap-3 mt-1">
                             <button
                                 type="button"
-                                onClick={() => setShowForm(false)}
+                                onClick={close}
                                 className="btn btn-ghost flex-1"
                             >
                                 Cancel
