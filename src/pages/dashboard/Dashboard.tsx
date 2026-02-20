@@ -24,6 +24,7 @@ export default function Dashboard() {
 
                 }
             </Routes>
+            <div className="h-20" />
             <DashboardNavbarBottom />
         </>
     )
