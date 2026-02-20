@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CreateButton from "../CreateButton";
-import { useProducts } from "shelflife-react-hooks";
+import { useProducts, type ProductCreateError } from "shelflife-react-hooks";
 
 export default function CreateProductForm() {
     const { fetchProducts, createProduct } = useProducts();
@@ -12,7 +12,7 @@ export default function CreateProductForm() {
     const [barcode, setBarcode] = useState("");
     const [expirationDaysDelta, setExpirationDaysDelta] = useState(1);
 
-    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
+    const [fieldErrors, setFieldErrors] = useState<ProductCreateError>({});
     const [generalError, setGeneralError] = useState("");
 
     const handleSubmit = async (e: React.SubmitEvent) => {
@@ -30,6 +30,12 @@ export default function CreateProductForm() {
             fetchProducts();
             setShowForm(false);
         } catch (err: any) {
+            const product = err as ProductCreateError
+
+            if (product.name || product.category || product.barcode || product.expirationDaysDelta)
+                setFieldErrors(product);
+            else
+                setGeneralError(err.message);
         }
     };
 
