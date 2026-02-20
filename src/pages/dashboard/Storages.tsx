@@ -30,7 +30,7 @@ export default function Storages() {
                 <p className="text-gray-600 mb-8">Manage your storages here</p>
 
                 {storages.length > 0 && (
-                    <div className="flex flex-col items-center gap-6 max-w-2xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
                         {storages.map((storage) => (
                             <StorageCard key={storage.id} storage={storage} />
                         ))}
@@ -93,7 +93,7 @@ export default function Storages() {
 
             {showForm && (
                 <div
-                    className="fixed inset-0 backdrop-blur-sm z-40"
+                    className="fixed inset-0 backdrop-blur-sm bg-black/50 z-40"
                     onClick={() => setShowForm(false)}
                 />
             )}

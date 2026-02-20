@@ -16,6 +16,7 @@ export default function Dashboard() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/products" element={<Products />} />
             </Routes>
+            <div className="h-20" />
             <DashboardNavbarBottom />
         </>
     )

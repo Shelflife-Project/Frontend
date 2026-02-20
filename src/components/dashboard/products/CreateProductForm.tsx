@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import CreateButton from "../CreateButton";
 import { useProducts } from "shelflife-react-hooks";
 
@@ -21,7 +21,12 @@ export default function CreateProductForm() {
         setGeneralError("");
 
         try {
-            await createProduct({ name, category, barcode, expirationDaysDelta });
+            await createProduct({
+                name,
+                category,
+                barcode: barcode || undefined,
+                expirationDaysDelta: expiration,
+            });
             fetchProducts();
             setShowForm(false);
         } catch (err: any) {
@@ -135,7 +140,7 @@ export default function CreateProductForm() {
 
             {showForm && (
                 <div
-                    className="fixed inset-0 backdrop-blur-sm z-40"
+                    className="fixed inset-0 backdrop-blur-sm bg-black/50 z-40"
                     onClick={() => setShowForm(false)}
                 />
             )}

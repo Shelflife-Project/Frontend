@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 export default function Navbar() {
     return (
-        <div className="navbar bg-base-100 shadow-sm">
+        <div className="navbar bg-base-100 sticky top-0  shadow-sm ">
             <div className="navbar-start">
                 <div className="dropdown lg:hidden">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">

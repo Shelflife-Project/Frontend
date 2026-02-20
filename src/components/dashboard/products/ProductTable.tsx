@@ -1,13 +1,17 @@
-import { useMemo, useState } from "react";
-import type { Product } from "../../../types/Product";
-import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type Row, type SortingState } from "@tanstack/react-table";
-import { useAuth, useProducts } from "shelflife-react-hooks";
+import { useEffect, useMemo, useState } from "react";
+import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
+import { useAuth, useProducts, type Product } from "shelflife-react-hooks";
+
 
 export default function ProductTable() {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [globalFilter, setGlobalFilter] = useState("");
     const { user } = useAuth();
     const { products, fetchProducts, deleteProduct } = useProducts();
+
+    useEffect(() => {
+        fetchProducts();
+    }, [])
 
     const deleteProductHandler = async (id: number) => {
         const confirmDelete = confirm("Are you sure you want to delete this product?");
