@@ -1,28 +1,29 @@
-import { useState, type FormEvent } from "react";
-import { UpdateUsername } from "../../../apis/User";
-import { useAuth } from "../../../context/AuthContext";
+import { useState } from "react";
+import { useAuth, type UpdateUserError } from "shelflife-react-hooks";
 
 export default function UpdateUsernameForm() {
-    const [username, setUsername] = useState("");
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
-    const { user, refreshAuth } = useAuth();
+    const { user, changeMe } = useAuth();
 
-    const handleSubmit = async (e: FormEvent) => {
+    const [username, setUsername] = useState("");
+    const [error, setError] = useState<string>("");
+    const [success, setSuccess] = useState<string>("");
+
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
+
         if (!user)
             return;
 
         try {
-            await UpdateUsername(username, user.id);
-            refreshAuth();
+            await changeMe({ username });
             setSuccess("Username updated successfully!");
-            setError(null);
-            
             setUsername("");
         } catch (err: any) {
-            setError(err.username || err.error || "An unexpected error occurred.");
-            setSuccess(null);
+            const update = err as UpdateUserError;
+            if (update.username)
+                setError(update.username);
         }
     };
 
@@ -32,14 +33,15 @@ export default function UpdateUsernameForm() {
             <input
                 type="text"
                 maxLength={40}
-                className="input input-bordered w-full"
+                className={`input input-bordered w-full ${error ? "input-error" : ""}`}
                 placeholder="New username"
                 value={username}
+                required
                 onChange={(e) => setUsername(e.target.value)}
             />
             {error && <p className="text-error text-sm">{error}</p>}
             {success && <p className="text-success text-sm">{success}</p>}
-            <button className="btn btn-primary w-fit mt-auto">Update Username</button>
+            <button className={`btn btn-primary w-fit mt-auto ${username === "" ? "btn-disabled" : ""}`}>Update Username</button>
         </form>
     );
 }

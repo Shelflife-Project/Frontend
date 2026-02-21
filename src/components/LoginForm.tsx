@@ -1,25 +1,26 @@
-import { login } from "../apis/Authentication";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
+import { useAuth, type LoginErrorResponse } from "shelflife-react-hooks";
 
 export default function LoginForm() {
+    const { login } = useAuth();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const { refreshAuth } = useAuth();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setError("");
 
         try {
-            await login(email, password);
-            refreshAuth();
+            await login({ email, password });
         } catch (err: any) {
-            setError(err.message);
+            const login = err as LoginErrorResponse;
+            setError(login.error || err.message);
         }
     }
+
     return (
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content flex-col lg:flex-row-reverse">

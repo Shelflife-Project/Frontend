@@ -1,25 +1,27 @@
-import { useMemo, useState } from "react";
-import { DeleteProduct } from "../../../apis/ProductsAPI";
-import { useAuth } from "../../../context/AuthContext";
-import type { Product } from "../../../types/Product";
-import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
-import { useProduct } from "../../../context/ProductContext";
+import { useEffect, useMemo, useState } from "react";
+import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type Row, type SortingState } from "@tanstack/react-table";
+import { useAuth, useProducts, type Product } from "shelflife-react-hooks";
+
 
 export default function ProductTable() {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [globalFilter, setGlobalFilter] = useState("");
     const { user } = useAuth();
-    const { products, fetchProducts } = useProduct();
+    const { products, fetchProducts, deleteProduct } = useProducts();
+
+    useEffect(() => {
+        fetchProducts();
+    }, [])
 
     const deleteProductHandler = async (id: number) => {
         const confirmDelete = confirm("Are you sure you want to delete this product?");
         if (confirmDelete) {
-            await DeleteProduct(id);
+            await deleteProduct(id);
             fetchProducts();
         }
     };
 
-    const columns = useMemo<ColumnDef<Product>[]>(() => [
+    const columns = useMemo<ColumnDef<Product>[] | any>(() => [
         {
             accessorKey: "name",
             header: "Name",
@@ -40,7 +42,7 @@ export default function ProductTable() {
             header: "Actions",
             enableSorting: false,
             enableGlobalFilter: false,
-            cell: ({ row }) => {
+            cell: ({ row }: { row: Row<Product> }) => {
                 const product = row.original;
                 if (product.ownerId === user?.id)
                     return (

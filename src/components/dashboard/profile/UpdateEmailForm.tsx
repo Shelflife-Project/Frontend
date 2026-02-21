@@ -1,27 +1,29 @@
-import { useState, type FormEvent } from "react";
-import { UpdateEmail } from "../../../apis/User";
-import { useAuth } from "../../../context/AuthContext";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { useAuth, type UpdateUserError } from "shelflife-react-hooks";
 
 export default function UpdateEmailForm() {
     const [email, setEmail] = useState("");
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
-    const { user } = useAuth();
+    const [error, setError] = useState<string>("");
+    const { user, changeMe, getMe } = useAuth();
+    const navigate = useNavigate();
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
+        setError("");
+
         if (!user)
             return;
 
         try {
-            await UpdateEmail(email, user.id);
-            setSuccess("Email updated successfully!");
-            setError(null);
-            
-            setEmail("");
+            await changeMe({ email });
+            alert("Email updated successfully!\nYou will get logged out.\nPlease login again.")
+            await getMe();
+            navigate("/login", { replace: true })
         } catch (err: any) {
-            setError(err.email || err.error || "An unexpected error occurred.");
-            setSuccess(null);
+            const update = err as UpdateUserError
+            if (update.email)
+                setError(update.email);
         }
     };
 
@@ -30,14 +32,14 @@ export default function UpdateEmailForm() {
             <h2 className="font-semibold">Change Email</h2>
             <input
                 type="email"
-                className="input input-bordered w-full"
+                className={`input input-bordered w-full ${error ? "input-error" : ""}`}
                 placeholder="New email"
                 value={email}
+                required
                 onChange={(e) => setEmail(e.target.value)}
             />
             {error && <p className="text-error text-sm">{error}</p>}
-            {success && <p className="text-success text-sm">{success}</p>}
-            <button className="btn btn-primary w-fit mt-auto">Update Email</button>
+            <button className={`btn btn-primary w-fit mt-auto ${email === "" ? "btn-disabled" : ""}`}>Update Email</button>
         </form>
     );
 }

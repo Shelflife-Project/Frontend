@@ -1,38 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import { Link } from 'react-router'
+import { Route, Routes } from "react-router";
+import { useAuth } from "shelflife-react-hooks";
+import { UnProtectedRoute } from "./components/UnProtectedRoute";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import { useEffect } from "react";
+import About from "./pages/About";
+import SignUp from "./pages/SignUp";
+import Dashboard from "./pages/dashboard/Dashboard";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+    const { getMe, user } = useAuth();
 
-  return (
-    <>
-      <div>
-        <Link to="https://vite.dev" target="_blank">
-          <img src={viteLogo} alt="Vite logo" />
-        </Link>
-        <Link to="https://react.dev" target="_blank">
-          <img src={reactLogo} alt="React logo" />
-        </Link>
-      </div>
-      <h1>Vite + React</h1>
-      <div>
-        <button className='btn btn-primary' onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p>
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        const fetchUser = async () => {
+            await getMe();
+        };
 
+        fetchUser();
+    }, []);
 
-
+    return (
+        <Routes>
+            <Route path='/' element={<UnProtectedRoute user={user} element={<Home />} />} />
+            <Route path='/about' element={<UnProtectedRoute user={user} element={<About />} />} />
+            <Route path='/login' element={<UnProtectedRoute user={user} element={<Login />} />} />
+            <Route path='/signup' element={<UnProtectedRoute user={user} element={<SignUp />} />} />
+            <Route path='/dashboard/*' element={<ProtectedRoute user={user} element={<Dashboard />} />} />
+        </Routes>
+    );
 }
-
-export default App

@@ -6,10 +6,10 @@ interface ProtectedRouteProps {
     user: User | null;
 }
 
-export function ProtectedRoute({ element, user }: ProtectedRouteProps) {
-    
-    if (!user) {
-        return <Navigate to="/login" replace />;
+export function UnProtectedRoute({ element, user }: ProtectedRouteProps) {
+
+    if (user) {
+        return <Navigate to="/dashboard" replace />;
     }
 
     return element;

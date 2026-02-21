@@ -1,13 +1,28 @@
-import { useAuth } from "../../context/AuthContext";
+import { useEffect, useState } from "react";
+import { useAuth, useUsers } from "shelflife-react-hooks";
 
-const URL = "http://localhost:8080/api/users/";
-
-export default function UserIcon({ id = 0 }) {
+export default function UserIcon({ defaultId = 0 }) {
     const { user } = useAuth();
+    const { getUserPfp } = useUsers();
+    const [src, setSrc] = useState<string | undefined>(undefined);
 
-    if (id > 0 || user == null) {
-        return <img src={URL + id + "/pfp"} />
-    }
+    useEffect(() => {
+        const loadImage = async (id: number) => {
+            try {
+                const blob = await getUserPfp(id);
+                const objectUrl = URL.createObjectURL(blob);
+                setSrc(objectUrl);
+            } catch (err) {
+                console.error(err);
+            }
+        };
 
-    return <img src={URL + user.id + "/pfp"} />
+        if (defaultId > 0 || user == null)
+            loadImage(defaultId);
+        else
+            loadImage(user.id);
+    }, []);
+
+
+    return <img src={src} />
 }

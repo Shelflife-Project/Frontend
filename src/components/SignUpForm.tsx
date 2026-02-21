@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { signup } from "../apis/Authentication";
+import type { SignupError } from "shelflife-react-hooks";
 
 export default function SignUpForm() {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function SignUpForm() {
         setGeneralError("");
 
         if (password !== passwordRepeat) {
-            setGeneralError("Passwords do not match");
+            setFieldErrors({ ...fieldErrors, passwordRepeat: "Passwords do not match" });
             return;
         }
 
@@ -25,8 +26,14 @@ export default function SignUpForm() {
             await signup(username, email, password, passwordRepeat);
             navigate("/login");
         } catch (err: any) {
-            setGeneralError(err.message || err.error || "");
-            setFieldErrors(err);
+            const signup = err as SignupError;
+
+            console.log(signup);
+
+            if (signup.email || signup.password || signup.passwordRepeat || signup.username)
+                setFieldErrors(err);
+
+            setGeneralError(signup.error || err.mesage || "");
         }
     }
 
