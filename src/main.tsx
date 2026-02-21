@@ -1,11 +1,10 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { AuthProvider, InviteProvider, ProductProvider, ShoppingListProvider, StorageItemProvider, StorageMemberProvider, StorageProvider, UserProvider } from 'shelflife-react-hooks'
+import { AuthProvider, InviteProvider, ProductProvider, ShoppingListProvider, StorageItemProvider, StorageMemberProvider, StorageProvider, ToPurchaseProvider, UserProvider } from 'shelflife-react-hooks'
 import { localStorageAdapter } from './LocalStorageAdapter.ts'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router'
 import { StrictMode } from 'react'
-import { Bounce, ToastContainer } from 'react-toastify/unstyled'
 
 const baseUrl = "http://localhost:8080";
 
@@ -19,9 +18,11 @@ createRoot(document.getElementById('root')!).render(
               <StorageMemberProvider baseUrl={baseUrl}>
                 <StorageItemProvider baseUrl={baseUrl} >
                   <ShoppingListProvider baseUrl={baseUrl} >
-                    <InviteProvider baseUrl={baseUrl} >
-                      <App />
-                    </InviteProvider>
+                    <ToPurchaseProvider baseUrl={baseUrl} >
+                      <InviteProvider baseUrl={baseUrl} >
+                        <App />
+                      </InviteProvider>
+                    </ToPurchaseProvider>
                   </ShoppingListProvider>
                 </StorageItemProvider>
               </StorageMemberProvider>
