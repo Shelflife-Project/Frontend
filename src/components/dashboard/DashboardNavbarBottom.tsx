@@ -46,8 +46,9 @@ export default function DashboardNavbarBottom() {
 
     return (
         <>
-            <div className="fixed bottom-0 left-0 right-0 mt-10 flex justify-center z-50 shadow-lg py-2 sm:py-3 md:py-4 overflow-x-auto">
-                <div role="tablist" className="tabs bg-base-300 tabs-box gap-1 sm:gap-2 flex-nowrap">
+            <div className="fixed bottom-0 left-0 right-0 mt-10 flex justify-center z-50 shadow-lg py-3 sm:py-4 md:py-6 overflow-x-auto ">
+                
+                <div role="tablist" className="tabs bg-base-100 tabs-box gap-1 sm:gap-2 flex-nowrap shadow-lg z-51">
                     {tabs.map((tab) => (
                         <Link
                             key={tab.path}
@@ -61,8 +62,15 @@ export default function DashboardNavbarBottom() {
                         </Link>
                     ))}
                 </div>
+                <div
+                    className="absolute inset-0 z-1 backdrop-blur-md bg-primary/10 pointer-events-none"
+                    style={{
+                        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.7) 10%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 100%)',
+                        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 100%)'
+                    }}
+                /> 
+                
             </div>
-            <div className="h-16"></div>
         </>
     );
 }

@@ -1,12 +1,10 @@
-import { logout } from "../apis/Authentication";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "shelflife-react-hooks";
 
 export default function LogoutButton() {
-    const { refreshAuth } = useAuth();
+    const { logout } = useAuth();
 
     async function handleLogout() {
         await logout();
-        refreshAuth();
     }
 
     return <button onClick={handleLogout} className="btn btn-error btn-sm">Logout</button>

@@ -1,24 +1,29 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { BrowserRouter, Routes, Route } from 'react-router'
-import Home from './pages/Home.tsx'
-import Login from './pages/Login.tsx'
-import About from './pages/About.tsx'
-import SignUp from './pages/SignUp.tsx'
-import Dashboard from './pages/dashboard/Dashboard.tsx'
-import { AuthProvider } from './context/AuthContext.tsx'
-import { ProtectedRoute } from './components/ProtectedRoute.tsx'
+import { AuthProvider, ProductProvider, StorageItemProvider, StorageMemberProvider, StorageProvider, UserProvider } from 'shelflife-react-hooks'
+import { localStorageAdapter } from './LocalStorageAdapter.ts'
+import App from './App.tsx'
+import { BrowserRouter } from 'react-router'
+import { StrictMode } from 'react'
+
+const baseUrl = "http://localhost:8080";
 
 createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <AuthProvider>
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/signup' element={<SignUp />} />
-        <Route path='/dashboard/*' element={<ProtectedRoute element={<Dashboard />} />} />
-      </Routes>
-    </AuthProvider>
-  </BrowserRouter>
+  <StrictMode>
+    <BrowserRouter>
+      <AuthProvider baseUrl={baseUrl} tokenStorage={localStorageAdapter} initialToken={await localStorageAdapter.getItem("auth_token")}>
+        <UserProvider baseUrl={baseUrl}>
+          <StorageProvider baseUrl={baseUrl}>
+            <ProductProvider baseUrl={baseUrl}>
+              <StorageMemberProvider baseUrl={baseUrl}>
+                <StorageItemProvider baseUrl={baseUrl} >
+                <App />
+                </StorageItemProvider>
+              </StorageMemberProvider>
+            </ProductProvider>
+          </StorageProvider>
+        </UserProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  </StrictMode>
 )
