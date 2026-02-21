@@ -1,18 +1,25 @@
 import { flexRender, getCoreRowModel, useReactTable, type Row } from "@tanstack/react-table";
-import { useStorageItem } from "../../../context/StorageItemContext";
-import type { StorageItem } from "../../../types/StorageItem";
-import { DeleteItem } from "../../../apis/StorageItemsAPI";
+import { useEffect } from "react";
+import { useStorageItems, type StorageItem } from "shelflife-react-hooks";
 
-export default function ItemsTable() {
-    const { items, fetchItems, storageId } = useStorageItem();
+type Props = {
+    storageId: number;
+}
+
+export default function ItemsTable({ storageId }: Props) {
+    const { items, fetchItems, deleteItem } = useStorageItems();
 
     const deleteItemHandler = async (item_id: number) => {
         const confirmDelete = confirm("Are you sure you want to remove this item?");
         if (confirmDelete) {
-            await DeleteItem(storageId, item_id);
-            fetchItems();
+            await deleteItem(storageId, item_id);
+            fetchItems(storageId);
         }
     };
+
+    useEffect(() => {
+        fetchItems(storageId);
+    }, [storageId]);
 
 
     const columns = [

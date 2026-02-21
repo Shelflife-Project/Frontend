@@ -2,6 +2,7 @@ import { useAuth, useStorages, type Storage } from "shelflife-react-hooks";
 import FormPopUp from "../FormPopUp";
 import SettingsForm from "../storage/SettingsFrom";
 import MembersPopUp from "../storage/MembersPopUp";
+import { Link } from "react-router";
 
 export default function StorageCard({ storage }: { storage: Storage; }) {
     const { user } = useAuth();

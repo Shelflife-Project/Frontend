@@ -5,12 +5,14 @@ import DashboardNavbarBottom from '../../components/dashboard/DashboardNavbarBot
 import Notifications from './Notifications';
 import Profile from './Profile';
 import Products from './Products';
+import Items from './Items';
 
 export default function Dashboard() {
     return (
         <>
             <DashboardNavbar />
             <Routes>
+                <Route path="storages/:id" element={<Items />} />
                 <Route path="/" element={<Storages />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/profile" element={<Profile />} />
