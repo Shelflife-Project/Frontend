@@ -33,14 +33,15 @@ export default function UpdateUsernameForm() {
             <input
                 type="text"
                 maxLength={40}
-                className="input input-bordered w-full"
+                className={`input input-bordered w-full ${error ? "input-error" : ""}`}
                 placeholder="New username"
                 value={username}
+                required
                 onChange={(e) => setUsername(e.target.value)}
             />
             {error && <p className="text-error text-sm">{error}</p>}
             {success && <p className="text-success text-sm">{success}</p>}
-            <button className="btn btn-primary w-fit mt-auto">Update Username</button>
+            <button className={`btn btn-primary w-fit mt-auto ${username === "" ? "btn-disabled" : ""}`}>Update Username</button>
         </form>
     );
 }

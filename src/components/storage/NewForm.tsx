@@ -1,19 +1,30 @@
 import { useState } from "react";
-import { useStorages } from "shelflife-react-hooks";
+import { useStorages, type CreateStorageError } from "shelflife-react-hooks";
 
 type Props = {}
 
 export default function CreateStorageForm({ }: Props) {
     const { createStorage, fetchStorages } = useStorages();
     const [newStorageName, setNewStorageName] = useState("");
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         if (!newStorageName) return;
 
-        await createStorage({ name: newStorageName });
-        fetchStorages();
-        setNewStorageName("");
+        try {
+            setError(null);
+
+            await createStorage({ name: newStorageName });
+
+            fetchStorages();
+            setNewStorageName("");
+
+        } catch (err: any) {
+            const storage = err as CreateStorageError
+
+            setError(storage.name || err.message || "");
+        }
     };
 
     return (
@@ -36,11 +47,13 @@ export default function CreateStorageForm({ }: Props) {
                         maxLength={40}
                         name="name"
                         placeholder="e.g., Kitchen Pantry"
-                        className="input input-bordered"
+                        className={`input input-bordered ${error ? 'input-error' : ''}`}
                         value={newStorageName}
                         onChange={(e) => setNewStorageName(e.target.value)}
                         required
                     />
+                    {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+
                 </div>
 
                 <div className="flex gap-3 mt-6">
