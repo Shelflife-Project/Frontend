@@ -75,7 +75,7 @@ export default function MembersPopUp({ storage }: Props) {
                 </div>
             </form>
             <div className="overflow-x-auto mt-8 rounded-box border border-base-content/5 bg-base-100">
-                <table className="table">
+                <table className="table table-zebra">
                     {/* head */}
                     <thead>
                         <tr>
