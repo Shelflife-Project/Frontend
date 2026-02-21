@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
-import { signup } from "../apis/Authentication";
-import type { SignupError } from "shelflife-react-hooks";
+import { useAuth, type SignupError } from "shelflife-react-hooks";
 
 export default function SignUpForm() {
+    const { signup } = useAuth();
+    
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ export default function SignUpForm() {
         }
 
         try {
-            await signup(username, email, password, passwordRepeat);
+            await signup({ username, email, password, passwordRepeat });
             navigate("/login");
         } catch (err: any) {
             const signup = err as SignupError;
