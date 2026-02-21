@@ -40,9 +40,9 @@ export default function MembersPopUp({ storage }: Props) {
                 <h2 className="text-xl font-bold mb-4">Members</h2>
                 <p className="text-gray-600">Manage members of this storage.</p>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="form-control">
-                    <div className="inline-grid *:[grid-area:1/1]">
+            <form onSubmit={handleSubmit} className="space-y-4 w-full">
+                <div className="form-control w-full flex flex-row items-center">
+                    <div className="inline-grid *:[grid-area:1/1] ">
                         <div className={`status ${inviteEmail ? 'status-success' : 'status-error'} animate-ping me-2`}></div>
                         <div className={`status ${inviteEmail ? 'status-success' : 'status-error'} me-2`}></div>
                     </div>
