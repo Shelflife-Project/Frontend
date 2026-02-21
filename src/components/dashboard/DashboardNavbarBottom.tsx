@@ -65,8 +65,8 @@ export default function DashboardNavbarBottom() {
                 <div
                     className="absolute inset-0 z-1 backdrop-blur-md bg-primary/10 pointer-events-none"
                     style={{
-                        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.7) 10%, rgba(0,0,0,1) 50%, rgba(0,0,0,1) 100%)',
-                        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,1) 50%, rgba(0,0,0,1) 100%)'
+                        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.7) 10%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 100%)',
+                        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 100%)'
                     }}
                 /> 
                 
