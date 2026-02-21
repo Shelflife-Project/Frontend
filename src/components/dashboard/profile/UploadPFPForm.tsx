@@ -1,10 +1,10 @@
 import { useState, type ChangeEvent } from "react";
-import { useAuth } from "../../../context/AuthContext";
-import { UploadPFP } from "../../../apis/User";
 import UserIcon from "../UserIcon";
+import { useAuth, useUsers } from "shelflife-react-hooks";
 
 export default function UploadPFPForm() {
     const { user } = useAuth();
+    const { uploadUserPfp } = useUsers();
     const [refreshKey, setRefreshKey] = useState(0);
 
     const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -14,10 +14,7 @@ export default function UploadPFPForm() {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        const formData = new FormData();
-        formData.append("pfp", file);
-
-        await UploadPFP(formData, user.id);
+        await uploadUserPfp(user.id, file);
         setRefreshKey((prevKey) => prevKey + 1);
     };
 

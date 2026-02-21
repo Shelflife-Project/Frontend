@@ -1,10 +1,15 @@
+import { useAuth } from "shelflife-react-hooks";
 import LogoutButton from "../LogoutButton";
 import UserIcon from "./UserIcon";
-import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router";
 
 export default function UserIconDropdown() {
-    const { user } = useAuth();
+    const { user, isLoading } = useAuth();
+
+    if (isLoading)
+        return <div className="flex justify-center items-center min-h-screen">
+            <span className="loading loading-spinner loading-lg"></span>
+        </div>;
 
     if (!user)
         return <Link to="/login" className="btn btn-secondary">Login</Link>;
@@ -17,7 +22,7 @@ export default function UserIconDropdown() {
         </div>
         <ul
             tabIndex={-1}
-            className="menu dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+            className="menu dropdown-content bg-base-300 rounded-box z-1 mt-3 w-52 p-2 shadow">
             <li><Link to="/dashboard">Dashboard</Link></li>
             <li><Link to="/dashboard/profile">Profile</Link></li>
             <li><LogoutButton /></li>

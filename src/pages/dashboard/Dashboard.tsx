@@ -1,11 +1,10 @@
 import { Routes, Route, } from 'react-router';
 import DashboardNavbar from "../../components/dashboard/DashboardNavbar";
 import Storages from "./Storages";
-import Products from "./Products";
-import Notifications from "./Notifications";
-import Profile from "./Profile";
 import DashboardNavbarBottom from '../../components/dashboard/DashboardNavbarBottom';
-import { ProductProvider } from '../../context/ProductContext';
+import Notifications from './Notifications';
+import Profile from './Profile';
+import Products from './Products';
 
 export default function Dashboard() {
     return (
@@ -13,14 +12,11 @@ export default function Dashboard() {
             <DashboardNavbar />
             <Routes>
                 <Route path="/" element={<Storages />} />
-                <Route path="/products" element={
-                    <ProductProvider>
-                        <Products />
-                    </ProductProvider>
-                } />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/products" element={<Products />} />
             </Routes>
+            <div className="h-20" />
             <DashboardNavbarBottom />
         </>
     )

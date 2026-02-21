@@ -1,31 +1,32 @@
-import { useState, type FormEvent } from "react";
-import { UpdatePassword } from "../../../apis/User";
-import { useAuth } from "../../../context/AuthContext";
+import { useState } from "react";
+import { useAuth, type ChangePasswordErrorResponse } from "shelflife-react-hooks";
 
 export default function UpdatePasswordForm() {
-    const [oldPass, setOldPass] = useState("");
-    const [password, setPassword] = useState("");
-    const [repeat, setRepeat] = useState("");
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
-    const { user } = useAuth();
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [newPasswordRepeat, setNewPasswordRepeat] = useState("");
+    const [error, setError] = useState<string>("");
+    const [success, setSuccess] = useState<string>("");
+    const { user, changePassword } = useAuth();
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
+
         if (!user)
             return;
 
         try {
-            await UpdatePassword(oldPass, password, repeat);
+            await changePassword({ oldPassword, newPassword, newPasswordRepeat });
             setSuccess("Password updated successfully!");
-            setError(null);
 
-            setOldPass("");
-            setPassword("");
-            setRepeat("");
+            setOldPassword("");
+            setNewPassword("");
+            setNewPasswordRepeat("");
         } catch (err: any) {
-            setError(err.oldPassword || err.newPassword || err.newPasswordRepeat || err.error || err);
-            setSuccess(null);
+            const pass = err as ChangePasswordErrorResponse;
+            setError(pass.oldPassword || pass.newPassword || pass.newPasswordRepeat || "");
         }
     };
 
@@ -36,26 +37,29 @@ export default function UpdatePasswordForm() {
                 type="password"
                 className="input input-bordered w-full"
                 placeholder="Old password"
-                value={oldPass}
-                onChange={(e) => setOldPass(e.target.value)}
+                value={oldPassword}
+                required
+                onChange={(e) => setOldPassword(e.target.value)}
             />
             <input
                 type="password"
                 className="input input-bordered w-full"
                 placeholder="New password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={newPassword}
+                required
+                onChange={(e) => setNewPassword(e.target.value)}
             />
             <input
                 type="password"
                 className="input input-bordered w-full"
                 placeholder="New password repeated"
-                value={repeat}
-                onChange={(e) => setRepeat(e.target.value)}
+                value={newPasswordRepeat}
+                required
+                onChange={(e) => setNewPasswordRepeat(e.target.value)}
             />
             {error && <p className="text-error text-sm">{error}</p>}
             {success && <p className="text-success text-sm">{success}</p>}
-            <button className="btn btn-error w-fit">Update Password</button>
+            <button className={`btn btn-error w-fit mt-auto ${oldPassword === "" || newPassword === "" || newPasswordRepeat === "" ? "btn-disabled" : ""}`}>Update Password</button>
         </form>
     );
 }
