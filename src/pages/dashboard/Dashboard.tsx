@@ -5,6 +5,8 @@ import DashboardNavbarBottom from '../../components/dashboard/DashboardNavbarBot
 import Notifications from './Notifications';
 import Profile from './Profile';
 import Products from './Products';
+import { ToastContainer } from 'react-toastify';
+
 
 export default function Dashboard() {
     return (
@@ -18,6 +20,19 @@ export default function Dashboard() {
             </Routes>
             <div className="h-20" />
             <DashboardNavbarBottom />
+            <ToastContainer
+            className="toast-container z-50"
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </>
     )
 }

@@ -4,6 +4,7 @@ import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButto
 import { useStorages } from "shelflife-react-hooks";
 import FormPopUp from "../../components/FormPopUp";
 import CreateStorageForm from "../../components/storage/NewForm";
+import { Bounce, ToastContainer } from "react-toastify/unstyled";
 
 export default function Storages() {
     const { storages, fetchStorages } = useStorages();
@@ -33,7 +34,19 @@ export default function Storages() {
 
             <FormPopUp button={<CreateButtonWithOutClick />} >
                 <CreateStorageForm />
-            </FormPopUp>
+            </FormPopUp> 
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </>
     )
 }

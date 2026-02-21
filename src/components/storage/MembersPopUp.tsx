@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useStorageMembers, type Storage } from "shelflife-react-hooks"
+import ErrorDisplay from "../ErrorDisplay";
 
 type Props = {
     storage: Storage
 }
 
 export default function MembersPopUp({ storage }: Props) {
-    const { members, fetchMembers, inviteMember, isLoading } = useStorageMembers(); 
+    const { members, fetchMembers, inviteMember, isLoading, error } = useStorageMembers(); 
     const [inviteEmail, setInviteEmail] = useState<string>("");
     
     useEffect(() => {
         fetchMembers(storage.id);
+        toast.success("Members loaded successfully");
     }, [storage.id]);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -33,13 +36,13 @@ export default function MembersPopUp({ storage }: Props) {
         )
     }
 
-
     return (
         <>
             <div className="p-4">
                 <h2 className="text-xl font-bold mb-4">Members</h2>
                 <p className="text-gray-600">Manage members of this storage.</p>
             </div>
+            <ErrorDisplay error={error}/>
             <form onSubmit={handleSubmit} className="space-y-4 w-full">
                 <div className="form-control w-full flex flex-row items-center">
                     <div className="inline-grid *:[grid-area:1/1] ">
@@ -54,25 +57,21 @@ export default function MembersPopUp({ storage }: Props) {
                         maxLength={40}
                         name="name"
                         placeholder="e.g., user@example.com"
-                        className="input input-bordered"
+                        className="input input-bordered mr-2"
                         value={inviteEmail}
                         onChange={(e) => setInviteEmail(e.target.value)}
                         required
                     />
-                </div>
-
-                <div className="flex gap-3 mt-6">
                     <button
                         type="submit"
                         disabled={!inviteEmail}
                         className={`btn flex-1 ${inviteEmail ? 'btn-info' : 'btn-disabled'}`}
                     >
-                        Invite Member
+                        Send
                     </button>
-
                 </div>
             </form>
-            <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+            <div className="overflow-x-auto mt-8 rounded-box border border-base-content/5 bg-base-100">
                 <table className="table">
                     {/* head */}
                     <thead>
@@ -96,7 +95,7 @@ export default function MembersPopUp({ storage }: Props) {
                         ))} 
                     </tbody>
                 </table>
-            </div>
+            </div> 
         </>
 
     )
