@@ -26,8 +26,8 @@ export default function SettingsForm({ storage }: Props) {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="form-control">
-                    <div className="inline-grid *:[grid-area:1/1]">
+                <div className="form-control w-full flex flex-row items-center">
+                    <div className="inline-grid *:[grid-area:1/1] ">
                         <div className={`status ${newName ? 'status-success' : 'status-error'} animate-ping me-2`}></div>
                         <div className={`status ${newName ? 'status-success' : 'status-error'} me-2`}></div>
                     </div>
