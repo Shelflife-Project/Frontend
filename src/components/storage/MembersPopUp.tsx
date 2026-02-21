@@ -36,13 +36,16 @@ export default function MembersPopUp({ storage }: Props) {
         )
     }
 
+    if (error) {
+        toast.error("Failed to load members");
+    }
+
     return (
         <>
             <div className="p-4">
                 <h2 className="text-xl font-bold mb-4">Members</h2>
                 <p className="text-gray-600">Manage members of this storage.</p>
             </div>
-            <ErrorDisplay error={error}/>
             <form onSubmit={handleSubmit} className="space-y-4 w-full">
                 <div className="form-control w-full flex flex-row items-center">
                     <div className="inline-grid *:[grid-area:1/1] ">
