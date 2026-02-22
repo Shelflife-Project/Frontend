@@ -24,11 +24,11 @@ export default function StorageCard({ storage }: { storage: Storage; }) {
                 <FormPopUp button={
                     // Check if the user is the owner of the storage, if not, don't show the settings button
                     <div className="flex items-start justify-between">
-                        <div>
+                        <div className="flex flex-row items-end gap-6">
                             <h2 className="card-title text-2xl">{storage.name}</h2>
                             {
                                 storage.owner.id !== user?.id && (
-                                    <p>{"Owned by: " + storage.owner.username}</p>
+                                    <p className="text-xs uppercase font-semibold opacity-60">{"Owned by: " + storage.owner.username}</p>
                                 )
                             }
                         </div>
