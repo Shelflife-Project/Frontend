@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useStorageMembers, type Storage } from "shelflife-react-hooks"
+import { useAuth, useStorageMembers, type Storage } from "shelflife-react-hooks"
 import ErrorDisplay from "../ErrorDisplay";
 
 type Props = {
@@ -8,9 +8,13 @@ type Props = {
 }
 
 export default function MembersPopUp({ storage }: Props) {
+    const { user } = useAuth();
+    
     const { members, fetchMembers, inviteMember, isLoading, error } = useStorageMembers(); 
     const [inviteEmail, setInviteEmail] = useState<string>("");
-    
+   
+    const isOwner = storage.owner.id === user?.id;
+
     useEffect(() => {
         fetchMembers(storage.id);
         toast.success("Members loaded successfully");
@@ -40,6 +44,38 @@ export default function MembersPopUp({ storage }: Props) {
         toast.error("Failed to load members");
     }
 
+
+    if (!isOwner) {
+        return (
+            <>
+                <div className="p-4">
+                    <h2 className="text-xl font-bold mb-4">Members</h2>
+                    <p className="text-gray-600">View members of this storage.</p>
+                </div> 
+                <div className="overflow-x-auto mt-8 rounded-box border border-base-content/5 bg-base-100">
+                    <table className="table table-zebra">
+                        {/* head */}
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Username</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {members.map((member) => (
+                                <tr key={member.id}>
+                                    <th>{member.id}</th>
+                                    <td>{member.user.username}</td>
+                                    <td>{member.accepted ? "Accepted" : "Pending"}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </>
+        );  
+    }
     return (
         <>
             <div className="p-4">

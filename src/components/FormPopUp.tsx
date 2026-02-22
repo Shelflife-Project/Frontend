@@ -21,11 +21,11 @@ export default function FormPopUp({ children, button }: PropsWithChildren<Props>
                         
                         {children}
 
-                        <div className="flex gap-3 mt-1">
+                        <div className="flex gap-3 mt-8">
                             <button
                                 type="button"
                                 onClick={() => setShowForm(false)}
-                                className="btn btn-ghost flex-1"
+                                className="btn btn-error flex-1"
                             >
                                 Cancel
                             </button>
