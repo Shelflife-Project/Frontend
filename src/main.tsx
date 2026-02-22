@@ -1,10 +1,11 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { AuthProvider, ProductProvider, StorageItemProvider, StorageMemberProvider, StorageProvider, UserProvider } from 'shelflife-react-hooks'
+import { AuthProvider, InviteProvider, ProductProvider, ShoppingListProvider, StorageItemProvider, StorageMemberProvider, StorageProvider, ToPurchaseProvider, UserProvider } from 'shelflife-react-hooks'
 import { localStorageAdapter } from './LocalStorageAdapter.ts'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router'
 import { StrictMode } from 'react'
+import { ThemeProvider } from './providers/ThemeProvider.tsx'
 
 const baseUrl = "http://localhost:8080";
 
@@ -17,7 +18,15 @@ createRoot(document.getElementById('root')!).render(
             <ProductProvider baseUrl={baseUrl}>
               <StorageMemberProvider baseUrl={baseUrl}>
                 <StorageItemProvider baseUrl={baseUrl} >
-                <App />
+                  <ShoppingListProvider baseUrl={baseUrl} >
+                    <ToPurchaseProvider baseUrl={baseUrl} >
+                      <InviteProvider baseUrl={baseUrl} >
+                        <ThemeProvider>
+                          <App />
+                        </ThemeProvider>
+                      </InviteProvider>
+                    </ToPurchaseProvider>
+                  </ShoppingListProvider>
                 </StorageItemProvider>
               </StorageMemberProvider>
             </ProductProvider>

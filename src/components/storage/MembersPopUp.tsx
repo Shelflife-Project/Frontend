@@ -1,17 +1,29 @@
 import { useEffect, useState } from "react";
-import { useStorageMembers, type Storage } from "shelflife-react-hooks"
+import { toast } from "react-toastify";
+import { useAuth, useStorageMembers, type Storage } from "shelflife-react-hooks"
+import ErrorDisplay from "../ErrorDisplay";
 
 type Props = {
     storage: Storage
 }
 
 export default function MembersPopUp({ storage }: Props) {
-    const { members, fetchMembers, inviteMember, isLoading } = useStorageMembers(); 
-    const [inviteEmail, setInviteEmail] = useState<string>("");
+    const { user } = useAuth();
     
+    const { members, fetchMembers, inviteMember, removeMember, isLoading, error } = useStorageMembers(); 
+    const [inviteEmail, setInviteEmail] = useState<string>("");
+   
+    const isOwner = storage.owner.id === user?.id;
+
     useEffect(() => {
         fetchMembers(storage.id);
+        toast.success("Members loaded successfully");
     }, [storage.id]);
+
+    const handleRemove = async (memberId: number) => {
+        await removeMember(storage.id, memberId);
+        fetchMembers(storage.id);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -33,7 +45,42 @@ export default function MembersPopUp({ storage }: Props) {
         )
     }
 
+    if (error) {
+        toast.error("Failed to load members");
+    }
 
+
+    if (!isOwner) {
+        return (
+            <>
+                <div className="p-4">
+                    <h2 className="text-xl font-bold mb-4">Members</h2>
+                    <p className="text-gray-600">View members of this storage.</p>
+                </div> 
+                <div className="overflow-x-auto mt-8 rounded-box border border-base-content/5 bg-base-100">
+                    <table className="table table-zebra">
+                        {/* head */}
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Username</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {members.map((member) => (
+                                <tr key={member.id}>
+                                    <th>{member.id}</th>
+                                    <td>{member.user.username}</td>
+                                    <td>{member.accepted ? "Accepted" : "Pending"}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </>
+        );  
+    }
     return (
         <>
             <div className="p-4">
@@ -54,33 +101,28 @@ export default function MembersPopUp({ storage }: Props) {
                         maxLength={40}
                         name="name"
                         placeholder="e.g., user@example.com"
-                        className="input input-bordered"
+                        className="input input-bordered mr-2"
                         value={inviteEmail}
                         onChange={(e) => setInviteEmail(e.target.value)}
                         required
                     />
-                </div>
-
-                <div className="flex gap-3 mt-6">
                     <button
                         type="submit"
                         disabled={!inviteEmail}
                         className={`btn flex-1 ${inviteEmail ? 'btn-info' : 'btn-disabled'}`}
                     >
-                        Invite Member
+                        Send
                     </button>
-
                 </div>
             </form>
-            <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-                <table className="table">
+            <div className="overflow-x-auto mt-8 rounded-box border border-base-content/5 bg-base-100">
+                <table className="table table-zebra">
                     {/* head */}
                     <thead>
                         <tr>
                             <th></th>
                             <th>Username</th>
                             <th>Status</th>
-                            <th>Edit</th>
                             <th>Remove</th>
                         </tr>
                     </thead>
@@ -90,13 +132,12 @@ export default function MembersPopUp({ storage }: Props) {
                                 <th>{member.id}</th>
                                 <td>{member.user.username}</td>
                                 <td>{member.accepted ? "Accepted" : "Pending"}</td>
-                                <td><button className="btn btn-sm btn-success">Edit</button></td>
-                                <td><button className="btn btn-sm btn-error">Remove</button></td>
+                                <td><button className="btn btn-sm btn-error" onClick={() => handleRemove(member.id)}>Remove</button></td>
                             </tr>
                         ))} 
                     </tbody>
                 </table>
-            </div>
+            </div> 
         </>
 
     )
