@@ -10,7 +10,7 @@ type Props = {
 export default function MembersPopUp({ storage }: Props) {
     const { user } = useAuth();
     
-    const { members, fetchMembers, inviteMember, isLoading, error } = useStorageMembers(); 
+    const { members, fetchMembers, inviteMember, removeMember, isLoading, error } = useStorageMembers(); 
     const [inviteEmail, setInviteEmail] = useState<string>("");
    
     const isOwner = storage.owner.id === user?.id;
@@ -19,6 +19,11 @@ export default function MembersPopUp({ storage }: Props) {
         fetchMembers(storage.id);
         toast.success("Members loaded successfully");
     }, [storage.id]);
+
+    const handleRemove = async (memberId: number) => {
+        await removeMember(storage.id, memberId);
+        fetchMembers(storage.id);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -118,7 +123,6 @@ export default function MembersPopUp({ storage }: Props) {
                             <th></th>
                             <th>Username</th>
                             <th>Status</th>
-                            <th>Edit</th>
                             <th>Remove</th>
                         </tr>
                     </thead>
@@ -128,8 +132,7 @@ export default function MembersPopUp({ storage }: Props) {
                                 <th>{member.id}</th>
                                 <td>{member.user.username}</td>
                                 <td>{member.accepted ? "Accepted" : "Pending"}</td>
-                                <td><button className="btn btn-sm btn-success">Edit</button></td>
-                                <td><button className="btn btn-sm btn-error">Remove</button></td>
+                                <td><button className="btn btn-sm btn-error" onClick={() => handleRemove(member.id)}>Remove</button></td>
                             </tr>
                         ))} 
                     </tbody>

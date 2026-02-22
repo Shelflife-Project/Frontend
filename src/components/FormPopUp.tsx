@@ -27,7 +27,7 @@ export default function FormPopUp({ children, button }: PropsWithChildren<Props>
                                 onClick={() => setShowForm(false)}
                                 className="btn btn-error flex-1"
                             >
-                                Cancel
+                               Close 
                             </button>
                         </div>
                     </div>
