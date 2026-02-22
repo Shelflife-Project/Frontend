@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useAuth, useProducts, useStorageItems, type Product, type Storage } from "shelflife-react-hooks";
+import { useProducts, useStorageItems, type Product, type Storage } from "shelflife-react-hooks";
 
 type Props = {
     storage: Storage

@@ -8,10 +8,12 @@ import { useEffect } from "react";
 import About from "./pages/About";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/dashboard/Dashboard";
-import { Bounce, ToastContainer } from "react-toastify/unstyled";
+import { ToastContainer } from "react-toastify";
+import { useTheme } from "./providers/ThemeProvider";
 
 export default function App() {
     const { getMe, user } = useAuth();
+    const { theme } = useTheme();
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -22,14 +24,26 @@ export default function App() {
     }, []);
 
     return (
-
-        <Routes>
-            <Route path='/' element={<UnProtectedRoute user={user} element={<Home />} />} />
-            <Route path='/about' element={<UnProtectedRoute user={user} element={<About />} />} />
-            <Route path='/login' element={<UnProtectedRoute user={user} element={<Login />} />} />
-            <Route path='/signup' element={<UnProtectedRoute user={user} element={<SignUp />} />} />
-            <Route path='/dashboard/*' element={<ProtectedRoute user={user} element={<Dashboard />} />} />
-        </Routes>
-       
+        <>
+            <Routes>
+                <Route path='/' element={<UnProtectedRoute user={user} element={<Home />} />} />
+                <Route path='/about' element={<UnProtectedRoute user={user} element={<About />} />} />
+                <Route path='/login' element={<UnProtectedRoute user={user} element={<Login />} />} />
+                <Route path='/signup' element={<UnProtectedRoute user={user} element={<SignUp />} />} />
+                <Route path='/dashboard/*' element={<ProtectedRoute user={user} element={<Dashboard />} />} />
+            </Routes>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme={theme ? "dark" : "light"}
+            />
+        </>
     );
 }
