@@ -2,7 +2,6 @@ import { useAuth, useStorages, type Storage } from "shelflife-react-hooks";
 import FormPopUp from "../FormPopUp";
 import SettingsForm from "../storage/SettingsFrom";
 import MembersPopUp from "../storage/MembersPopUp";
-import ItemsPopUp from "../storage/ItemsPopUp";
 import { Link } from "react-router";
 
 export default function StorageCard({ storage }: { storage: Storage; }) {
@@ -52,10 +51,7 @@ export default function StorageCard({ storage }: { storage: Storage; }) {
                         <MembersPopUp storage={storage} />
                     </FormPopUp>
                     
-                    <Link className="btn btn-sm sm:btn-md btn-primary" to={"/dashboard/storages/" + storage.id}>ItemsPage</Link>
-                    <FormPopUp button={<a className="btn btn-sm sm:btn-md btn-primary w-full">Items</a>}>
-                        <ItemsPopUp storage={storage} />
-                    </FormPopUp>
+                    <Link className="btn btn-sm sm:btn-md btn-primary" to={"/dashboard/storages/" + storage.id}>Items</Link>
                     <button onClick={handleDelete} className="btn btn-sm sm:btn-md btn-error">
                         {deleteButtonValue}
                     </button>
