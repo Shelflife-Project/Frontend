@@ -33,7 +33,8 @@ export default function Storages() {
 
             <FormPopUp button={<CreateButtonWithOutClick />} >
                 <CreateStorageForm />
-            </FormPopUp>
+            </FormPopUp> 
+            
         </>
     )
 }

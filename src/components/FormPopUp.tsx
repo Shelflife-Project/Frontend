@@ -15,18 +15,18 @@ export default function FormPopUp({ children, button }: PropsWithChildren<Props>
             </div>
 
             {showForm && (
-                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-11/12 max-w-150 overflow-y-auto">
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 max-h-4/6 w-11/12 max-w-150 overflow-y-auto">
                     <div className="bg-base-100 rounded-lg shadow-xl p-6 md:p-8">
                         
                         {children}
 
-                        <div className="flex gap-3 mt-1">
+                        <div className="flex gap-3 mt-8">
                             <button
                                 type="button"
                                 onClick={() => setShowForm(false)}
-                                className="btn btn-ghost flex-1"
+                                className="btn btn-error flex-1"
                             >
-                                Cancel
+                               Close 
                             </button>
                         </div>
                     </div>
