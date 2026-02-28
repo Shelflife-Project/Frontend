@@ -79,10 +79,9 @@ export default function ItemsPopUp({ storage }: Props) {
                     <input
                         type="date"
                         maxLength={40}
-                        name="name"
-                        placeholder="e.g., user@example.com"
                         className="input w-full input-bordered mr-2"
                         value={expiresAt}
+                        min={new Date().toISOString().split("T")[0]}
                         onChange={(e) => setExpiresAt(e.target.value)}
                         required
                     />
