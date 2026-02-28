@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router'
 import { StrictMode } from 'react'
 import { ThemeProvider } from './providers/ThemeProvider.tsx'
 
-const baseUrl = "http://localhost:8080";
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

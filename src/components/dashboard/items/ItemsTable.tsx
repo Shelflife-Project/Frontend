@@ -1,6 +1,5 @@
-import { flexRender, getCoreRowModel, useReactTable, type Row } from "@tanstack/react-table";
 import { useEffect } from "react";
-import { useStorageItems, type StorageItem } from "shelflife-react-hooks";
+import { useStorageItems } from "shelflife-react-hooks";
 
 type Props = {
     storageId: number;
@@ -21,81 +20,27 @@ export default function ItemsTable({ storageId }: Props) {
         fetchItems(storageId);
     }, [storageId]);
 
-
-    const columns = [
-        {
-            header: 'Product',
-            accessorKey: 'product.name',
-        },
-        {
-            header: 'Expiration Date',
-            cell: ({ row }: { row: Row<StorageItem> }) => {
-                const date = row.original.expiresAt;
-                return new Date(date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric' });
-            },
-        },
-        {
-            header: "Actions",
-            enableSorting: false,
-            enableGlobalFilter: false,
-            cell: ({ row }: { row: Row<StorageItem> }) => {
-                const item = row.original;
-                return (
-                    <div className="grid grid-cols-2 gap-2 min-w-max">
-                        <button className="btn btn-sm btn-primary">Edit</button>
-                        <button className="btn btn-sm btn-error" onClick={() => deleteItemHandler(item.id)}>
-                            Delete
-                        </button>
-                    </div>
-                );
-            },
-        }
-    ]
-
-    const table = useReactTable({
-        columns,
-        data: items,
-        getCoreRowModel: getCoreRowModel()
-    });
-
-
     return (
-        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mb-2">
-            <table className="table">
-                <thead>
-                    {table.getHeaderGroups().map(headerGroup => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map(header => (
-                                <th key={header.id}>
-                                    <div className="space-x-2">
-                                        {flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
-                                    </div>
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                </thead>
-                <tbody>
-                    {table.getRowModel().rows.map(row => (
-                        <tr key={row.id}>
-                            {row.getVisibleCells().map(cell => (
-                                <td key={cell.id}>
-                                    {flexRender(
-                                        cell.column.columnDef.cell,
-                                        cell.getContext()
-                                    )}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mx-auto flex justify-items-center">
+            {
+                items.map((x, i) =>
+                    <div key={i} className="card bg-base-300 shadow-sm">
+                        <figure>
+                            <img
+                                className="max-w-82"
+                                src={`${import.meta.env.VITE_BACKEND_BASE_URL}/api/products/${x.id}/icon`}
+                                alt="Shoes" />
+                        </figure>
+                        <div className="card-body">
+                            <h2 className="card-title">{x.product.name}</h2>
+                            <div className="card-actions justify-between">
+                                <button className="btn btn-error" onClick={() => deleteItemHandler(x.id)}>Delete</button>
+                                <button className="btn btn-primary">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
         </div>
     );
 }
