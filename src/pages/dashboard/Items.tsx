@@ -1,11 +1,11 @@
 import { useParams } from "react-router";
 import ItemsTable from "../../components/dashboard/items/ItemsTable";
 import FormPopUp from "../../components/FormPopUp";
-import ItemsPopUp from "../../components/storage/ItemsPopUp";
 import { useStorages } from "shelflife-react-hooks";
 import { useEffect, useState } from "react";
 import type { Storage } from "../../types/Storage";
 import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButton";
+import ItemsPopUp from "../../components/dashboard/items/ItemsPopUp";
 
 export default function Items() {
     const { id } = useParams();

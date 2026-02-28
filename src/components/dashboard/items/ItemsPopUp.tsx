@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useProducts, useStorageItems, type Storage } from "shelflife-react-hooks";
-import ProductSelector from "../dashboard/items/ProductSelector";
+import ProductSelector from "./ProductSelector";
 
 type Props = {
     storage: Storage

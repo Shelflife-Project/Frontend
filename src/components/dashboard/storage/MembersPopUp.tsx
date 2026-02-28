@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth, useStorageMembers, type Storage } from "shelflife-react-hooks"
-import ErrorDisplay from "../ErrorDisplay";
 
 type Props = {
     storage: Storage
