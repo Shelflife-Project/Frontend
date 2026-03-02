@@ -10,7 +10,7 @@ export default function FormPopUp({ children, button }: PropsWithChildren<Props>
     return (
         <>
             <div
-                className="w-full h-full cursor-pointer" onClick={() => setShowForm(true)}>
+                className="cursor-pointer" onClick={() => setShowForm(true)}>
                 {button}
             </div>
 
