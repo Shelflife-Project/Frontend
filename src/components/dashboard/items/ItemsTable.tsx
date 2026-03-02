@@ -55,33 +55,35 @@ export default function ItemsTable({ storageId }: Props) {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto flex justify-items-center">
             {
-                [...itemsTable].map(([key, value]) => (
-                    <div key={key} className="card bg-base-300 max-w-82 shadow-sm">
-                        <figure>
-                            <img
-                                src={`${import.meta.env.VITE_BACKEND_BASE_URL}/api/products/${key}/icon`}
-                                alt="Shoes" />
-                        </figure>
-                        <div className="card-body">
-                            <h2 className="card-title">{value[0].product.name}</h2>
+                [...itemsTable]
+                    .sort(([keyA], [keyB]) => keyA - keyB)
+                    .map(([key, value]) => (
+                        <div key={key} className="card bg-base-300 max-w-82 shadow-sm">
+                            <figure>
+                                <img
+                                    src={`${import.meta.env.VITE_BACKEND_BASE_URL}/api/products/${key}/icon`}
+                                    alt="Shoes" />
+                            </figure>
+                            <div className="card-body">
+                                <h2 className="card-title">{value[0].product.name}</h2>
 
-                            {
-                                value.map((y, i) =>
-                                    <div key={i} className="gap-4 flex justify-between">
-                                        <h2
-                                            className={daysToExpire(y) < 0 ? "text-red-600" : daysToExpire(y) < 2 ? "text-orange-600" : ""}>
-                                            Expires at: {new Date(y.expiresAt).toLocaleDateString()}
-                                        </h2>
-                                        <FormPopUp button={<button className="btn btn-primary">Edit</button>}>
-                                            <EditStorageItemsForm storageId={storageId} itemId={y.id} />
-                                        </FormPopUp>
-                                        <button className="btn btn-error" onClick={() => deleteItemHandler(y.id)}>Delete</button>
-                                    </div>
-                                )
-                            }
+                                {
+                                    value.map((y, i) =>
+                                        <div key={i} className="gap-4 flex justify-between">
+                                            <h2
+                                                className={daysToExpire(y) < 0 ? "text-red-600" : daysToExpire(y) < 2 ? "text-orange-600" : ""}>
+                                                Expires at: {new Date(y.expiresAt).toLocaleDateString()}
+                                            </h2>
+                                            <FormPopUp button={<button className="btn btn-primary">Edit</button>}>
+                                                <EditStorageItemsForm storageId={storageId} itemId={y.id} />
+                                            </FormPopUp>
+                                            <button className="btn btn-error" onClick={() => deleteItemHandler(y.id)}>Delete</button>
+                                        </div>
+                                    )
+                                }
+                            </div>
                         </div>
-                    </div>
-                ))
+                    ))
             }
         </div>
     );
