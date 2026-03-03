@@ -1,0 +1,165 @@
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { useProducts, type ProductCreateError, type UpdateProductRequest } from "shelflife-react-hooks";
+
+type Props = {
+    productId: number
+};
+
+export default function EditProductForm({ productId }: Props) {
+    const { product, fetchProducts, fetchProduct, updateProduct } = useProducts();
+
+    const [name, setName] = useState("");
+    const [category, setCategory] = useState("");
+    const [barcode, setBarcode] = useState("");
+    const [expirationDaysDelta, setExpirationDaysDelta] = useState(1);
+
+    const [fieldErrors, setFieldErrors] = useState<ProductCreateError>({});
+    const [generalError, setGeneralError] = useState("");
+
+    const handleSubmit = async (e: React.SubmitEvent) => {
+        e.preventDefault();
+        setFieldErrors({});
+        setGeneralError("");
+
+        if (!product)
+            return;
+
+        const updateDto: UpdateProductRequest = {};
+
+        if (name !== product.name) {
+            updateDto.name = name;
+        }
+
+        if (category !== product.category) {
+            updateDto.category = category;
+        }
+
+        if ((barcode || undefined) !== product.barcode) {
+            updateDto.barcode = barcode || undefined;
+        }
+
+        if (expirationDaysDelta !== product.expirationDaysDelta) {
+            updateDto.expirationDaysDelta = expirationDaysDelta;
+        }
+
+        try {
+            await updateProduct(productId, updateDto);
+            fetchProducts();
+            toast.success("The changes have been successfully saved");
+        } catch (err: any) {
+            const product = err as ProductCreateError
+
+            if (product.name || product.category || product.barcode || product.expirationDaysDelta)
+                setFieldErrors(product);
+            else
+                setGeneralError(err.message);
+        }
+    };
+
+    const getProduct = async () => {
+        const p = await fetchProduct(productId);
+
+        if (!p)
+            return;
+
+        setName(p.name);
+        setCategory(p.category);
+        setBarcode(p.barcode ? p.barcode : "");
+        setExpirationDaysDelta(p.expirationDaysDelta);
+    };
+
+    useEffect(() => {
+        getProduct();
+    }, [productId])
+
+    return (
+        <>
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">Edit {product?.name}</h2>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="form-control grid sm:grid-cols-2">
+                    <label className="label">
+                        <span className="label-text font-semibold me-2">Product Name</span>
+                    </label>
+                    <input
+                        type="text"
+                        maxLength={40}
+                        name="name"
+                        placeholder="e.g., Bread"
+                        className={"input input-bordered w-auto" + (fieldErrors.name ? " input-error" : "")}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                    {fieldErrors.name && <p className="text-red-500 text-sm mt-1">{fieldErrors.name}</p>}
+                </div>
+
+                <div className="form-control grid sm:grid-cols-2">
+                    <label className="label">
+                        <span className="label-text font-semibold me-2">Category</span>
+                    </label>
+                    <input
+                        type="text"
+                        maxLength={40}
+                        name="category"
+                        placeholder="e.g., Baked goods"
+                        className={"input input-bordered w-auto" + (fieldErrors.category ? " input-error" : "")}
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        required
+                    />
+                    {fieldErrors.category && <p className="text-red-500 text-sm mt-1">{fieldErrors.category}</p>}
+                </div>
+
+                <div className="form-control grid sm:grid-cols-2">
+                    <label className="label">
+                        <span className="label-text font-semibold me-2">Barcode</span>
+                    </label>
+                    <input
+                        type="text"
+                        maxLength={40}
+                        name="barcode"
+                        placeholder="12345 (optional)"
+                        className={"input input-bordered w-auto" + (fieldErrors.barcode ? " input-error" : "")}
+                        value={barcode}
+                        onChange={(e) => setBarcode(e.target.value)}
+                    />
+                    {fieldErrors.barcode && <p className="text-red-500 text-sm mt-1">{fieldErrors.barcode}</p>}
+                </div>
+
+                <div className="form-control grid sm:grid-cols-2">
+                    <label className="label">
+                        <span className="label-text font-semibold me-2">Expires In (Days)</span>
+                    </label>
+                    <input
+                        type="number"
+                        maxLength={40}
+                        name="expiration"
+                        placeholder="e.g., Bread"
+                        className={"input input-bordered w-auto" + (fieldErrors.expirationDaysDelta ? " input-error" : "")}
+                        value={expirationDaysDelta}
+                        onChange={(e) => setExpirationDaysDelta(parseInt(e.target.value))}
+                        min={1}
+                        required
+                    />
+                    {fieldErrors.expirationDaysDelta && <p className="text-red-500 text-sm mt-1">{fieldErrors.expirationDaysDelta}</p>}
+                </div>
+
+                {generalError && <p className="text-red-500 mt-2">{generalError}</p>}
+
+                <div className="flex gap-3 mt-6">
+                    <button
+                        type="submit"
+                        disabled={!name || !category}
+                        className={`btn flex-1 ${name ? 'btn-info' : 'btn-disabled'}`}
+                    >
+                        Save changes
+                    </button>
+                </div>
+            </form>
+        </>
+    );
+}
