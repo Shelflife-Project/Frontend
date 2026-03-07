@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type Row, type SortingState } from "@tanstack/react-table";
 import { useAuth, useProducts, type Product } from "shelflife-react-hooks";
+import FormPopUp from "../../FormPopUp";
+import EditProductForm from "./EditProductForm";
 
 
 export default function ProductTable() {
@@ -47,8 +49,10 @@ export default function ProductTable() {
                 if (product.ownerId === user?.id)
                     return (
                         <div className="grid grid-cols-2 gap-2 min-w-max">
-                            <button className="btn btn-sm btn-primary">Edit</button>
-                            <button className="btn btn-sm btn-error" onClick={() => deleteProductHandler(row.original.id)}>
+                            <FormPopUp button={<button className="btn btn-sm w-full btn-primary">Edit</button>} >
+                                <EditProductForm productId={product.id} />
+                            </FormPopUp>
+                            <button className="btn btn-sm btn-error" onClick={() => deleteProductHandler(product.id)}>
                                 Delete
                             </button>
                         </div>
