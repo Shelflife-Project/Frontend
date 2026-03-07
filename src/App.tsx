@@ -4,15 +4,18 @@ import { UnProtectedRoute } from "./components/UnProtectedRoute";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import About from "./pages/About";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/dashboard/Dashboard";
+import { ToastContainer } from "react-toastify";
+import { useTheme } from "./providers/ThemeProvider";
 
 export default function App() {
-    const { getMe, user } = useAuth();
+    const { getMe, user, isLoading } = useAuth();
+    const { theme } = useTheme();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const fetchUser = async () => {
             await getMe();
         };
@@ -21,12 +24,26 @@ export default function App() {
     }, []);
 
     return (
-        <Routes>
-            <Route path='/' element={<UnProtectedRoute user={user} element={<Home />} />} />
-            <Route path='/about' element={<UnProtectedRoute user={user} element={<About />} />} />
-            <Route path='/login' element={<UnProtectedRoute user={user} element={<Login />} />} />
-            <Route path='/signup' element={<UnProtectedRoute user={user} element={<SignUp />} />} />
-            <Route path='/dashboard/*' element={<ProtectedRoute user={user} element={<Dashboard />} />} />
-        </Routes>
+        <>
+            <Routes>
+                <Route path='/' element={<UnProtectedRoute user={user} element={<Home />} />} />
+                <Route path='/about' element={<UnProtectedRoute user={user} element={<About />} />} />
+                <Route path='/login' element={<UnProtectedRoute user={user} element={<Login />} />} />
+                <Route path='/signup' element={<UnProtectedRoute user={user} element={<SignUp />} />} />
+                <Route path='/dashboard/*' element={<ProtectedRoute isLoading={isLoading} user={user} element={<Dashboard />} />} />
+            </Routes>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme={theme ? "dark" : "light"}
+            />
+        </>
     );
 }

@@ -46,11 +46,11 @@ export default function SettingsForm({ storage }: Props) {
                     />
                 </div>
 
-                <div className="flex gap-3 mt-6">
+                <div className="flex w-full justify-center gap-3 mt-6">
                     <button
                         type="submit"
                         disabled={!newName}
-                        className={`btn flex-1 ${newName ? 'btn-info' : 'btn-disabled'}`}
+                        className={`btn ${newName ? 'btn-info' : 'btn-disabled'}`}
                     >
                         Save Changes
                     </button>

@@ -1,27 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useTheme } from "../providers/ThemeProvider";
 
 export default function Theme() {
-    const [isChecked, setIsChecked] = useState(() => {
-        const saved = localStorage.getItem("isChecked");
-        return saved ? JSON.parse(saved) : false;
-    });
+    const { theme, change } = useTheme();
 
     useEffect(() => {
-        if (isChecked) document.documentElement.classList.add("dark");
+        if (theme) document.documentElement.classList.add("dark");
         else document.documentElement.classList.remove("dark");
-    }, [isChecked]);
+    }, [theme]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.checked;
-        setIsChecked(value);
-        localStorage.setItem("isChecked", JSON.stringify(value));
+        change(value);
+
         if (value) document.documentElement.classList.add("dark");
         else document.documentElement.classList.remove("dark");
     };
 
     return (
         <label className="swap swap-rotate">
-            <input type="checkbox" className="theme-controller" value="night" checked={isChecked} onChange={handleChange} />
+            <input type="checkbox" className="theme-controller" value="night" checked={theme} onChange={handleChange} />
             <svg
                 className="swap-off h-10 w-10 fill-current"
                 xmlns="http://www.w3.org/2000/svg"

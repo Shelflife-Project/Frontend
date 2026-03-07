@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import StorageCard from "../../components/dashboard/StorageCard";
+import StorageCard from "../../components/dashboard/storage/StorageCard";
 import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButton";
 import { useStorages } from "shelflife-react-hooks";
 import FormPopUp from "../../components/FormPopUp";
-import CreateStorageForm from "../../components/storage/NewForm";
+import CreateStorageForm from "../../components/dashboard/storage/NewForm";
 
 export default function Storages() {
     const { storages, fetchStorages } = useStorages();
@@ -33,7 +33,8 @@ export default function Storages() {
 
             <FormPopUp button={<CreateButtonWithOutClick />} >
                 <CreateStorageForm />
-            </FormPopUp>
+            </FormPopUp> 
+            
         </>
     )
 }
