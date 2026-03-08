@@ -6,6 +6,7 @@ import Notifications from './Notifications';
 import Profile from './Profile';
 import Products from './Products';
 import Items from './Items';
+import Settings from './Settings';
 
 
 export default function Dashboard() {
@@ -14,6 +15,7 @@ export default function Dashboard() {
             <DashboardNavbar />
             <Routes>
                 <Route path="storages/:id" element={<Items />} />
+                <Route path="storages/:id/settings" element={<Settings />} />
                 <Route path="/" element={<Storages />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/profile" element={<Profile />} />

@@ -5,7 +5,7 @@ type Props ={
     storage: Storage
 }
 
-export default function SettingsForm({ storage }: Props) {
+export default function StorageNameEditForm({ storage }: Props) {
     const { changeStorageName, fetchStorages} = useStorages();
     const [newName, setNewName] = useState<string>(storage.name);
 
