@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRunningLow } from "shelflife-react-hooks";
+import FormPopUp from "../../FormPopUp";
+import EditSettingForm from "./EditSettingForm";
 
 type Props = {
     storageId: number
@@ -39,7 +41,11 @@ export default function SettingsTable({ storageId }: Props) {
                                 <p>Runs low at: {s.runningLow}</p>
                                 <div className="flex justify-between">
                                     <button onClick={() => deleteSettingHandler(s.id)} className="btn btn-error">Delete</button>
-                                    <button className="btn btn-secondary">Edit</button>
+
+                                    <FormPopUp button={<button className="btn btn-secondary">Edit</button>}>
+                                        <EditSettingForm settingId={s.id} storageId={storageId} />
+                                    </FormPopUp>
+
                                 </div>
                             </div>
                         </div>
