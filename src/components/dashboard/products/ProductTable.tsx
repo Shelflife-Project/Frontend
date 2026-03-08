@@ -2,6 +2,7 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import FormPopUp from "../../FormPopUp";
 import EditProductForm from "./EditProductForm";
 import { useAuth, useProducts, type Product } from "shelflife-react-hooks";
+import { toast } from "react-toastify";
 
 
 export default function ProductTable() {
@@ -27,8 +28,12 @@ export default function ProductTable() {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        await uploadProductIcon(product.id, file);
-        setRefreshKey((prevKey) => prevKey + 1);
+        try {
+            await uploadProductIcon(product.id, file);
+            setRefreshKey((prevKey) => prevKey + 1);
+        } catch (err: any) {
+            toast.error(err.message)
+        }
     };
 
     const deleteProductHandler = async (id: number) => {
