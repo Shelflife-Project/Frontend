@@ -16,7 +16,7 @@ export default function EditSettingForm({ settingId, storageId }: Props) {
         e.preventDefault();
 
         try{
-            await editSetting(storageId, settingId, {runningLow: runsLowAt});
+            setSetting(await editSetting(storageId, settingId, {runningLow: runsLowAt}));
 
         } catch(err: any) {
             const error = err as EditRunningLowSettingError;

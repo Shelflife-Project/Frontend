@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import StorageCard from "../../components/dashboard/storage/StorageCard";
 import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButton";
-import { useStorages } from "shelflife-react-hooks";
+import { useAuth, useStorages } from "shelflife-react-hooks";
 import FormPopUp from "../../components/FormPopUp";
 import CreateStorageForm from "../../components/dashboard/storage/NewForm";
 
 export default function Storages() {
+    const { user } = useAuth();
     const { storages, fetchStorages } = useStorages();
 
     useEffect(() => {
@@ -20,9 +21,16 @@ export default function Storages() {
 
                 {storages.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-12xl mx-auto">
-                        {storages.map((storage) => (
-                            <StorageCard key={storage.id} storage={storage} />
-                        ))}
+                        {
+                            storages
+                                .sort((storage1) => {
+                                    if (storage1.owner.id === user?.id) return -1
+                                    return 1;
+                                })
+                                .map((storage) => (
+                                    <StorageCard key={storage.id} storage={storage} />
+                                ))
+                        }
                     </div>
                 )}
 
@@ -33,8 +41,8 @@ export default function Storages() {
 
             <FormPopUp button={<CreateButtonWithOutClick />} >
                 <CreateStorageForm />
-            </FormPopUp> 
-            
+            </FormPopUp>
+
         </>
     )
 }

@@ -20,11 +20,12 @@ export default function StorageCard({ storage }: { storage: Storage; }) {
     };
 
     const getCardHeader = () => {
-        if (isOwner)
+        if (canEdit)
             return (
                 <Link to={`storages/${storage.id}/settings`} className="flex items-start justify-between">
-                    <div className="flex flex-row items-end gap-3">
+                    <div>
                         <h2 className="card-title text-2xl">{storage.name}</h2>
+                        <p className="card-title text-xs font-semibold opacity-60">{"OWNED BY: " + (isOwner ? "Me" : storage.owner.username)}</p>
                     </div>
                     <div className="btn btn-ghost btn-sm btn-circle">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-gear-fill" viewBox="0 0 16 16">
