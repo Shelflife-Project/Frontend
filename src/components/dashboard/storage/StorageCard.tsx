@@ -8,7 +8,8 @@ export default function StorageCard({ storage }: { storage: Storage; }) {
     const { deleteStorage, fetchStorages } = useStorages();
 
     const isOwner = storage.owner.id === user?.id;
-    const deleteButtonValue = storage.owner.id === user?.id || user?.admin ? "Delete" : "Leave";
+    const canEdit = isOwner || user?.admin;
+    const deleteButtonValue = canEdit ? "Delete" : "Leave";
 
     const handleDelete = async () => {
         const confirmDelete = window.confirm("Are you sure you want to " + deleteButtonValue + " this storage?");
@@ -49,7 +50,7 @@ export default function StorageCard({ storage }: { storage: Storage; }) {
                     getCardHeader()
                 }
 
-                <div className="grid grid-cols-3 gap-2 mt-4">
+                <div className="grid grid-cols-3 gap-2 mt-auto">
                     <FormPopUp button={<a className="btn btn-sm sm:btn-md btn-success w-full">Members</a>}>
                         <MembersPopUp storage={storage} />
                     </FormPopUp>
