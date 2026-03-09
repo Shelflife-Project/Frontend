@@ -1,28 +1,9 @@
-import { useEffect, useState } from "react";
-import { useAuth, useUsers } from "shelflife-react-hooks";
+import { useAuth } from "shelflife-react-hooks";
 
-export default function UserIcon({ defaultId = 0 }) {
+export default function UserIcon({ defaultId = 0, refreshKey = 0 }) {
     const { user } = useAuth();
-    const { getUserPfp } = useUsers();
-    const [src, setSrc] = useState<string | undefined>(undefined);
 
-    useEffect(() => {
-        const loadImage = async (id: number) => {
-            try {
-                const blob = await getUserPfp(id);
-                const objectUrl = URL.createObjectURL(blob);
-                setSrc(objectUrl);
-            } catch (err) {
-                console.error(err);
-            }
-        };
+    const src = import.meta.env.VITE_BACKEND_BASE_URL + "/api/users/" + ((defaultId > 0 ? defaultId : user?.id || 0)) + "/pfp";
 
-        if (defaultId > 0 || user == null)
-            loadImage(defaultId);
-        else
-            loadImage(user.id);
-    }, []);
-
-
-    return <img src={src} />
+    return <img src={src + "?key=" + refreshKey} />
 }
