@@ -10,29 +10,40 @@ type Props = {
 export default function MembersPopUp({ storage }: Props) {
     const { user } = useAuth();
 
-    const { members, fetchMembers, inviteMember, removeMember, isLoading, error } = useStorageMembers();
+    const { members, fetchMembers, inviteMember, removeMember, isLoading } = useStorageMembers();
     const [inviteEmail, setInviteEmail] = useState<string>("");
 
     const isOwner = storage.owner.id === user?.id || user?.admin;
 
     useEffect(() => {
         fetchMembers(storage.id);
-        toast.success("Members loaded successfully");
     }, [storage.id]);
 
-    const handleRemove = async (memberId: number) => {
-        await removeMember(storage.id, memberId);
-        fetchMembers(storage.id);
+    const handleRemove = async (userId: number) => {
+        try {
+            await removeMember(storage.id, userId);
+            fetchMembers(storage.id);
+            toast.success("Member successfully removed");
+        } catch (e: any) {
+            toast.error(e.message);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (inviteEmail) {
+
+        if (!inviteEmail)
+            return;
+
+        try {
             await inviteMember(storage.id, {
                 email: inviteEmail
             });
             setInviteEmail("");
             fetchMembers(storage.id);
+            toast.success("Member successfully invited");
+        } catch (e: any) {
+            toast.success(e.message);
         }
     };
 
@@ -44,11 +55,6 @@ export default function MembersPopUp({ storage }: Props) {
             </div>
         )
     }
-
-    if (error) {
-        toast.error("Failed to load members");
-    }
-
 
     if (!isOwner) {
         return (
@@ -138,7 +144,7 @@ export default function MembersPopUp({ storage }: Props) {
                                 </th>
                                 <td>{member.user.username}</td>
                                 <td>{member.accepted ? "Accepted" : "Pending"}</td>
-                                <td><button className="btn btn-sm btn-error" onClick={() => handleRemove(member.id)}>Remove</button></td>
+                                <td><button className="btn btn-sm btn-error" onClick={() => handleRemove(member.user.id)}>Remove</button></td>
                             </tr>
                         ))}
                     </tbody>
