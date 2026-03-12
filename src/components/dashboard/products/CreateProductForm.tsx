@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useProducts, type ProductCreateError } from "shelflife-react-hooks";
 
 export default function CreateProductForm() {
-    const { fetchProducts, createProduct } = useProducts();
+    const { createProduct } = useProducts();
 
     const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
     const [barcode, setBarcode] = useState("");
     const [expirationDaysDelta, setExpirationDaysDelta] = useState(1);
@@ -20,11 +21,11 @@ export default function CreateProductForm() {
         try {
             await createProduct({
                 name,
+                description,
                 category,
                 barcode: barcode || undefined,
                 expirationDaysDelta: expirationDaysDelta,
             });
-            fetchProducts();
         } catch (err: any) {
             const product = err as ProductCreateError
 
@@ -34,10 +35,6 @@ export default function CreateProductForm() {
                 setGeneralError(err.message);
         }
     };
-
-    useEffect(() => {
-        fetchProducts();
-    }, [])
 
     return (
         <>
@@ -61,6 +58,20 @@ export default function CreateProductForm() {
                         required
                     />
                     {fieldErrors.name && <p className="text-red-500 text-sm mt-1">{fieldErrors.name}</p>}
+                </div>
+
+                <div className="form-control grid sm:grid-cols-2">
+                    <label className="label">
+                        <span className="label-text font-semibold me-2">Product Description</span>
+                    </label>
+                    <textarea
+                        maxLength={255}
+                        placeholder="Description (optional)"
+                        className={"textarea w-auto" + (fieldErrors.description ? " input-error" : "")}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                    {fieldErrors.description && <p className="text-red-500 text-sm mt-1">{fieldErrors.description}</p>}
                 </div>
 
                 <div className="form-control grid sm:grid-cols-2">

@@ -85,6 +85,7 @@ export default function ProductCard({ product }: Props) {
 
         <div className="card-body">
             <h2 className="card-title">{product.name}</h2>
+            <h2>Description: {product.description}</h2>
             <h2>Category: {product.category}</h2>
             <h2>Barcode: {product.barcode}</h2>
             <h2>Expiration delta: {product.expirationDaysDelta} days</h2>
