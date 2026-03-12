@@ -173,7 +173,7 @@ export default function EditProductForm({ productId }: Props) {
                     <button
                         type="submit"
                         disabled={!name || !category}
-                        className={`btn flex-1 ${name ? 'btn-info' : 'btn-disabled'}`}
+                        className={`btn flex-1 ${name ? 'btn-success' : 'btn-disabled'}`}
                     >
                         Save changes
                     </button>

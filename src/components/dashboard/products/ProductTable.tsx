@@ -31,47 +31,15 @@ export default function ProductTable() {
 
     return (
         <>
-            <div className="flex justify-between">
-
-                <input
-                    className="input input-bordered mb-4"
-                    placeholder="Search..."
-                    value={search}
-                    onChange={(e) => {
-                        setSearch(e.target.value);
-                        setPage(0);
-                    }}
-                />
-
-                <div className="flex justify-center items-center gap-4">
-                    <select className="select" onChange={e => setPageSize(Number(e.target.value))}>
-                        <option value={5}>5</option>
-                        <option value={10}>10</option>
-                        <option value={15}>15</option>
-                        <option value={20}>20</option>
-                    </select>
-
-                    <button
-                        className="btn btn-primary"
-                        onClick={prevPage}
-                        disabled={page === 0}
-                    >
-                        Previous
-                    </button>
-
-                    <p className="text-center">
-                        Page {page + 1}
-                    </p>
-
-                    <button
-                        className="btn btn-primary"
-                        onClick={nextPage}
-                        disabled={nextProducts.length <= 0}
-                    >
-                        Next
-                    </button>
-                </div>
-            </div>
+            <input
+                className="input input-bordered mb-4"
+                placeholder="Search..."
+                value={search}
+                onChange={(e) => {
+                    setSearch(e.target.value);
+                    setPage(0);
+                }}
+            />
 
             {products.length === 0 && (
                 <p className="text-center text-gray-400">
@@ -81,7 +49,7 @@ export default function ProductTable() {
 
             {products.length > 0 && (
                 <>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6 mx-auto justify-items-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mb-6 mx-auto justify-items-center">
                         {
                             products.map((p) => (
                                 <ProductCard key={p.id} product={p} />
@@ -90,6 +58,35 @@ export default function ProductTable() {
                     </div>
                 </>
             )}
+
+            <div className="flex items-center gap-2">
+                <select className="select w-min" onChange={e => {setPageSize(Number(e.target.value)); setPage(0)}}>
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                    <option value={20}>20</option>
+                </select>
+
+                <button
+                    className="btn btn-primary"
+                    onClick={prevPage}
+                    disabled={page === 0}
+                >
+                    Previous
+                </button>
+
+                <p className="text-center">
+                    Page {page + 1}
+                </p>
+
+                <button
+                    className="btn btn-primary"
+                    onClick={nextPage}
+                    disabled={nextProducts.length <= 0}
+                >
+                    Next
+                </button>
+            </div>
         </>
     );
 }
