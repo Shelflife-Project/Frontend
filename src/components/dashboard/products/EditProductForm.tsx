@@ -7,9 +7,10 @@ type Props = {
 };
 
 export default function EditProductForm({ productId }: Props) {
-    const { product, fetchProducts, fetchProduct, updateProduct } = useProducts();
+    const { product, fetchProduct, updateProduct } = useProducts();
 
     const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
     const [barcode, setBarcode] = useState("");
     const [expirationDaysDelta, setExpirationDaysDelta] = useState(1);
@@ -31,6 +32,10 @@ export default function EditProductForm({ productId }: Props) {
             updateDto.name = name;
         }
 
+        if (description !== product.description) {
+            updateDto.description = description;
+        }
+
         if (category !== product.category) {
             updateDto.category = category;
         }
@@ -45,7 +50,6 @@ export default function EditProductForm({ productId }: Props) {
 
         try {
             await updateProduct(productId, updateDto);
-            fetchProducts();
             toast.success("The changes have been successfully saved");
         } catch (err: any) {
             const product = err as ProductCreateError
@@ -64,6 +68,7 @@ export default function EditProductForm({ productId }: Props) {
             return;
 
         setName(p.name);
+        setDescription(p.description ? p.description : "");
         setCategory(p.category);
         setBarcode(p.barcode ? p.barcode : "");
         setExpirationDaysDelta(p.expirationDaysDelta);
@@ -95,6 +100,20 @@ export default function EditProductForm({ productId }: Props) {
                         required
                     />
                     {fieldErrors.name && <p className="text-red-500 text-sm mt-1">{fieldErrors.name}</p>}
+                </div>
+
+                <div className="form-control grid sm:grid-cols-2">
+                    <label className="label">
+                        <span className="label-text font-semibold me-2">Product Description</span>
+                    </label>
+                    <textarea
+                        maxLength={255}
+                        placeholder="Description (optional)"
+                        className={"textarea w-auto" + (fieldErrors.description ? " input-error" : "")}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                    {fieldErrors.description && <p className="text-red-500 text-sm mt-1">{fieldErrors.description}</p>}
                 </div>
 
                 <div className="form-control grid sm:grid-cols-2">
