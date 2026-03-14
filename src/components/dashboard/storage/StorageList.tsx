@@ -1,22 +1,20 @@
 import { useEffect, useState } from "react";
-import { useStorages, type Storage } from "shelflife-react-hooks";
+import { useStorages } from "shelflife-react-hooks";
 import StorageCard from "./StorageCard";
 
 export default function StorageList() {
-    const { fetchStorages } = useStorages();
+    const { fetchStorages, storages } = useStorages();
 
-    const [currentStorages, setCurrentStorages] = useState<Storage[]>([]);
-    const [nextStorages, setNextStorages] = useState<Storage[]>([]);
+    const [hasNext, setHasNext] = useState(false);
+    const [hasPrevious, setHasPrevious] = useState(false);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
 
     const getStorages = async () => {
-        const current = await fetchStorages(search, pageSize, page);
-        const next = await fetchStorages(search, pageSize, page + 1);
-
-        setCurrentStorages(current);
-        setNextStorages(next);
+        const res = await fetchStorages(search, pageSize, page)
+        setHasNext(res.hasNext);
+        setHasPrevious(res.hasPrevious);
     };
 
     useEffect(() => {
@@ -32,9 +30,7 @@ export default function StorageList() {
     };
 
     return <>
-
-        <div className="flex justify-between">
-
+        <div className="text-left">
             <input
                 className="input input-bordered mb-4"
                 placeholder="Search..."
@@ -45,8 +41,8 @@ export default function StorageList() {
                 }}
             />
 
-            <div className="flex justify-center items-center gap-4">
-                <select className="select" onChange={e => setPageSize(Number(e.target.value))}>
+            <div className="flex items-center gap-4 mb-4">
+                <select className="select w-min" onChange={e => setPageSize(Number(e.target.value))}>
                     <option value={5}>5</option>
                     <option value={10}>10</option>
                     <option value={15}>15</option>
@@ -56,7 +52,7 @@ export default function StorageList() {
                 <button
                     className="btn btn-primary"
                     onClick={prevPage}
-                    disabled={page === 0}
+                    disabled={!hasPrevious}
                 >
                     Previous
                 </button>
@@ -68,7 +64,7 @@ export default function StorageList() {
                 <button
                     className="btn btn-primary"
                     onClick={nextPage}
-                    disabled={nextStorages.length <= 0}
+                    disabled={!hasNext}
                 >
                     Next
                 </button>
@@ -76,10 +72,10 @@ export default function StorageList() {
         </div>
 
         {
-            currentStorages.length > 0 && (
+            storages.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-12xl mx-auto">
                     {
-                        currentStorages
+                        storages
                             .map((storage) => (
                                 <StorageCard key={storage.id} storage={storage} />
                             ))
@@ -89,7 +85,7 @@ export default function StorageList() {
         }
 
         {
-            currentStorages.length === 0 && (
+            storages.length === 0 && (
                 <p className="text-gray-400">No storages created yet. Click the + button to create one!</p>
             )
         }</>

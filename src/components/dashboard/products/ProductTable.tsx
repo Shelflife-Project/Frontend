@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import { useProducts, type Product } from "shelflife-react-hooks";
+import { useProducts } from "shelflife-react-hooks";
 import ProductCard from "./ProductCard";
 
 export default function ProductTable() {
     const { products, fetchProducts } = useProducts();
 
-    const [nextProducts, setNextProducts] = useState<Product[]>([]);
+    const [hasNext, setHasNext] = useState(false);
+    const [hasPrevious, setHasPrevious] = useState(false);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
 
     const getProducts = async () => {
-        const next = await fetchProducts(search, pageSize, page + 1);
-        setNextProducts(next);
-
-        fetchProducts(search, pageSize, page);
+        const res = await fetchProducts(search, pageSize, page);
+        setHasNext(res.hasNext);
+        setHasPrevious(res.hasPrevious);
     };
 
     useEffect(() => {
@@ -41,6 +41,35 @@ export default function ProductTable() {
                 }}
             />
 
+            <div className="flex items-center gap-2 mb-4">
+                <select className="select w-min" onChange={e => { setPageSize(Number(e.target.value)); setPage(0) }}>
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                    <option value={20}>20</option>
+                </select>
+
+                <button
+                    className="btn btn-primary"
+                    onClick={prevPage}
+                    disabled={!hasPrevious}
+                >
+                    Previous
+                </button>
+
+                <p className="text-center">
+                    Page {page + 1}
+                </p>
+
+                <button
+                    className="btn btn-primary"
+                    onClick={nextPage}
+                    disabled={!hasNext}
+                >
+                    Next
+                </button>
+            </div>
+
             {products.length === 0 && (
                 <p className="text-center text-gray-400">
                     No products created yet. Click the + button to create one!
@@ -58,35 +87,6 @@ export default function ProductTable() {
                     </div>
                 </>
             )}
-
-            <div className="flex items-center gap-2">
-                <select className="select w-min" onChange={e => {setPageSize(Number(e.target.value)); setPage(0)}}>
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={15}>15</option>
-                    <option value={20}>20</option>
-                </select>
-
-                <button
-                    className="btn btn-primary"
-                    onClick={prevPage}
-                    disabled={page === 0}
-                >
-                    Previous
-                </button>
-
-                <p className="text-center">
-                    Page {page + 1}
-                </p>
-
-                <button
-                    className="btn btn-primary"
-                    onClick={nextPage}
-                    disabled={nextProducts.length <= 0}
-                >
-                    Next
-                </button>
-            </div>
         </>
     );
 }
