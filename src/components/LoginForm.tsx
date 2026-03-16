@@ -8,6 +8,7 @@ export default function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -34,7 +35,23 @@ export default function LoginForm() {
                             <label className="label">Email</label>
                             <input type="email" className="input" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                             <label className="label">Password</label>
-                            <input type="password" className="input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                className="input"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+
+                            <label className="label cursor-pointer justify-start gap-2 mb-4">
+                                <input
+                                    type="checkbox"
+                                    className="checkbox checkbox-sm"
+                                    checked={showPassword}
+                                    onChange={() => setShowPassword(!showPassword)}
+                                />
+                                <span className="label-text">Show password</span>
+                            </label>
                             <div><Link className="link link-hover" to="/signup">Don't have an account?</Link></div>
                             <button className="btn btn-neutral mt-4" type="submit">Login</button>
                             {error && <p className="text-red-500 mt-2">{error}</p>}
