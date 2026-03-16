@@ -1,27 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router";
-import { useStorageItems, useStorages, type RunningLowNotification } from "shelflife-react-hooks";
+import { useStorageItems } from "shelflife-react-hooks";
 
 export default function RunningLowList() {
-    const { fetchRunningLow } = useStorageItems();
-    const { fetchStorages } = useStorages();
-
-    const [runningLow, setRunningLow] = useState<RunningLowNotification[]>([]);
-
-    const getRunningLow = async () => {
-        const storages = await fetchStorages();
-        let items = [] as RunningLowNotification[]
-
-        for (let i = 0; i < storages.data.length; i++) {
-            const notifications = await fetchRunningLow(storages.data[i].id);
-            items = items.concat(notifications);
-        }
-
-        setRunningLow(items);
-    };
+    const { fetchRunningLowAggregated, runningLow } = useStorageItems();
 
     useEffect(() => {
-        getRunningLow();
+        fetchRunningLowAggregated();
     }, []);
 
     return (
