@@ -40,12 +40,12 @@ export default function ProductCard({ product }: Props) {
     };
 
     return (
-        <div className="card border border-base-200 shadow-sm hover:shadow-xl transition-all duration-300">
+        <div className="card w-full h-full border border-base-200 shadow-sm hover:shadow-xl transition-all duration-300">
 
             {
                 canEdit &&
-                <figure>
-                    <div className="relative group">
+                <figure className="w-full">
+                    <div className="relative group w-full flex justify-center">
 
                         <input
                             id={`fileInput-${product.id}`}
