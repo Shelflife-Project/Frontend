@@ -18,7 +18,7 @@ export default function CreateSettingForm({ storageId }: Props) {
         const settings = await fetchSettings(storageId);
         const products = await fetchProducts();
 
-        const filtered = products.filter((p) => !settings.find((s) => s.product.id === p.id))
+        const filtered = products.data.filter((p) => !settings.find((s) => s.product.id === p.id))
 
         setFilteredProducts(filtered);
     };

@@ -22,7 +22,12 @@ export default function RunningLowList() {
                             <div><img className="size-10 rounded-box" src={`${import.meta.env.VITE_BACKEND_BASE_URL}/api/products/${x.product.id}/icon/small`} /></div>
                             <div>
                                 <div>{x.product.name}</div>
-                                <div className="text-xs uppercase font-semibold opacity-60">Only {x.amount} left in {x.storage.name}</div>
+                                {
+                                    x.amount > 0 ?
+                                        <div className="text-xs uppercase font-semibold opacity-60">Only {x.amount} left in {x.storage.name}</div>
+                                        :
+                                        <div className="text-xs uppercase font-semibold opacity-60">There aren't any left in {x.storage.name}</div>
+                                }
                             </div>
                             <button className="btn btn-square btn-success p-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cart" viewBox="0 0 16 16">
