@@ -1,17 +1,12 @@
-import { useEffect, useRef } from "react";
-import { useAuth, useShoppingList, useToPurchase } from "shelflife-react-hooks";
+import { useEffect } from "react";
+import { useShoppingList } from "shelflife-react-hooks";
 
-type Prop = {
-
-}
-
-export default function ShoppingList({ }: Prop) {
-    const { fetchAggregated, items, isLoading, isError} = useToPurchase();
-   
+export default function ShoppingList() {
+    const { items, isLoading, isError, fetchAggregated } = useShoppingList();
 
     useEffect(() => {
-        if (items.length > 0 || isLoading || isError) return; 
-        
+        if (items.length > 0 || isLoading || isError) return;
+
         fetchAggregated();
     }, []);
 
@@ -30,14 +25,14 @@ export default function ShoppingList({ }: Prop) {
 
 
             {items.map((item) => (
-                <li key={item.productId} className="list-row">
+                <li key={item.product.id} className="list-row">
                     <div>
-                        <div>{item.productName}</div>
+                        <div>{item.product.name}</div>
                         <div className="text-xs uppercase font-semibold opacity-60">{item.amountToBuy}</div>
                     </div>
                     <button className="btn btn-square btn-ghost">
                         <svg className="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-                    </button> 
+                    </button>
                 </li>
             ))}
         </ul>
