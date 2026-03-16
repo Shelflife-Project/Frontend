@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useAuth, useStorageMembers, type Storage } from "shelflife-react-hooks"
+import { useAuth, useStorageMembers, type InviteMemberError, type Storage } from "shelflife-react-hooks"
 import UserIcon from "../UserIcon";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 export default function MembersPopUp({ storage }: Props) {
     const { user } = useAuth();
 
-    const { members, fetchMembers, inviteMember, removeMember, isLoading } = useStorageMembers();
+    const { members, fetchMembers, inviteMember, removeMember } = useStorageMembers();
     const [inviteEmail, setInviteEmail] = useState<string>("");
 
     const isOwner = storage.owner.id === user?.id || user?.admin;
@@ -43,18 +43,14 @@ export default function MembersPopUp({ storage }: Props) {
             fetchMembers(storage.id);
             toast.success("Member successfully invited");
         } catch (e: any) {
-            toast.success(e.message);
+            const err = e as InviteMemberError;
+
+            if (err.email)
+                toast.error(err.email);
+            else if (e.message)
+                toast.error(e);
         }
     };
-
-    if (isLoading) {
-        return (
-            <div className="p-4">
-                <h2 className="text-xl font-bold mb-4">Members</h2>
-                <p className="text-gray-600">Loading members...</p>
-            </div>
-        )
-    }
 
     if (!isOwner) {
         return (
