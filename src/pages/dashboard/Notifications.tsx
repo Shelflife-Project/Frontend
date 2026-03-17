@@ -1,6 +1,6 @@
-import InvitationList from "../../components/notification/InvitaitonList";
-import RunningLowList from "../../components/notification/RunningLowList";
-import ShoppingList from "../../components/notification/ShoppingList";
+import InvitationList from "../../components/dashboard/notification/InvitaitonList";
+import RunningLowList from "../../components/dashboard/notification/RunningLowList";
+import ShoppingList from "../../components/dashboard/notification/ExpiredList";
 
 export default function Notifications() {
     return (
@@ -11,7 +11,7 @@ export default function Notifications() {
             </div>
 
 
-            <div className="grid md:grid-cols-3 gap-6 px-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 mb-6">
                 <ShoppingList />
                 <InvitationList /> 
                 <RunningLowList />

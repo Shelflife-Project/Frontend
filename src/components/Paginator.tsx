@@ -47,7 +47,13 @@ export default function Paginator({ onChange }: Props) {
         />
 
         <div className="flex items-center gap-4 mb-4">
-            <select className="select w-min" onChange={e => setPageSize(Number(e.target.value))}>
+            <select
+                className="select w-min"
+                onChange={(e) => {
+                    setPageSize(Number(e.target.value));
+                    setPage(0);
+                }}
+            >
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={15}>15</option>
