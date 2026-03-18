@@ -7,6 +7,7 @@ import Profile from './Profile';
 import Products from './Products';
 import Items from './Items';
 import Settings from './Settings';
+import ShoppingList from './ShoppingList';
 
 
 export default function Dashboard() {
@@ -20,6 +21,7 @@ export default function Dashboard() {
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/shoppinglist" element={<ShoppingList />} />
             </Routes>
             <div className="h-20" />
             <DashboardNavbarBottom />
