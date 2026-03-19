@@ -18,12 +18,12 @@ export default function CreateShoppingListItemForm() {
 	}, []);
 
 	useEffect(() => {
-		fetchStorages(storageSearch);
+		fetchStorages(storageSearch, 10, 0);
 		setSelectedStorage(0);
 	}, [storageSearch]);
 
 	useEffect(() => {
-		fetchProducts(productSearch);
+		fetchProducts(productSearch, 10, 0);
 		setSelectedProduct(0);
 	}, [productSearch]);
 
