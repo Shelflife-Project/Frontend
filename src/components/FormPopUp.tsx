@@ -1,23 +1,26 @@
-import { useState, type PropsWithChildren, type ReactNode } from "react";
+import { cloneElement, isValidElement, useState, type PropsWithChildren, type ReactElement } from "react";
 
 type Props = {
-    button: ReactNode;
+    button: ReactElement<{ onClick?: (e: any) => void }>;
 }
 
 export default function FormPopUp({ children, button }: PropsWithChildren<Props>) {
     const [showForm, setShowForm] = useState(false);
 
+    const trigger = isValidElement(button)
+        ? cloneElement(button, {
+            onClick: () => setShowForm(true),
+        })
+        : button;
+
     return (
         <>
-            <div
-                className="cursor-pointer" onClick={() => setShowForm(true)}>
-                {button}
-            </div>
+            {trigger}
 
             {showForm && (
                 <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 max-h-4/6 w-11/12 max-w-150 overflow-y-auto">
                     <div className="bg-base-100 rounded-lg shadow-xl p-6 md:p-8">
-                        
+
                         {children}
 
                         <div className="flex gap-3 mt-8">
@@ -26,7 +29,7 @@ export default function FormPopUp({ children, button }: PropsWithChildren<Props>
                                 onClick={() => setShowForm(false)}
                                 className="btn btn-error flex-1"
                             >
-                               Close 
+                                Close
                             </button>
                         </div>
                     </div>
@@ -40,7 +43,7 @@ export default function FormPopUp({ children, button }: PropsWithChildren<Props>
                 />
             )}
 
-            
+
         </>
     )
 }

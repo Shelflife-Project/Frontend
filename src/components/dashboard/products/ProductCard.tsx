@@ -35,7 +35,7 @@ export default function ProductCard({ product }: Props) {
         if (confirmDelete) {
             await deleteProduct(id);
 
-            toast.success("")
+            toast.success("Product successfully removed")
         }
     };
 
@@ -128,7 +128,7 @@ export default function ProductCard({ product }: Props) {
 
                         <FormPopUp
                             button={
-                                <button className="btn btn-success flex-1">
+                                <button className="btn btn-success">
                                     Edit
                                 </button>
                             }
