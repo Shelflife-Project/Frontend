@@ -12,7 +12,7 @@ export default function ShoppingList() {
 
             <ShoppingListTable />
             <FormPopUp button={<CreateButtonWithOutClick />} >
-                <CreateShoppingListItemForm existingItems={[]} />
+                <CreateShoppingListItemForm />
             </FormPopUp>
         </div>
     )
