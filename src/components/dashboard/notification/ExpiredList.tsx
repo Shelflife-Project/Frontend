@@ -35,8 +35,7 @@ export default function ShoppingList() {
 
             <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">Expired items</li>
 
-            <span className="overflow-x-auto">
-
+            <span className="overflow-x-hidden">
                 {
                     expiredItems.map((x, i) =>
                         <li key={i} className="list-row">
@@ -80,7 +79,6 @@ export default function ShoppingList() {
                         </li>
                     )
                 }
-
             </span>
 
             {
