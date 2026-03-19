@@ -67,20 +67,23 @@ export default function ItemsTable({ storageId }: Props) {
                             <div className="card-body">
                                 <h2 className="card-title">{value[0].product.name}</h2>
 
-                                {
-                                    value.map((y, i) =>
-                                        <div key={i} className="gap-4 flex justify-between">
-                                            <h2
-                                                className={daysToExpire(y) < 0 ? "text-red-600" : daysToExpire(y) < 2 ? "text-orange-600" : ""}>
-                                                Expires at: {new Date(y.expiresAt).toLocaleDateString()}
-                                            </h2>
-                                            <FormPopUp button={<button className="btn btn-primary">Edit</button>}>
-                                                <EditStorageItemsForm storageId={storageId} itemId={y.id} />
-                                            </FormPopUp>
-                                            <button className="btn btn-error" onClick={() => deleteItemHandler(y.id)}>Delete</button>
-                                        </div>
-                                    )
-                                }
+                                <div className="max-h-40 overflow-x-hidden space-y-2">
+                                    {
+                                        value.map((y, i) =>
+                                            <div key={i} className="gap-4 flex justify-between">
+                                                <h2
+                                                    className={daysToExpire(y) < 0 ? "text-red-600" : daysToExpire(y) < 2 ? "text-orange-600" : ""}>
+                                                    Expires at: {new Date(y.expiresAt).toLocaleDateString()}
+                                                </h2>
+                                                <FormPopUp button={<button className="btn btn-primary">Edit</button>}>
+                                                    <EditStorageItemsForm storageId={storageId} itemId={y.id} />
+                                                </FormPopUp>
+                                                <button className="btn btn-error" onClick={() => deleteItemHandler(y.id)}>Delete</button>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+
                             </div>
                         </div>
                     ))
