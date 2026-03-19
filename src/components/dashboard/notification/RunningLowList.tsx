@@ -1,12 +1,33 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
-import { useStorageItems } from "shelflife-react-hooks";
+import { toast } from "react-toastify";
+import { useShoppingList, useStorageItems, type RunningLowNotification } from "shelflife-react-hooks";
 
 export default function RunningLowList() {
     const { fetchRunningLowAggregated, runningLow } = useStorageItems();
+    const { fetchAggregated, items, createItem } = useShoppingList();
+
+    const getItems = async () => {
+        await fetchAggregated();
+        await fetchRunningLowAggregated();
+    }
+
+    const onAddToCart = async (item: RunningLowNotification) => {
+        try {
+            await createItem(item.storage.id, {
+                productId: item.product.id,
+                amountToBuy: item.runningLowAt - item.amount + 1,
+            });
+
+            toast.success("Successfully added item to shopping list");
+            getItems();
+        } catch (e: any) {
+            toast.error("Couldn't add item to shopping list");
+        }
+    }
 
     useEffect(() => {
-        fetchRunningLowAggregated();
+        getItems();
     }, []);
 
     return (
@@ -28,11 +49,14 @@ export default function RunningLowList() {
                                         <div className="text-xs uppercase font-semibold opacity-60">There aren't any left in {x.storage.name}</div>
                                 }
                             </div>
-                            <button className="btn btn-square btn-success p-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cart" viewBox="0 0 16 16">
-                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-                                </svg>
-                            </button>
+                            {
+                                !items.find(item => item.storage.id === x.storage.id && item.product.id === x.product.id) &&
+                                <button onClick={() => onAddToCart(x)} className="btn btn-square btn-success p-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cart" viewBox="0 0 16 16">
+                                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                    </svg>
+                                </button>
+                            }
                             <Link to={`/dashboard/storages/${x.storage.id}/settings`} className="btn btn-square btn-primary p-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
