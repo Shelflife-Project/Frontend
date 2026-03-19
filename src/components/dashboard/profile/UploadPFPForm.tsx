@@ -19,21 +19,31 @@ export default function UploadPFPForm() {
     };
 
     return (
-        <div className="flex items-center gap-4 my-4 me-4">
-            <input
-                id="fileInput"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleChange}
-            />
-            <label htmlFor="fileInput" className="cursor-pointer">
-                <div className="avatar">
-                    <div className="w-24 rounded-full ring ring-primary">
-                        <UserIcon refreshKey={refreshKey} />
+        <label htmlFor="pfp" className="cursor-pointer group">
+            <div className="relative group flex justify-center">
+
+                <input
+                    id={"pfp"}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => handleChange(e)}
+                />
+
+                <label htmlFor="pfp" className="cursor-pointer group">
+                    <div className="avatar">
+                        <div className="w-24 rounded-full ring ring-primary ring-offset-2 group-hover:blur-[0.1em] ring-offset-base-100 transition group-hover:scale-105">
+                            <UserIcon refreshKey={refreshKey} />
+                        </div>
                     </div>
-                </div>
-            </label>
-        </div>
+
+                    <div className="rounded-full absolute inset-0 bg-black/50 opacity-0 group-hover:scale-105 flex items-center justify-center text-white text-sm transition">
+                    </div>
+                </label>
+            </div>
+                <p className="text-xs text-center mt-2 opacity-60 group-hover:opacity-100">
+                    Change photo
+                </p>
+        </label>
     );
 }
