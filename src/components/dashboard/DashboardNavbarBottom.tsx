@@ -34,6 +34,15 @@ export default function DashboardNavbarBottom() {
             )
         },
         {
+            label: "Shopping List",
+            path: "/dashboard/shoppinglist",
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-cart-fill" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                </svg>
+            )
+        },
+        {
             label: "Profile",
             path: "/dashboard/profile",
             icon: (
@@ -46,8 +55,8 @@ export default function DashboardNavbarBottom() {
 
     return (
         <>
-            <div className="fixed bottom-0 left-0 right-0 mt-10 flex justify-center z-50 shadow-lg py-3 sm:py-4 md:py-6 overflow-x-auto ">
-                
+            <div className="fixed bottom-0 left-0 right-0 flex justify-center z-50 py-4">
+
                 <div role="tablist" className="tabs bg-base-100 tabs-box gap-1 sm:gap-2 flex-nowrap shadow-lg z-51">
                     {tabs.map((tab) => (
                         <Link
@@ -56,7 +65,7 @@ export default function DashboardNavbarBottom() {
                             role="tab"
                             title={tab.label}
                             aria-label={tab.label}
-                            className={`tab mx-1 sm:mx-3 md:mx-8 px-2 sm:px-4 md:px-6 my-2 flex items-center justify-center whitespace-nowrap ${isActive(tab.path) ? 'tab-active' : ''}`}
+                            className={`tab relative transition-all sm:mx-3 md:mx-8 sm:my-2 ${isActive(tab.path) ? "tab-active text-primary" : ""}`}
                         >
                             {tab.icon}
                         </Link>
@@ -68,8 +77,8 @@ export default function DashboardNavbarBottom() {
                         maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.7) 10%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 100%)',
                         WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 100%)'
                     }}
-                /> 
-                
+                />
+
             </div>
         </>
     );

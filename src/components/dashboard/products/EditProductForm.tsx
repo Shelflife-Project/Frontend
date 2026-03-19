@@ -1,8 +1,13 @@
-import { useState } from "react";
-import { useProducts, type ProductCreateError } from "shelflife-react-hooks";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { useProducts, type ProductCreateError, type UpdateProductRequest } from "shelflife-react-hooks";
 
-export default function CreateProductForm() {
-    const { createProduct } = useProducts();
+type Props = {
+    productId: number
+};
+
+export default function EditProductForm({ productId }: Props) {
+    const { product, fetchProduct, updateProduct } = useProducts();
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -18,14 +23,34 @@ export default function CreateProductForm() {
         setFieldErrors({});
         setGeneralError("");
 
+        if (!product)
+            return;
+
+        const updateDto: UpdateProductRequest = {};
+
+        if (name !== product.name) {
+            updateDto.name = name;
+        }
+
+        if (description !== product.description) {
+            updateDto.description = description;
+        }
+
+        if (category !== product.category) {
+            updateDto.category = category;
+        }
+
+        if ((barcode || undefined) !== product.barcode) {
+            updateDto.barcode = barcode || undefined;
+        }
+
+        if (expirationDaysDelta !== product.expirationDaysDelta) {
+            updateDto.expirationDaysDelta = expirationDaysDelta;
+        }
+
         try {
-            await createProduct({
-                name,
-                description,
-                category,
-                barcode: barcode || undefined,
-                expirationDaysDelta: expirationDaysDelta,
-            });
+            await updateProduct(productId, updateDto);
+            toast.success("The changes have been successfully saved");
         } catch (err: any) {
             const product = err as ProductCreateError
 
@@ -36,10 +61,27 @@ export default function CreateProductForm() {
         }
     };
 
+    const getProduct = async () => {
+        const p = await fetchProduct(productId);
+
+        if (!p)
+            return;
+
+        setName(p.name);
+        setDescription(p.description ? p.description : "");
+        setCategory(p.category);
+        setBarcode(p.barcode ? p.barcode : "");
+        setExpirationDaysDelta(p.expirationDaysDelta);
+    };
+
+    useEffect(() => {
+        getProduct();
+    }, [productId])
+
     return (
         <>
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Add New Product</h2>
+                <h2 className="text-2xl font-bold">Edit {product?.name}</h2>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -133,7 +175,7 @@ export default function CreateProductForm() {
                         disabled={!name || !category}
                         className={`btn flex-1 ${name ? 'btn-success' : 'btn-disabled'}`}
                     >
-                        Create Product
+                        Save changes
                     </button>
                 </div>
             </form>

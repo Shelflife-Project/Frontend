@@ -1,155 +1,35 @@
-import { useEffect, useMemo, useState } from "react";
-import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type Row, type SortingState } from "@tanstack/react-table";
-import { useAuth, useProducts, type Product } from "shelflife-react-hooks";
-
+import { useProducts } from "shelflife-react-hooks";
+import ProductCard from "./ProductCard";
+import Paginator from "../../Paginator";
 
 export default function ProductTable() {
-    const [sorting, setSorting] = useState<SortingState>([]);
-    const [globalFilter, setGlobalFilter] = useState("");
-    const { user } = useAuth();
-    const { products, fetchProducts, deleteProduct } = useProducts();
+    const { products, fetchProducts } = useProducts();
 
-    useEffect(() => {
-        fetchProducts();
-    }, [])
-
-    const deleteProductHandler = async (id: number) => {
-        const confirmDelete = confirm("Are you sure you want to delete this product?");
-        if (confirmDelete) {
-            await deleteProduct(id);
-            fetchProducts();
-        }
-    };
-
-    const columns = useMemo<ColumnDef<Product>[] | any>(() => [
-        {
-            accessorKey: "name",
-            header: "Name",
-        },
-        {
-            accessorKey: "category",
-            header: "Category",
-        },
-        {
-            accessorKey: "barcode",
-            header: "Barcode",
-        },
-        {
-            accessorKey: "expirationDaysDelta",
-            header: "Expires In (Days)"
-        },
-        {
-            header: "Actions",
-            enableSorting: false,
-            enableGlobalFilter: false,
-            cell: ({ row }: { row: Row<Product> }) => {
-                const product = row.original;
-                if (product.ownerId === user?.id)
-                    return (
-                        <div className="grid grid-cols-2 gap-2 min-w-max">
-                            <button className="btn btn-sm btn-primary">Edit</button>
-                            <button className="btn btn-sm btn-error" onClick={() => deleteProductHandler(row.original.id)}>
-                                Delete
-                            </button>
-                        </div>
-                    );
-
-                return null;
-            },
-        }
-    ], [])
-
-    const table = useReactTable({
-        data: products,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        onGlobalFilterChange: setGlobalFilter,
-        onSortingChange: setSorting,
-        state: { sorting, globalFilter },
-        initialState: {
-            pagination: {
-                pageSize: 10,
-            },
-        },
-    });
+    const handleOnChange = (search: string, page: number, size: number) => {
+        return fetchProducts(search, size, page);
+    }
 
     return (
         <>
-            <input type="text" onChange={e => table.setGlobalFilter(e.target.value)} className="input input-bordered mb-2 w-fit" placeholder="Search" />
+            <Paginator onChange={handleOnChange}/>
 
-            <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mb-2">
-                <table className="table">
-                    <thead>
-                        {table.getHeaderGroups().map(headerGroup => (
-                            <tr key={headerGroup.id}>
-                                {headerGroup.headers.map(header => (
-                                    <th key={header.id} className="cursor-pointer" onClick={header.column.getToggleSortingHandler()}>
-                                        <div className="space-x-2">
-                                            {flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-                                            {header.column.getIsSorted() === "asc" && "↑"}
-                                            {header.column.getIsSorted() === "desc" && "↓"}
-                                        </div>
-                                    </th>
-                                ))}
-                            </tr>
-                        ))}
-                    </thead>
-                    <tbody>
-                        {table.getRowModel().rows.map(row => (
-                            <tr key={row.id}>
-                                {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id}>
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                        )}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            {products.length === 0 && (
+                <p className="text-center text-gray-400">
+                    No products created yet. Click the + button to create one!
+                </p>
+            )}
 
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <button
-                        className="btn btn-sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                    >
-                        {"<"}
-                    </button>
-                    <button
-                        className="btn btn-sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                    >
-                        {">"}
-                    </button>
-                    <p className="text-sm select-none">
-                        {"Page " + (table.getState().pagination.pageIndex + 1) + " of " + table.getPageCount()}
-                    </p>
-                </div>
-
-                <select
-                    className="select select-sm w-fit"
-                    value={table.getState().pagination.pageSize}
-                    onChange={e => table.setPageSize(Number(e.target.value))}
-                >
-                    {[10, 25, 50, 100].map(size => (
-                        <option key={size} value={size}>
-                            Show {size}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            {products.length > 0 && (
+                <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mb-6 mx-auto justify-items-center">
+                        {
+                            products.map((p) => (
+                                <ProductCard key={p.id} product={p} />
+                            ))
+                        }
+                    </div>
+                </>
+            )}
         </>
     );
 }

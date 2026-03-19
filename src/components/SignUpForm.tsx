@@ -1,39 +1,38 @@
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { useAuth, type SignupError } from "shelflife-react-hooks";
+import { toast } from "react-toastify";
 
 export default function SignUpForm() {
     const { signup } = useAuth();
-    
+
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
-    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
+    const [fieldErrors, setFieldErrors] = useState<SignupError>({});
     const [generalError, setGeneralError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        setFieldErrors({});
-        setGeneralError("");
+        let field = {} as SignupError
 
         if (password !== passwordRepeat) {
-            setFieldErrors({ ...fieldErrors, passwordRepeat: "Passwords do not match" });
-            return;
+            field = { ...field, passwordRepeat: "Passwords do not match" };
         }
 
         try {
             await signup({ username, email, password, passwordRepeat });
             navigate("/login");
+            toast.success("Successful sign up! Please log in!");
         } catch (err: any) {
             const signup = err as SignupError;
 
-            console.log(signup);
+            field = {...field, ...signup};
 
-            if (signup.email || signup.password || signup.passwordRepeat || signup.username)
-                setFieldErrors(err);
-
+            setFieldErrors(field);
             setGeneralError(signup.error || err.mesage || "");
         }
     }
@@ -57,12 +56,36 @@ export default function SignUpForm() {
                             {fieldErrors.email && <p className="text-red-500 text-sm mt-1">{fieldErrors.email}</p>}
 
                             <label className="label">Password</label>
-                            <input required type="password" className={`input ${fieldErrors.password ? 'input-error' : ''}`} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input
+                                required
+                                type={showPassword ? "text" : "password"}
+                                className={`input ${fieldErrors.password ? 'input-error' : ''}`}
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
                             {fieldErrors.password && <p className="text-red-500 text-sm mt-1">{fieldErrors.password}</p>}
 
                             <label className="label">Repeat Password</label>
-                            <input required type="password" className={`input ${fieldErrors.passwordRepeat ? 'input-error' : ''}`} placeholder="Repeat Password" value={passwordRepeat} onChange={(e) => setPasswordRepeat(e.target.value)} />
+                            <input
+                                required
+                                type={showPassword ? "text" : "password"}
+                                className={`input ${fieldErrors.passwordRepeat ? 'input-error' : ''}`}
+                                placeholder="Repeat Password"
+                                value={passwordRepeat}
+                                onChange={(e) => setPasswordRepeat(e.target.value)}
+                            />
                             {fieldErrors.passwordRepeat && <p className="text-red-500 text-sm mt-1">{fieldErrors.passwordRepeat}</p>}
+
+                            <label className="label cursor-pointer justify-start gap-2 mb-4">
+                                <input
+                                    type="checkbox"
+                                    className="checkbox checkbox-sm"
+                                    checked={showPassword}
+                                    onChange={() => setShowPassword(!showPassword)}
+                                />
+                                <span className="label-text">Show passwords</span>
+                            </label>
 
                             <div><Link className="link link-hover" to="/login">Already have an account?</Link></div>
                             <button className="btn btn-neutral mt-4" type="submit">Sign Up</button>
