@@ -72,7 +72,7 @@ export default function ItemsTable({ storageId }: Props) {
                                         value.map((y, i) =>
                                             <div key={i} className="gap-4 flex justify-between">
                                                 <h2
-                                                    className={daysToExpire(y) < 0 ? "text-red-600" : daysToExpire(y) < 2 ? "text-orange-600" : ""}>
+                                                    className={daysToExpire(y) < 0 ? "text-red-600" : daysToExpire(y) < 1 ? "text-orange-600" : ""}>
                                                     Expires at: {new Date(y.expiresAt).toLocaleDateString()}
                                                 </h2>
                                                 <FormPopUp button={<button className="btn btn-primary">Edit</button>}>
