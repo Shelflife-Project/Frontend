@@ -1,27 +1,50 @@
 import { Link, useParams } from "react-router";
 import SettingsTable from "../../components/dashboard/settings/SettingsTable";
-import FormPopUp from "../../components/FormPopUp";
+import EditStorageNameForm from "../../components/dashboard/settings/EditStorageNameForm";
 import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButton";
 import CreateSettingForm from "../../components/dashboard/settings/CreateSettingForm";
-import EditStorageNameForm from "../../components/dashboard/settings/EditStorageNameForm";
+import FormPopUp from "../../components/FormPopUp";
 
 export default function Settings() {
     const { id } = useParams();
 
     return (
-        <div className="container mx-auto p-8">
-            <h1 className="text-3xl font-bold text-center">Settings</h1>
+        <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+            <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-semibold">
+                    Storage Settings
+                </h1>
 
-            <Link to={"/dashboard"} className="btn btn-secondary">Back</Link>
+                <Link
+                    to="/dashboard"
+                    className="btn btn-secondary btn-sm"
+                >
+                    Back
+                </Link>
+            </div>  
 
-            <div className="my-4">
-                <EditStorageNameForm storageId={Number(id)} />
+            <div className="card shadow-sm">
+                <div className="card-body">
+                    <h2 className="text-sm font-semibold mb-3">
+                        General
+                    </h2>
+
+                    <EditStorageNameForm storageId={Number(id)} />
+                </div>
             </div>
 
-            <SettingsTable storageId={Number(id)} />
+            <div className="card shadow-md">
+                <div className="card-body">
+                    <h2 className="text-sm font-semibold">
+                        Running Low Rules
+                    </h2>
+
+                    <SettingsTable storageId={Number(id)} />
+                </div>
+            </div>
             <FormPopUp button={<CreateButtonWithOutClick />}>
                 <CreateSettingForm storageId={Number(id)} />
             </FormPopUp>
         </div>
-    )
+    );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useProducts, useRunningLow, type Product } from "shelflife-react-hooks";
 import ProductSelector from "../items/ProductSelector";
+import { toast } from "react-toastify";
 
 type Props = {
     storageId: number
@@ -32,15 +33,20 @@ export default function CreateSettingForm({ storageId }: Props) {
         e.preventDefault();
         if (!addProduct) return;
 
-        await createSetting(storageId, {
-            productId: addProduct,
-            runningLow: runsLowAt,
-        });
+        try {
+            await createSetting(storageId, {
+                productId: addProduct,
+                runningLow: runsLowAt,
+            });
 
-        setAddProduct(0);
-        setRunsLowAt(0);
+            setAddProduct(0);
+            setRunsLowAt(0);
 
-        getProductsWithoutSetting();
+            toast.success("Rule added successfully")
+        } catch (err: any) {
+            toast.error("An error occured while adding rule");
+        }
+
     }
 
     useEffect(() => {
@@ -53,8 +59,8 @@ export default function CreateSettingForm({ storageId }: Props) {
 
     return (
         <>
-            <div className="p-4">
-                <h2 className="text-xl font-bold">Add item</h2>
+            <div className="mb-4">
+                <h2 className="text-xl font-bold">Add Rule</h2>
             </div>
             <form onSubmit={handleSubmit}>
 
@@ -77,7 +83,7 @@ export default function CreateSettingForm({ storageId }: Props) {
                     />
                 </div>
 
-                <button className="btn btn-primary w-full mt-5">Create setting</button>
+                <button className="btn btn-primary w-full mt-5">Create Rule</button>
             </form>
         </>
 
