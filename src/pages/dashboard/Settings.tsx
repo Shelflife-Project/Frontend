@@ -4,9 +4,20 @@ import EditStorageNameForm from "../../components/dashboard/settings/EditStorage
 import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButton";
 import CreateSettingForm from "../../components/dashboard/settings/CreateSettingForm";
 import FormPopUp from "../../components/FormPopUp";
+import { useAuth, useStorages } from "shelflife-react-hooks";
+import { useEffect } from "react";
 
 export default function Settings() {
     const { id } = useParams();
+    const { fetchStorage, storage } = useStorages();
+    const { user } = useAuth();
+
+    useEffect(() => {
+        fetchStorage(Number(id));
+    }, []);
+
+    const isOwner = storage?.owner.id === user?.id;
+    const canEdit = isOwner || user?.admin;
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
@@ -21,17 +32,21 @@ export default function Settings() {
                 >
                     Back
                 </Link>
-            </div>  
-
-            <div className="card shadow-sm">
-                <div className="card-body">
-                    <h2 className="text-sm font-semibold mb-3">
-                        General
-                    </h2>
-
-                    <EditStorageNameForm storageId={Number(id)} />
-                </div>
             </div>
+
+            {
+                canEdit &&
+                <div className="card shadow-sm">
+                    <div className="card-body">
+                        <h2 className="text-sm font-semibold mb-3">
+                            General
+                        </h2>
+
+                        <EditStorageNameForm storageId={Number(id)} />
+                    </div>
+                </div>
+            }
+
 
             <div className="card shadow-md">
                 <div className="card-body">
