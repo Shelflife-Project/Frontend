@@ -60,25 +60,27 @@ export default function Paginator({ onChange }: Props) {
                 <option value={20}>20</option>
             </select>
 
-            <button
-                className="btn btn-primary"
-                onClick={prevPage}
-                disabled={!hasPrevious || isLoading}
-            >
-                Previous
-            </button>
+            <div className="join">
+                <button
+                    onClick={prevPage}
+                    disabled={!hasPrevious || isLoading}
+                    className="join-item btn">
+                    «
+                </button>
 
-            <p className="text-center">
-                Page {page + 1}
-            </p>
+                <button
+                    onClick={() => change()}
+                    className="join-item btn">
+                    {page + 1}
+                </button>
 
-            <button
-                className="btn btn-primary"
-                onClick={nextPage}
-                disabled={!hasNext || isLoading}
-            >
-                Next
-            </button>
+                <button
+                    className="join-item btn"
+                    onClick={nextPage}
+                    disabled={!hasNext || isLoading}>
+                    »
+                </button>
+            </div>
         </div>
     </div>
 }
