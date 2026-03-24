@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useStorages, type CreateStorageError } from "shelflife-react-hooks";
 
 type Props = {}
@@ -19,6 +20,8 @@ export default function CreateStorageForm({ }: Props) {
 
             fetchStorages();
             setNewStorageName("");
+
+            toast.success("Storage added successfully");
 
         } catch (err: any) {
             const storage = err as CreateStorageError

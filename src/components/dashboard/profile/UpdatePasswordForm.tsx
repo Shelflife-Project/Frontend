@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useAuth, type ChangePasswordErrorResponse } from "shelflife-react-hooks";
 
 export default function UpdatePasswordForm() {
@@ -6,20 +7,18 @@ export default function UpdatePasswordForm() {
     const [newPassword, setNewPassword] = useState("");
     const [newPasswordRepeat, setNewPasswordRepeat] = useState("");
     const [error, setError] = useState<string>("");
-    const [success, setSuccess] = useState<string>("");
     const { user, changePassword } = useAuth();
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         setError("");
-        setSuccess("");
 
         if (!user)
             return;
 
         try {
             await changePassword({ oldPassword, newPassword, newPasswordRepeat });
-            setSuccess("Password updated successfully!");
+            toast.success("Password updated successfully!");
 
             setOldPassword("");
             setNewPassword("");
@@ -31,35 +30,44 @@ export default function UpdatePasswordForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="card bg-base-200 p-4 space-y-3">
-            <h2 className="font-semibold">Change Password</h2>
+        <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+        >
+            <h2 className="font-semibold text-lg">Change your Password</h2>
+
             <input
                 type="password"
                 className="input input-bordered w-full"
-                placeholder="Old password"
+                placeholder="Current password"
                 value={oldPassword}
-                required
                 onChange={(e) => setOldPassword(e.target.value)}
             />
+
             <input
                 type="password"
                 className="input input-bordered w-full"
                 placeholder="New password"
                 value={newPassword}
-                required
                 onChange={(e) => setNewPassword(e.target.value)}
             />
+
             <input
                 type="password"
                 className="input input-bordered w-full"
-                placeholder="New password repeated"
+                placeholder="Repeat new password"
                 value={newPasswordRepeat}
-                required
                 onChange={(e) => setNewPasswordRepeat(e.target.value)}
             />
+
             {error && <p className="text-error text-sm">{error}</p>}
-            {success && <p className="text-success text-sm">{success}</p>}
-            <button className={`btn btn-error w-fit mt-auto ${oldPassword === "" || newPassword === "" || newPasswordRepeat === "" ? "btn-disabled" : ""}`}>Update Password</button>
+
+            <button
+                className="btn btn-primary w-full"
+                disabled={!oldPassword || !newPassword || !newPasswordRepeat}
+            >
+                Update Password
+            </button>
         </form>
     );
 }
