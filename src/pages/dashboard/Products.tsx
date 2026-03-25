@@ -1,7 +1,4 @@
 import ProductTable from "../../components/dashboard/products/ProductTable";
-import CreateProductForm from "../../components/dashboard/products/CreateProductForm";
-import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButton";
-import FormPopUp from "../../components/FormPopUp";
 
 export default function Products() {
     return (
@@ -11,9 +8,6 @@ export default function Products() {
                 <p className="text-gray-600">View and manage your products here.</p>
             </div>
             <ProductTable />
-            <FormPopUp button={<CreateButtonWithOutClick />} >
-                <CreateProductForm />
-            </FormPopUp>
         </div>
     )
 }

@@ -21,3 +21,20 @@ export function CreateButtonWithOutClick({ onClick }: { onClick?: () => void }) 
         </button>
     );
 }
+
+type CardProps = {
+    onClick?: () => void;
+    className?: string;
+    text?: string;
+}
+
+export function CreateButtonCard({ onClick, className, text }: CardProps) {
+    return (
+        <button onClick={onClick} className={"card btn btn-dash transition flex items-center justify-center min-h-20 h-full w-full " + className}>
+            <div className="text-center">
+                <div className="text-4xl mb-2">+</div>
+                <p className="text-sm opacity-70 mb-2">{text}</p>
+            </div>
+        </button>
+    )
+}
