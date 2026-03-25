@@ -79,13 +79,16 @@ export default function CreateShoppingListItemForm() {
 				</div>
 			</div>
 
-			<div className={"p-4 shadow " + (selectedStorage > 0 ? "" : "hidden")}>
-				<ProductSelector
-					onSelect={setSelectedProduct}
-					selectedProductId={selectedProduct}
-					predicate={predicate}
-				/>
-			</div>
+			{
+				selectedStorage > 0 &&
+				<div className={"p-4 shadow"}>
+					<ProductSelector
+						onSelect={setSelectedProduct}
+						selectedProductId={selectedProduct}
+						predicate={predicate}
+					/>
+				</div>
+			}
 
 			<fieldset className={"fieldset " + (selectedProduct > 0 && selectedStorage > 0 ? "" : "hidden")}>
 				<legend className="fieldset-legend">Amount</legend>
