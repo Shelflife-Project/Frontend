@@ -55,7 +55,12 @@ export default function SettingsTable({ storageId }: Props) {
                         </p>
 
                         <p className="text-sm font-semibold">
-                            {s.runningLow} Item(s)
+                            {
+                                s.runningLow === 0 ?
+                                    "Out of stock"
+                                    :
+                                    `${s.runningLow} Item(s)`
+                            }
                         </p>
 
                         <div className="card-actions justify-between">
@@ -73,10 +78,7 @@ export default function SettingsTable({ storageId }: Props) {
                                     </button>
                                 }
                             >
-                                <EditSettingForm
-                                    settingId={s.id}
-                                    storageId={storageId}
-                                />
+                                <EditSettingForm setting={s} />
                             </FormPopUp>
                         </div>
                     </div>

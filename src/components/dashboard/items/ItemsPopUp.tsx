@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useProducts, useStorageItems, type Storage } from "shelflife-react-hooks";
 import ProductSelector from "./ProductSelector";
@@ -8,65 +8,52 @@ type Props = {
 }
 
 export default function ItemsPopUp({ storage }: Props) {
-    const { fetchItems, isError, isLoading, addItem } = useStorageItems();
-    const { products, fetchProducts, isError: productsError, isLoading: productsLoading } = useProducts();
+    const { addItem } = useStorageItems();
+    const { fetchProduct } = useProducts();
 
-    const [addProduct, setAddProduct] = useState<number>(0);
+    const [selectedProductId, setSelectedProductId] = useState<number>(0);
     const [expiresAt, setExpiresAt] = useState<string>("");
 
-    useEffect(() => {
-        if (isLoading || isError) return;
-        fetchItems(storage.id);
-        if (productsLoading || productsError) return;
-        fetchProducts();
-    }, [storage.id]);
+    const onSelectProduct = async (productId: number) => {
+        setSelectedProductId(productId);
+        if (productId === 0)
+            return;
 
-    const onSelectProduct = (productId: number) => {
-        if (addProduct !== productId) {
-            const selectedProduct = products.find((product) => product.id === productId);
+        try {
+            const p = await fetchProduct(productId);
+
             const calc = new Date();
-            calc.setDate(calc.getDate() + selectedProduct?.expirationDaysDelta!);
+            calc.setDate(calc.getDate() + p?.expirationDaysDelta!);
             setExpiresAt(calc.toISOString().split('T')[0]);
-            setAddProduct(productId);
-        }
-        else {
-            setExpiresAt("");
-            setAddProduct(0);
+        } catch (err: any) {
+            toast.error("An error occured while fetching products");
         }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!addProduct) return;
+        if (selectedProductId <= 0) return;
 
         await addItem(storage.id, {
-            productId: addProduct,
+            productId: selectedProductId,
             expiresAt: expiresAt,
         });
 
-        setAddProduct(0);
+        setSelectedProductId(0);
         setExpiresAt("");
-        fetchItems(storage.id);
-    }
-
-    if (isLoading || productsLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (isError || productsError) {
-        toast.error("An error occurred while fetching items or products. Please try again later.");
+        toast.success("Item added successfully");
     }
 
     return (
         <>
-            <div className="p-4">
-                <h2 className="text-xl font-bold">Add item</h2>
+            <div className="mb-6">
+                <h2 className="text-xl font-bold">Add item to {storage.name}</h2>
             </div>
             <form onSubmit={handleSubmit}>
 
-                <ProductSelector products={products} productId={addProduct} onSelect={(id: number) => onSelectProduct(id)} />
+                <ProductSelector onSelect={(id: number) => onSelectProduct(id)} selectedProductId={selectedProductId} />
 
-                <div className="form-control">
+                <div className="form-control mt-4">
                     <div className="w-full flex flex-row items-center">
                         <div className="inline-grid *:[grid-area:1/1] ">
                             <div className={`status ${expiresAt ? 'status-success' : 'status-error'} animate-ping me-2`}></div>
@@ -87,7 +74,7 @@ export default function ItemsPopUp({ storage }: Props) {
                     />
                 </div>
 
-                <button className="btn btn-primary w-full mt-5">Add Item</button>
+                <button className="btn btn-primary w-full mt-5" disabled={selectedProductId === 0 || expiresAt === null}>Add Item</button>
             </form>
         </>
 

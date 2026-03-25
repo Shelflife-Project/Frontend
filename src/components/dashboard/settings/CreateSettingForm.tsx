@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useProducts, useRunningLow, type Product } from "shelflife-react-hooks";
+import { useRunningLow } from "shelflife-react-hooks";
 import ProductSelector from "../items/ProductSelector";
 import { toast } from "react-toastify";
 
@@ -8,21 +8,10 @@ type Props = {
 }
 
 export default function CreateSettingForm({ storageId }: Props) {
-    const { fetchSettings, createSetting, isLoading } = useRunningLow();
-    const { fetchProducts, isLoading: productsLoading } = useProducts();
+    const { fetchSettings, createSetting, settings } = useRunningLow();
 
-    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [addProduct, setAddProduct] = useState<number>(0);
     const [runsLowAt, setRunsLowAt] = useState<number>(0);
-
-    const getProductsWithoutSetting = async () => {
-        const settings = await fetchSettings(storageId);
-        const products = await fetchProducts();
-
-        const filtered = products.data.filter((p) => !settings.find((s) => s.product.id === p.id))
-
-        setFilteredProducts(filtered);
-    };
 
     const onSelectProduct = (productId: number) => {
         if (addProduct === 0) setAddProduct(productId);
@@ -50,12 +39,8 @@ export default function CreateSettingForm({ storageId }: Props) {
     }
 
     useEffect(() => {
-        getProductsWithoutSetting();
+        fetchSettings(storageId);
     }, [storageId]);
-
-    if (isLoading || productsLoading) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <>
@@ -64,7 +49,7 @@ export default function CreateSettingForm({ storageId }: Props) {
             </div>
             <form onSubmit={handleSubmit}>
 
-                <ProductSelector products={filteredProducts} productId={addProduct} onSelect={(id: number) => onSelectProduct(id)} />
+                <ProductSelector selectedProductId={addProduct} onSelect={(id: number) => onSelectProduct(id)} predicate={(p) => !settings.find((s) => s.product.id === p.id)} />
 
                 <div className="form-control">
                     <div className="w-full flex flex-row items-center">
@@ -83,7 +68,7 @@ export default function CreateSettingForm({ storageId }: Props) {
                     />
                 </div>
 
-                <button className="btn btn-primary w-full mt-5">Create Rule</button>
+                <button className="btn btn-primary w-full mt-5" disabled={addProduct === 0}>Create Rule</button>
             </form>
         </>
 

@@ -1,49 +1,32 @@
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { type EditRunningLowSettingError, type RunningLowSetting, useRunningLow } from "shelflife-react-hooks";
 
 type Props = {
-    settingId: number
-    storageId: number
+    setting: RunningLowSetting
 }
 
-export default function EditSettingForm({ settingId, storageId }: Props) {
-    const { fetchSettings, editSetting } = useRunningLow();
-    const [runsLowAt, setRunsLowAt] = useState<number>(0);
-    const [setting, setSetting] = useState<RunningLowSetting | null>(null);
+export default function EditSettingForm({ setting }: Props) {
+    const { editSetting } = useRunningLow();
+    const [runsLowAt, setRunsLowAt] = useState<number>(setting.runningLow);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        try{
-            setSetting(await editSetting(storageId, settingId, {runningLow: runsLowAt}));
+        try {
+            await editSetting(setting.storage.id, setting.id, { runningLow: runsLowAt });
 
-        } catch(err: any) {
+        } catch (err: any) {
             const error = err as EditRunningLowSettingError;
-            
-            if(error && error.runningLow) {
+
+            if (error && error.runningLow) {
                 toast.error(error.runningLow);
                 return;
             }
         }
 
         toast.success("Changes successfully saved")
-
     }
-
-    const findSetting = async () => {
-        const settings = await fetchSettings(storageId);
-        const val = settings.find(x => x.id == settingId);
-
-        if (val) {
-            setSetting(val);
-            setRunsLowAt(val.runningLow);
-        }
-    }
-
-    useLayoutEffect(() => {
-        findSetting();
-    }, [settingId, storageId])
 
     return (
         <div>
