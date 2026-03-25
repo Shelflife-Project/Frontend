@@ -25,7 +25,7 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
 
     useEffect(() => {
         searchProduct();
-    }, [search]);
+    }, [search, predicate]);
 
     return (
         <div>
@@ -52,7 +52,7 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
                     onChange={(e) => onSelect(Number(e.target.value))}
                     className="select w-full">
 
-                    <option value="">Select product</option>
+                    <option disabled value="0">Select product</option>
 
                     {products.map((p) => (
                         <option key={p.id} value={p.id}>
