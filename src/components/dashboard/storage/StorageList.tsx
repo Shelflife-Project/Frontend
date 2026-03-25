@@ -1,6 +1,9 @@
 import { useStorages } from "shelflife-react-hooks";
 import StorageCard from "./StorageCard";
 import Paginator from "../../Paginator";
+import FormPopUp from "../../FormPopUp";
+import CreateStorageForm from "./NewForm";
+import { CreateButtonCard } from "../CreateButton";
 
 export default function StorageList() {
     const { fetchStorages, storages } = useStorages();
@@ -9,24 +12,20 @@ export default function StorageList() {
         return fetchStorages(search, size, page);
     }
 
-    return <>
-        <Paginator onChange={handleOnChange}/>
-        {
-            storages.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-12xl mx-auto">
-                    {
-                        storages
-                            .map((storage) => (
-                                <StorageCard key={storage.id} storage={storage} />
-                            ))
-                    }
-                </div>
-            )
-        }
-
-        {
-            storages.length === 0 && (
-                <p className="text-gray-400">No storages created yet. Click the + button to create one!</p>
-            )
-        }</>
+    return (
+        <>
+            <Paginator onChange={handleOnChange} />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-12xl mx-auto">
+                <FormPopUp button={<CreateButtonCard text="Add Storage" />}>
+                    <CreateStorageForm />
+                </FormPopUp>
+                {
+                    storages
+                        .map((storage) => (
+                            <StorageCard key={storage.id} storage={storage} />
+                        ))
+                }
+            </div>
+        </>
+    )
 }

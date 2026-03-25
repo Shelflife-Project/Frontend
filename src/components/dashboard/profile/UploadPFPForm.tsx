@@ -25,7 +25,7 @@ export default function UploadPFPForm() {
                 <input
                     id={"pfp"}
                     type="file"
-                    accept="image/*"
+                    accept="image/png, image/jpeg, image/gif"
                     className="hidden"
                     onChange={(e) => handleChange(e)}
                 />

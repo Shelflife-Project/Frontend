@@ -50,7 +50,7 @@ export default function ProductCard({ product }: Props) {
                         <input
                             id={`fileInput-${product.id}`}
                             type="file"
-                            accept="image/*"
+                            accept="image/png, image/jpeg, image/gif"
                             className="hidden"
                             onChange={(e) => handleIconChange(e, product)}
                         />
