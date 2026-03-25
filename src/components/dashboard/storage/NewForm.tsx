@@ -5,7 +5,7 @@ import { useStorages, type CreateStorageError } from "shelflife-react-hooks";
 type Props = {}
 
 export default function CreateStorageForm({ }: Props) {
-    const { createStorage, fetchStorages } = useStorages();
+    const { createStorage } = useStorages();
     const [newStorageName, setNewStorageName] = useState("");
     const [error, setError] = useState<string | null>(null);
 
@@ -17,8 +17,6 @@ export default function CreateStorageForm({ }: Props) {
             setError(null);
 
             await createStorage({ name: newStorageName });
-
-            fetchStorages();
             setNewStorageName("");
 
             toast.success("Storage added successfully");

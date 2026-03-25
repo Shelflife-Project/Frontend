@@ -5,7 +5,7 @@ import { Link } from "react-router";
 
 export default function StorageCard({ storage }: { storage: Storage; }) {
     const { user } = useAuth();
-    const { deleteStorage, fetchStorages } = useStorages();
+    const { deleteStorage } = useStorages();
 
     const isOwner = storage.owner.id === user?.id;
     const canEdit = isOwner || user?.admin;
@@ -15,7 +15,6 @@ export default function StorageCard({ storage }: { storage: Storage; }) {
         const confirmDelete = window.confirm("Are you sure you want to " + deleteButtonValue + " this storage?");
         if (confirmDelete) {
             await deleteStorage(storage.id);
-            fetchStorages();
         }
     };
 
