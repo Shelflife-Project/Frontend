@@ -3,6 +3,7 @@ import { useStorageItems, type Storage, type StorageItem } from "shelflife-react
 import ItemCard from "./ItemCard";
 import FormPopUp from "../../FormPopUp";
 import ItemsPopUp from "./ItemsPopUp";
+import { CreateButtonCard } from "../CreateButton";
 
 type Props = {
     storage: Storage;
@@ -40,14 +41,7 @@ export default function ItemsTable({ storage }: Props) {
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-            <FormPopUp button={
-                <button className="card bg-base-200 border-2 border-dashed border-base-300 hover:border-primary hover:bg-base-300 transition cursor-pointer flex items-center justify-center h-full min-h-[220px]">
-                    <div className="text-center">
-                        <div className="text-4xl mb-2">+</div>
-                        <p className="text-sm opacity-70">Add Item</p>
-                    </div>
-                </button>
-            }>
+            <FormPopUp button={<CreateButtonCard text="Add Item" />}>
                 <ItemsPopUp storage={storage} />
             </FormPopUp>
 

@@ -1,7 +1,4 @@
-import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButton";
-import FormPopUp from "../../components/FormPopUp";
 import ShoppingListTable from "../../components/dashboard/shoppinglist/ShoppingListTable";
-import CreateShoppingListItemForm from "../../components/dashboard/shoppinglist/CreateShoppingListItemForm";
 
 export default function ShoppingList() {
     return (
@@ -11,9 +8,6 @@ export default function ShoppingList() {
             </h1>
 
             <ShoppingListTable />
-            <FormPopUp button={<CreateButtonWithOutClick />} >
-                <CreateShoppingListItemForm />
-            </FormPopUp>
         </div>
     )
 }
