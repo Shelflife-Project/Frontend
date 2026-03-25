@@ -102,6 +102,19 @@ export default function MembersPopUp({ storage }: Props) {
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <th>
+                                <div className="avatar">
+                                    <div className="w-12 rounded-full">
+                                        <UserIcon defaultId={storage.owner.id} />
+                                    </div>
+                                </div>
+                            </th>
+                            <td>{storage.owner.username}</td>
+                            <td className="align-middle">
+                                <span className="badge badge-info">Owner</span>
+                            </td>
+                        </tr>
                         {members.map((member) => (
                             <tr key={member.id}>
                                 <th>
