@@ -8,6 +8,7 @@ import Products from './Products';
 import Items from './Items';
 import Settings from './Settings';
 import ShoppingList from './ShoppingList';
+import AdminPage from './AdminPage';
 
 
 export default function Dashboard() {
@@ -18,6 +19,7 @@ export default function Dashboard() {
                 <Route path="storages/:id" element={<Items />} />
                 <Route path="storages/:id/settings" element={<Settings />} />
                 <Route path="/" element={<Storages />} />
+                <Route path="/admin" element={<AdminPage />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/products" element={<Products />} />

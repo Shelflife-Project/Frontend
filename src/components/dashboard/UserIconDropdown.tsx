@@ -57,6 +57,9 @@ export default function UserIconDropdown() {
                 <li>
                     <Link to="/dashboard/shoppinglist">Shopping List</Link>
                 </li>
+                <li>
+                    <Link to="/dashboard/admin">Admin Page</Link>
+                </li>
 
                 <div className="divider my-1"></div>
 
