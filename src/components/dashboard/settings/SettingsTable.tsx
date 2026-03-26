@@ -3,6 +3,8 @@ import { toast } from "react-toastify";
 import { useRunningLow } from "shelflife-react-hooks";
 import FormPopUp from "../../FormPopUp";
 import EditSettingForm from "./EditSettingForm";
+import { CreateButtonCard } from "../CreateButton";
+import CreateSettingForm from "./CreateSettingForm";
 
 type Props = {
     storageId: number;
@@ -23,16 +25,11 @@ export default function SettingsTable({ storageId }: Props) {
         fetchSettings(storageId);
     }, []);
 
-    if (settings.length === 0) {
-        return (
-            <div className="text-sm opacity-60 text-center py-6">
-                No rules defined yet
-            </div>
-        );
-    }
-
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+            <FormPopUp button={<CreateButtonCard />}>
+                <CreateSettingForm storageId={storageId} />
+            </FormPopUp>
             {settings.map((s) => (
                 <div
                     key={s.id}
@@ -55,7 +52,12 @@ export default function SettingsTable({ storageId }: Props) {
                         </p>
 
                         <p className="text-sm font-semibold">
-                            {s.runningLow} Item(s)
+                            {
+                                s.runningLow === 0 ?
+                                    "Out of stock"
+                                    :
+                                    `${s.runningLow} Item(s)`
+                            }
                         </p>
 
                         <div className="card-actions justify-between">
@@ -73,10 +75,7 @@ export default function SettingsTable({ storageId }: Props) {
                                     </button>
                                 }
                             >
-                                <EditSettingForm
-                                    settingId={s.id}
-                                    storageId={storageId}
-                                />
+                                <EditSettingForm setting={s} />
                             </FormPopUp>
                         </div>
                     </div>

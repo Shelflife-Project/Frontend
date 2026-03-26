@@ -1,23 +1,35 @@
 import { Link, useParams } from "react-router";
 import SettingsTable from "../../components/dashboard/settings/SettingsTable";
 import EditStorageNameForm from "../../components/dashboard/settings/EditStorageNameForm";
-import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButton";
-import CreateSettingForm from "../../components/dashboard/settings/CreateSettingForm";
-import FormPopUp from "../../components/FormPopUp";
 import { useAuth, useStorages } from "shelflife-react-hooks";
-import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
+import { useLayoutEffect } from "react";
 
 export default function Settings() {
     const { id } = useParams();
     const { fetchStorage, storage } = useStorages();
     const { user } = useAuth();
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        fetchStorage(Number(id));
+    const getStorage = async () => {
+        try {
+            await fetchStorage(Number(id));
+        } catch (err: any) {
+            navigate("/dashboard", { replace: true })
+            toast.error("Couldn't find storage");
+        }
+    }
+
+    useLayoutEffect(() => {
+        getStorage();
     }, []);
 
     const isOwner = storage?.owner.id === user?.id;
     const canEdit = isOwner || user?.admin;
+
+    if (!storage)
+        return;
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
@@ -42,7 +54,7 @@ export default function Settings() {
                             General
                         </h2>
 
-                        <EditStorageNameForm storageId={Number(id)} />
+                        <EditStorageNameForm storage={storage} />
                     </div>
                 </div>
             }
@@ -57,9 +69,6 @@ export default function Settings() {
                     <SettingsTable storageId={Number(id)} />
                 </div>
             </div>
-            <FormPopUp button={<CreateButtonWithOutClick />}>
-                <CreateSettingForm storageId={Number(id)} />
-            </FormPopUp>
         </div>
     );
 }

@@ -16,7 +16,7 @@ export default function ShoppingListTable() {
         <>
             {
                 items.length === 0 && (
-                    <p className="text-gray-400 text-center">
+                    <p className="text-gray-600 text-center">
                         Your list is empty
                     </p>
                 )
