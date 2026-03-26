@@ -6,7 +6,7 @@ import EditProductForm from "./EditProductForm";
 
 type Props = {
     product: Product;
-}
+};
 
 export default function ProductCard({ product }: Props) {
     const { deleteProduct, uploadProductIcon } = useProducts();
@@ -15,18 +15,15 @@ export default function ProductCard({ product }: Props) {
 
     const canEdit = user?.admin || product.ownerId === user?.id;
 
-    const handleIconChange = async (e: ChangeEvent<HTMLInputElement>, product: Product) => {
-        if (!product)
-            return;
-
+    const handleIconChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
         try {
             await uploadProductIcon(product.id, file);
-            setRefreshKey((prevKey) => prevKey + 1);
+            setRefreshKey((k) => k + 1);
         } catch (err: any) {
-            toast.error(err.message)
+            toast.error(err.message);
         }
     };
 
@@ -34,101 +31,99 @@ export default function ProductCard({ product }: Props) {
         const confirmDelete = confirm("Are you sure you want to delete this product?");
         if (confirmDelete) {
             await deleteProduct(id);
-
-            toast.success("Product successfully removed")
+            toast.success("Product removed");
         }
     };
 
     return (
-        <div className="card w-full h-full border border-base-200 shadow-sm hover:shadow-xl transition-all duration-300">
+        <div className="card border border-base-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
 
-            {
-                canEdit &&
-                <figure className="w-full">
-                    <div className="relative group w-full flex justify-center">
+            <figure className="group relative aspect-square bg-base-200 flex items-center justify-center overflow-hidden">
 
+                <img
+                    src={`${import.meta.env.VITE_BACKEND_BASE_URL}/api/products/${product.id}/icon?${refreshKey}`}
+                    className="object-contain w-full h-full p-4 transition-transform duration-300 group-hover:scale-105"
+                />
+
+                {canEdit && (
+                    <>
                         <input
                             id={`fileInput-${product.id}`}
                             type="file"
                             accept="image/png, image/jpeg, image/gif"
                             className="hidden"
-                            onChange={(e) => handleIconChange(e, product)}
+                            onChange={handleIconChange}
                         />
 
-                        <label htmlFor={`fileInput-${product.id}`} className="cursor-pointer block">
-                            <img
-                                src={`${import.meta.env.VITE_BACKEND_BASE_URL}/api/products/${product.id}/icon?${refreshKey}`}
-                            />
-
-                            <label className="w-max absolute bottom-2 right-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-camera" viewBox="0 0 16 16">
-                                    <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z" />
-                                    <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0" />
-                                </svg>
-                            </label>
-
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-sm transition">
+                        <label
+                            htmlFor={`fileInput-${product.id}`}
+                            className="absolute inset-0 cursor-pointer"
+                        >
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white text-sm transition">
                                 Change icon
                             </div>
                         </label>
 
-                    </div>
-                </figure>
-            }
-
-            {
-                !canEdit &&
-                <img
-                    src={`${import.meta.env.VITE_BACKEND_BASE_URL}/api/products/${product.id}/icon`}
-                    className="rounded-lg"
-                />
-            }
-
-            <div className="card-body">
-
-                <h2 className="card-title">
-                    {product.name}
-                </h2>
-
-                {product.description && (
-                    <p className="text-sm text-zinc-500">
-                        {product.description}
-                    </p>
+                        <label
+                            htmlFor={`fileInput-${product.id}`}
+                            className="absolute bottom-2 right-2 bg-base-100/80 backdrop-blur p-2 rounded-full shadow-md cursor-pointer transition"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-camera" viewBox="0 0 16 16">
+                                <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z" />
+                                <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0" />
+                            </svg>
+                        </label>
+                    </>
                 )}
+            </figure>
 
-                <div className="grid grid-cols-2 gap-2 mt-2">
+            <div className="p-4 flex flex-col gap-3 flex-grow">
 
-                    <div className="bg-base-200 rounded-lg px-3 py-2">
-                        <p className="text-xs text-zinc-500">Category</p>
-                        <p className="font-medium">{product.category}</p>
+                <div>
+                    <h2 className="font-semibold text-lg leading-tight">
+                        {product.name}
+                    </h2>
+
+                    {product.description && (
+                        <p className="text-sm opacity-70 line-clamp-2">
+                            {product.description}
+                        </p>
+                    )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                    <div className="bg-base-200 rounded-xl px-3 py-2">
+                        <p className="opacity-60 text-xs">Category</p>
+                        <p className="font-medium truncate">{product.category}</p>
                     </div>
 
-                    <div className="bg-base-200 rounded-lg px-3 py-2">
-                        <p className="text-xs text-zinc-500">Expires in</p>
-                        <p className="font-medium">{product.expirationDaysDelta} days</p>
+                    <div className="bg-base-200 rounded-xl px-3 py-2">
+                        <p className="opacity-60 text-xs">Shelf life</p>
+                        <p className="font-medium">{product.expirationDaysDelta} day(s)</p>
                     </div>
 
                     {product.barcode && (
-                        <div className="col-span-2 bg-base-200 rounded-lg px-3 py-2">
-                            <p className="text-xs text-zinc-500">Barcode</p>
-                            <p className="font-mono text-xs">{product.barcode}</p>
+                        <div className="col-span-2 bg-base-200 rounded-xl px-3 py-2">
+                            <p className="opacity-60 text-xs">Barcode</p>
+                            <p className="font-mono text-xs truncate">
+                                {product.barcode}
+                            </p>
                         </div>
                     )}
-
                 </div>
 
                 {canEdit && (
-                    <div className="flex justify-between mt-auto">
+                    <div className="flex gap-2 mt-auto pt-2">
                         <button
                             onClick={() => deleteProductHandler(product.id)}
-                            className="btn btn-error"
+                            className="btn btn-error btn-sm flex-1"
                         >
                             Delete
                         </button>
 
                         <FormPopUp
                             button={
-                                <button className="btn btn-success">
+                                <button className="btn btn-primary btn-sm flex-1">
                                     Edit
                                 </button>
                             }

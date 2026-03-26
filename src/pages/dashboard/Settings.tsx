@@ -1,9 +1,6 @@
 import { Link, useParams } from "react-router";
 import SettingsTable from "../../components/dashboard/settings/SettingsTable";
 import EditStorageNameForm from "../../components/dashboard/settings/EditStorageNameForm";
-import { CreateButtonWithOutClick } from "../../components/dashboard/CreateButton";
-import CreateSettingForm from "../../components/dashboard/settings/CreateSettingForm";
-import FormPopUp from "../../components/FormPopUp";
 import { useAuth, useStorages } from "shelflife-react-hooks";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
@@ -72,9 +69,6 @@ export default function Settings() {
                     <SettingsTable storageId={Number(id)} />
                 </div>
             </div>
-            <FormPopUp button={<CreateButtonWithOutClick />}>
-                <CreateSettingForm storageId={Number(id)} />
-            </FormPopUp>
         </div>
     );
 }
