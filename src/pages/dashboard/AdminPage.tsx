@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import { useAuth, useUsers, type User } from "shelflife-react-hooks";
 import UserIcon from "../../components/dashboard/UserIcon";
 import { toast } from "react-toastify";
+import FormPopUp from "../../components/FormPopUp";
+import EditUserForm from "../../components/dashboard/admin/EditUserForm";
 
 export default function AdminPage() {
     const { getMe, user: self } = useAuth();
@@ -100,9 +102,13 @@ export default function AdminPage() {
                                     {
                                         user.id !== self?.id &&
                                         <div className="flex justify-end gap-2">
-                                            <button className="btn btn-sm btn-primary">
-                                                Edit
-                                            </button>
+                                            <FormPopUp button={
+                                                <button className="btn btn-sm btn-primary">
+                                                    Edit
+                                                </button>
+                                            }>
+                                                <EditUserForm user={user} />
+                                            </FormPopUp>
                                             <button onClick={() => handleDelete(user)} className="btn btn-sm btn-error">
                                                 Delete
                                             </button>
