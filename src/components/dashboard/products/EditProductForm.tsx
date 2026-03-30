@@ -40,8 +40,8 @@ export default function EditProductForm({ productId }: Props) {
             updateDto.category = category;
         }
 
-        if ((barcode || undefined) !== product.barcode) {
-            updateDto.barcode = barcode || undefined;
+        if (barcode !== product.barcode) {
+            updateDto.barcode = barcode;
         }
 
         if (expirationDaysDelta !== product.expirationDaysDelta) {
