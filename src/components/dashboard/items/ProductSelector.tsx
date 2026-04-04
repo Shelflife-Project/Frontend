@@ -70,6 +70,7 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
                 {!isLoading && products.map((p) => (
                     <li key={p.id}>
                         <button
+                            type="button"
                             onClick={() => {
                                 onSelect(p.id);
                                 setSearch(p.name);
