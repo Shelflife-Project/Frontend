@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useProducts, type ProductCreateError } from "shelflife-react-hooks";
 
 export default function CreateProductForm() {
@@ -8,7 +9,7 @@ export default function CreateProductForm() {
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
     const [barcode, setBarcode] = useState("");
-    const [expirationDaysDelta, setExpirationDaysDelta] = useState(1);
+    const [expirationDaysDelta, setExpirationDaysDelta] = useState(0);
 
     const [fieldErrors, setFieldErrors] = useState<ProductCreateError>({});
     const [generalError, setGeneralError] = useState("");
@@ -30,6 +31,15 @@ export default function CreateProductForm() {
                 barcode: barcode || undefined,
                 expirationDaysDelta: expirationDaysDelta,
             });
+
+            setName("");
+            setDescription("");
+            setCategory("");
+            setBarcode("");
+            setExpirationDaysDelta(0);
+
+            toast.success("Product saved successfully");
+            
         } catch (err: any) {
             const product = err as ProductCreateError
 

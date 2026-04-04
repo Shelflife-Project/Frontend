@@ -17,7 +17,7 @@ export default function DashboardNavbarBottom() {
             )
         },
         {
-            label: "Products",
+            label: "Product Database",
             path: "/dashboard/products",
             icon: (
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-database-fill" viewBox="0 0 16 16">

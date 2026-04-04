@@ -61,13 +61,6 @@ export default function SettingsTable({ storageId }: Props) {
                         </p>
 
                         <div className="card-actions justify-between">
-                            <button
-                                onClick={() => deleteSettingHandler(s.id)}
-                                className="btn btn-error btn-sm"
-                            >
-                                Delete
-                            </button>
-
                             <FormPopUp
                                 button={
                                     <button className="btn btn-primary btn-sm">
@@ -77,6 +70,13 @@ export default function SettingsTable({ storageId }: Props) {
                             >
                                 <EditSettingForm setting={s} />
                             </FormPopUp>
+
+                            <button
+                                onClick={() => deleteSettingHandler(s.id)}
+                                className="btn btn-error btn-sm"
+                            >
+                                Delete
+                            </button>
                         </div>
                     </div>
 

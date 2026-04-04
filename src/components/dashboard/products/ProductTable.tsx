@@ -14,6 +14,7 @@ export default function ProductTable() {
 
     return (
         <>
+        <p className="text-xs opacity-60 mb-1">Search by name, category or barcode</p>
             <Paginator onChange={handleOnChange} />
 
             {products.length === 0 && (
@@ -24,7 +25,7 @@ export default function ProductTable() {
 
             {products.length > 0 && (
                 <>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 gap-6 mb-6 mx-auto justify-items-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-6 mb-6 mx-auto justify-items-center">
                         <FormPopUp button={<CreateButtonCard text="Create Product" />} >
                             <CreateProductForm />
                         </FormPopUp>
