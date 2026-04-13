@@ -47,6 +47,7 @@ export default function Paginator({ onChange }: Props) {
         />
 
         <div className="flex items-center gap-4 mb-4">
+            <p className="text-xs">Show items: </p>
             <select
                 className="select w-min"
                 onChange={(e) => {

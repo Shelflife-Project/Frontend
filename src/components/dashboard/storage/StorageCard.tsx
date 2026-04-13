@@ -24,11 +24,11 @@ export default function StorageCard({ storage }: { storage: Storage; }) {
             <div className="flex items-start justify-between">
 
                 <div>
-                    <h2 className="card-title text-xl">
+                    <h2 className="card-title text-xl break-all text-left">
                         {storage.name}
                     </h2>
 
-                    <p className="text-left text-xs opacity-60">
+                    <p className="text-left text-xs break-all text-left opacity-60">
                         Owned by {storage.owner.username}
                     </p>
                 </div>

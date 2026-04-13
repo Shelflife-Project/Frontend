@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useProducts, useStorageItems, type Storage } from "shelflife-react-hooks";
+import { useProducts, useStorageItems, type AddItemError, type Storage } from "shelflife-react-hooks";
 import ProductSelector from "./ProductSelector";
 
 type Props = {
@@ -34,14 +34,27 @@ export default function ItemsPopUp({ storage }: Props) {
         e.preventDefault();
         if (selectedProductId <= 0) return;
 
-        await addItem(storage.id, {
-            productId: selectedProductId,
-            expiresAt: expiresAt,
-        });
+        try {
+            await addItem(storage.id, {
+                productId: selectedProductId,
+                expiresAt: expiresAt,
+            });
 
-        setSelectedProductId(0);
-        setExpiresAt("");
-        toast.success("Item added successfully");
+            setSelectedProductId(0);
+            setExpiresAt("");
+            toast.success("Item added successfully");
+        } catch (err: any) {
+            const itemErr = err as AddItemError;
+
+            if (itemErr) {
+                if (itemErr.productId)
+                    toast.error(`Product: ${itemErr.productId}`);
+                else
+                    toast.error(`Expires at: ${itemErr.expiresAt}`);
+            }
+            else
+                toast.error("An error occured while adding the item");
+        }
     }
 
     return (
@@ -65,7 +78,6 @@ export default function ItemsPopUp({ storage }: Props) {
                     </div>
                     <input
                         type="date"
-                        maxLength={40}
                         className="input w-full input-bordered mr-2"
                         value={expiresAt}
                         min={new Date().toISOString().split("T")[0]}

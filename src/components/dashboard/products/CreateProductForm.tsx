@@ -9,7 +9,7 @@ export default function CreateProductForm() {
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
     const [barcode, setBarcode] = useState("");
-    const [expirationDaysDelta, setExpirationDaysDelta] = useState(0);
+    const [expirationDaysDelta, setExpirationDaysDelta] = useState(1);
 
     const [fieldErrors, setFieldErrors] = useState<ProductCreateError>({});
     const [generalError, setGeneralError] = useState("");
