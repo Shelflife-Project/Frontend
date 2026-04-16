@@ -7,11 +7,18 @@ import CreateShoppingListItemForm from "./CreateShoppingListItemForm";
 import EmptyList from "../../EmptyList";
 
 export default function ShoppingListTable() {
-    const { fetchAggregated, items } = useShoppingList()
+    const { fetchAggregated, items, isLoading } = useShoppingList()
 
     useEffect(() => {
         fetchAggregated();
     }, [])
+
+    if (isLoading)
+        return (
+            <div className="flex justify-center items-center">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+        );
 
     return (
         <>

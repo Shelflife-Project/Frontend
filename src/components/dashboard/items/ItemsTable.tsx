@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function ItemsTable({ storage }: Props) {
-    const { items, fetchItems } = useStorageItems();
+    const { items, fetchItems, isLoading } = useStorageItems();
     const [itemsTable, setItemsTable] = useState<Map<number, StorageItem[]>>(new Map<number, StorageItem[]>());
 
     const groupItems = async () => {
@@ -39,6 +39,13 @@ export default function ItemsTable({ storage }: Props) {
     useEffect(() => {
         fetchItems(storage.id);
     }, [storage]);
+
+    if (isLoading)
+        return (
+            <div className="flex justify-center items-center">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+        );
 
     return (
         <>
