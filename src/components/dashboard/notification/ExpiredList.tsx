@@ -41,8 +41,8 @@ export default function ShoppingList() {
             </h2>
 
             {isLoading ? (
-                <div className="text-sm opacity-80 text-center py-6">
-                    Loading items...
+                <div className="flex justify-center items-center">
+                    <span className="loading loading-spinner loading-lg text-primary"></span>
                 </div>
             ) : isError ? (
                 <div className="text-sm text-error text-center py-6">

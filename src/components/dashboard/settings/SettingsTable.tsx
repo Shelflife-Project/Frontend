@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function SettingsTable({ storageId }: Props) {
-    const { settings, fetchSettings, deleteSetting } = useRunningLow();
+    const { settings, fetchSettings, deleteSetting, isLoading } = useRunningLow();
 
     const deleteSettingHandler = async (id: number) => {
         if (confirm("Are you sure you want to remove this rule?")) {
@@ -24,6 +24,13 @@ export default function SettingsTable({ storageId }: Props) {
     useEffect(() => {
         fetchSettings(storageId);
     }, []);
+
+    if (isLoading)
+        return (
+            <div className="flex justify-center items-center">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+        );
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">

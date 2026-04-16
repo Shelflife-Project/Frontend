@@ -4,13 +4,14 @@ import ItemCard from "./ItemCard";
 import FormPopUp from "../../FormPopUp";
 import ItemsPopUp from "./ItemsPopUp";
 import { CreateButtonCard } from "../CreateButton";
+import EmptyList from "../../EmptyList";
 
 type Props = {
     storage: Storage;
 };
 
 export default function ItemsTable({ storage }: Props) {
-    const { items, fetchItems } = useStorageItems();
+    const { items, fetchItems, isLoading } = useStorageItems();
     const [itemsTable, setItemsTable] = useState<Map<number, StorageItem[]>>(new Map<number, StorageItem[]>());
 
     const groupItems = async () => {
@@ -39,17 +40,30 @@ export default function ItemsTable({ storage }: Props) {
         fetchItems(storage.id);
     }, [storage]);
 
-    return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-            <FormPopUp button={<CreateButtonCard text="Add Item" />}>
-                <ItemsPopUp storage={storage} />
-            </FormPopUp>
+    if (isLoading)
+        return (
+            <div className="flex justify-center items-center">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+        );
 
-            {[...itemsTable]
-                .sort(([a], [b]) => a - b)
-                .map(([productId, group]) => (
-                    <ItemCard key={productId} items={group} />
-                ))}
-        </div>
+    return (
+        <>
+            {
+                [...itemsTable].length === 0 && <EmptyList />
+            }
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+                <FormPopUp button={<CreateButtonCard text="Add Item" />}>
+                    <ItemsPopUp storage={storage} />
+                </FormPopUp>
+
+                {[...itemsTable]
+                    .sort(([a], [b]) => a - b)
+                    .map(([productId, group]) => (
+                        <ItemCard key={productId} items={group} />
+                    ))}
+            </div>
+        </>
     );
 }
