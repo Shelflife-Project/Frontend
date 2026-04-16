@@ -14,7 +14,7 @@ export default function StorageList() {
 
     return (
         <>
-            <Paginator onChange={handleOnChange} />
+            <Paginator onChange={handleOnChange} contextData={storages} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-12xl mx-auto">
                 <FormPopUp button={<CreateButtonCard text="Add Storage" />}>
                     <CreateStorageForm />

@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import type { PaginatedResponse } from "shelflife-react-hooks"
 
+type IdAble = {
+    id: number;
+};
+
 type Props = {
-    onChange: (search: string, page: number, size: number) => Promise<PaginatedResponse<any>>;
+    onChange: (search: string, page: number, size: number) => Promise<PaginatedResponse<IdAble>>;
+    contextData: IdAble[];
 }
 
-export default function Paginator({ onChange }: Props) {
-    const [hasNext, setHasNext] = useState(false);
-    const [hasPrevious, setHasPrevious] = useState(false);
+export default function Paginator({ onChange, contextData }: Props) {
+    const [data, setData] = useState<PaginatedResponse<IdAble>>({ currentPage: 0, data: [], hasNext: false, hasPrevious: false, pageSize: 0, totalItems: 0, totalPages: 0 });
+
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
@@ -17,15 +22,15 @@ export default function Paginator({ onChange }: Props) {
     const change = async () => {
         setIsLoading(true);
         const res = await onChange(search, page, pageSize);
+
+        if (res.data.length === 0 && res.currentPage !== 0) {
+            setPage(0);
+            return;
+        }
+
         setIsLoading(false);
-
-        setHasNext(res.hasNext);
-        setHasPrevious(res.hasPrevious);
+        setData(res);
     }
-
-    useEffect(() => {
-        change();
-    }, [search, page, pageSize]);
 
     const nextPage = () => {
         setPage((p) => p + 1);
@@ -34,6 +39,19 @@ export default function Paginator({ onChange }: Props) {
     const prevPage = () => {
         if (page > 0) setPage((p) => p - 1);
     };
+
+    useEffect(() => {
+        const added = contextData.filter(x => !data.data.some(y => y.id === x.id));
+        const removed = data.data.filter(y => !contextData.some(x => x.id === y.id));
+
+        if (added.length > 0 || removed.length > 0) {
+            change();
+        }
+    }, [contextData]);
+
+    useEffect(() => {
+        change();
+    }, [search, page, pageSize]);
 
     return <div className="text-left">
         <input
@@ -64,7 +82,7 @@ export default function Paginator({ onChange }: Props) {
             <div className="join">
                 <button
                     onClick={prevPage}
-                    disabled={!hasPrevious || isLoading}
+                    disabled={!data.hasPrevious || isLoading}
                     className="join-item btn">
                     «
                 </button>
@@ -78,7 +96,7 @@ export default function Paginator({ onChange }: Props) {
                 <button
                     className="join-item btn"
                     onClick={nextPage}
-                    disabled={!hasNext || isLoading}>
+                    disabled={!data.hasNext || isLoading}>
                     »
                 </button>
             </div>
