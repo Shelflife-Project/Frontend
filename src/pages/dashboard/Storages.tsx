@@ -11,7 +11,7 @@ export default function Storages() {
                     <p className="text-gray-600">Manage your storages here</p>
                 </div>
 
-                <div className="hidden sm:flex absolute top-5 right-0 w-64">
+                <div className="hidden sm:flex absolute top-0 right-0 w-64">
                     <BetterLottie animationData={Inventory} />
                 </div>
             </div>
