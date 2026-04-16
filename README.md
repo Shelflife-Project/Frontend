@@ -100,16 +100,17 @@ The easiest way to run the frontend service:
 docker-compose up
 ```
 
+**Before running Docker Compose**, update the backend URL in `docker-compose.yaml`:
+
+```yaml
+environment:
+  VITE_BACKEND_BASE_URL: http://localhost:8080  # Change this to your backend URL
+```
+
 This will:
 1. Build the Docker image
 2. Start the frontend service on port 5173
 3. Restart automatically if the container exits
-
-**docker-compose.yaml** Configuration:
-- Uses Node.js Alpine image for smaller image size
-- Runs on port 5173
-- Auto-restarts on failure
-- Backend URL: http://localhost:8080
 
 ### Stop Docker Services
 
