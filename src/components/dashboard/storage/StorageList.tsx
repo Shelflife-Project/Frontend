@@ -6,7 +6,7 @@ import CreateStorageForm from "./NewForm";
 import { CreateButtonCard } from "../CreateButton";
 
 export default function StorageList() {
-    const { fetchStorages, storages } = useStorages();
+    const { fetchStorages, storages, isLoading } = useStorages();
 
     const handleOnChange = (search: string, page: number, size: number) => {
         return fetchStorages(search, size, page);
@@ -14,18 +14,24 @@ export default function StorageList() {
 
     return (
         <>
-            <Paginator onChange={handleOnChange} />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-12xl mx-auto">
-                <FormPopUp button={<CreateButtonCard text="Add Storage" />}>
-                    <CreateStorageForm />
-                </FormPopUp>
-                {
-                    storages
-                        .map((storage) => (
-                            <StorageCard key={storage.id} storage={storage} />
-                        ))
-                }
-            </div>
+            <Paginator onChange={handleOnChange} contextData={storages} />
+            {
+                isLoading ?
+                    <div className="flex justify-center items-center">
+                        <span className="loading loading-spinner loading-lg text-primary"></span>
+                    </div> :
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-12xl mx-auto">
+                        <FormPopUp button={<CreateButtonCard text="Add Storage" />}>
+                            <CreateStorageForm />
+                        </FormPopUp>
+                        {
+                            storages
+                                .map((storage) => (
+                                    <StorageCard key={storage.id} storage={storage} />
+                                ))
+                        }
+                    </div>
+            }
         </>
     )
 }

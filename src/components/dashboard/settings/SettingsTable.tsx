@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function SettingsTable({ storageId }: Props) {
-    const { settings, fetchSettings, deleteSetting } = useRunningLow();
+    const { settings, fetchSettings, deleteSetting, isLoading } = useRunningLow();
 
     const deleteSettingHandler = async (id: number) => {
         if (confirm("Are you sure you want to remove this rule?")) {
@@ -24,6 +24,13 @@ export default function SettingsTable({ storageId }: Props) {
     useEffect(() => {
         fetchSettings(storageId);
     }, []);
+
+    if (isLoading)
+        return (
+            <div className="flex justify-center items-center">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+        );
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
@@ -61,13 +68,6 @@ export default function SettingsTable({ storageId }: Props) {
                         </p>
 
                         <div className="card-actions justify-between">
-                            <button
-                                onClick={() => deleteSettingHandler(s.id)}
-                                className="btn btn-error btn-sm"
-                            >
-                                Delete
-                            </button>
-
                             <FormPopUp
                                 button={
                                     <button className="btn btn-primary btn-sm">
@@ -77,6 +77,13 @@ export default function SettingsTable({ storageId }: Props) {
                             >
                                 <EditSettingForm setting={s} />
                             </FormPopUp>
+
+                            <button
+                                onClick={() => deleteSettingHandler(s.id)}
+                                className="btn btn-error btn-sm"
+                            >
+                                Delete
+                            </button>
                         </div>
                     </div>
 

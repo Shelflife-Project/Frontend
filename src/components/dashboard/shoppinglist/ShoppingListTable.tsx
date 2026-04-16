@@ -4,22 +4,26 @@ import ShoppingCard from "./ShoppingCard";
 import { CreateButtonCard } from "../CreateButton";
 import FormPopUp from "../../FormPopUp";
 import CreateShoppingListItemForm from "./CreateShoppingListItemForm";
+import EmptyList from "../../EmptyList";
 
 export default function ShoppingListTable() {
-    const { fetchAggregated, items } = useShoppingList()
+    const { fetchAggregated, items, isLoading } = useShoppingList()
 
     useEffect(() => {
         fetchAggregated();
     }, [])
 
+    if (isLoading)
+        return (
+            <div className="flex justify-center items-center">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+        );
+
     return (
         <>
             {
-                items.length === 0 && (
-                    <p className="text-gray-600 text-center">
-                        Your list is empty
-                    </p>
-                )
+                items.length === 0 && <EmptyList />
             }
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 <FormPopUp button={<CreateButtonCard text="Add Item" />} >

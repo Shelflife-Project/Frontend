@@ -8,13 +8,12 @@ type Props = {
 }
 
 export default function ProductSelector({ predicate, selectedProductId, onSelect }: Props) {
-    const { fetchProducts } = useProducts();
-    const [search, setSearch] = useState<string>("");
+    const { fetchProducts, isLoading } = useProducts();
+
+    const [search, setSearch] = useState("");
     const [products, setProducts] = useState<Product[]>([]);
 
-    const searchProduct = async () => {
-        onSelect(0);
-
+    const searchProducts = async () => {
         const res = await fetchProducts(search, 10, 0);
 
         if (predicate)
@@ -24,11 +23,17 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
     }
 
     useEffect(() => {
-        searchProduct();
+        searchProducts();
     }, [search, predicate]);
 
+    useEffect(() => {
+        setSearch("");
+    }, [selectedProductId])
+
+    const selected = products.find((p) => p.id === selectedProductId);
+
     return (
-        <div>
+        <div className="dropdown w-full">
             <div className="w-full flex flex-row items-center">
                 <div className="inline-grid *:[grid-area:1/1] ">
                     <div className={`status ${selectedProductId !== 0 ? 'status-success' : 'status-error'} animate-ping me-2`}></div>
@@ -38,34 +43,48 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
                     <span className="label-text font-semibold me-2">Product</span>
                 </label>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-                <input
-                    type="text"
-                    placeholder="Search product..."
-                    className="input w-full"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
+            <input
+                tabIndex={0}
+                type="text"
+                className="input input-bordered w-full"
+                placeholder="Search product..."
+                value={search || selected?.name || ""}
+                onFocus={() => setSearch("")}
+                onChange={(e) => {
+                    setSearch(e.target.value);
+                    onSelect(0);
+                }}
+            />
 
-                <select
-                    value={selectedProductId}
-                    onChange={(e) => onSelect(Number(e.target.value))}
-                    className="select w-full">
+            <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box w-full mt-1 shadow max-h-60 overflow-y-auto"
+            >
+                {isLoading && (
+                    <li className="p-2 text-sm">
+                        <span className="loading loading-spinner loading-sm"></span>
+                        Loading...
+                    </li>
+                )}
 
-                    <option disabled value="0">Select product</option>
-
-                    {products.map((p) => (
-                        <option key={p.id} value={p.id}>
+                {!isLoading && products.map((p) => (
+                    <li key={p.id}>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                onSelect(p.id);
+                                setSearch(p.name);
+                            }}
+                        >
                             {p.name}
-                        </option>
-                    ))}
+                        </button>
+                    </li>
+                ))}
 
-                    {products.length === 0 && (
-                        <option disabled>No products match your search</option>
-                    )}
-                </select>
-            </div>
-
+                {!isLoading && products.length === 0 && (
+                    <li className="p-2 text-sm opacity-60">No results</li>
+                )}
+            </ul>
         </div>
     );
 }

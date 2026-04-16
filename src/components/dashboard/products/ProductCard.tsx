@@ -42,7 +42,7 @@ export default function ProductCard({ product }: Props) {
 
                 <img
                     src={`${import.meta.env.VITE_BACKEND_BASE_URL}/api/products/${product.id}/icon?${refreshKey}`}
-                    className="object-contain w-full h-full p-4 transition-transform duration-300 group-hover:scale-105"
+                    className="object-contain w-full h-full transition-transform duration-300 group-hover:scale-105"
                 />
 
                 {canEdit && (
@@ -60,7 +60,7 @@ export default function ProductCard({ product }: Props) {
                             className="absolute inset-0 cursor-pointer"
                         >
                             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white text-sm transition">
-                                Change icon
+                                Change Image
                             </div>
                         </label>
 
@@ -114,13 +114,6 @@ export default function ProductCard({ product }: Props) {
 
                 {canEdit && (
                     <div className="flex gap-2 mt-auto pt-2">
-                        <button
-                            onClick={() => deleteProductHandler(product.id)}
-                            className="btn btn-error btn-sm flex-1"
-                        >
-                            Delete
-                        </button>
-
                         <FormPopUp
                             button={
                                 <button className="btn btn-primary btn-sm flex-1">
@@ -130,8 +123,24 @@ export default function ProductCard({ product }: Props) {
                         >
                             <EditProductForm productId={product.id} />
                         </FormPopUp>
+
+                        <button
+                            onClick={() => deleteProductHandler(product.id)}
+                            className="btn btn-error btn-sm flex-1"
+                        >
+                            Delete
+                        </button>
                     </div>
                 )}
+                {!canEdit &&
+                    <div title="You can't edit this product, but you can still add this to storages as an item" className="flex gap-2 mt-auto pt-2">
+                        <p className="opacity-60 text-xs">You are not the owner of this product</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-info-circle mt-auto" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                        </svg>
+                    </div>
+                }
             </div>
         </div>
     );

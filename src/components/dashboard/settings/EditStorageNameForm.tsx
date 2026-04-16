@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useStorages, type Storage } from "shelflife-react-hooks";
 
@@ -8,7 +8,11 @@ type Props = {
 
 export default function EditStorageNameForm({ storage }: Props) {
     const { changeStorageName } = useStorages();
-    const [newName, setNewName] = useState<string>(storage.name);
+    const [newName, setNewName] = useState<string>("");
+
+    useEffect(() => {
+        setNewName(storage.name);
+    }, [storage])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
