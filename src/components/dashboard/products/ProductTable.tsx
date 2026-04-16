@@ -4,12 +4,18 @@ import Paginator from "../../Paginator";
 import { CreateButtonCard } from "../CreateButton";
 import FormPopUp from "../../FormPopUp";
 import CreateProductForm from "./CreateProductForm";
+import { useState } from "react";
 
 export default function ProductTable() {
-    const { products, fetchProducts, isLoading } = useProducts();
+    const { products, fetchProducts } = useProducts();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const handleOnChange = (search: string, page: number, size: number) => {
-        return fetchProducts(search, size, page);
+        setIsLoading(true);
+        const res = fetchProducts(search, size, page);
+        setIsLoading(false);
+
+        return res;
     }
 
     return (
