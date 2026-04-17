@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
 import type { PaginatedResponse } from "shelflife-react-hooks"
 
-type IdAble = {
-    id: number;
-};
-
 type Props = {
-    onChange: (search: string, page: number, size: number) => Promise<PaginatedResponse<IdAble>>;
-    contextData: IdAble[];
+    onChange: (search: string, page: number, size: number) => Promise<PaginatedResponse<any>>;
+    contextData: any[];
 }
 
 export default function Paginator({ onChange, contextData }: Props) {
-    const [data, setData] = useState<PaginatedResponse<IdAble>>({ currentPage: 0, data: [], hasNext: false, hasPrevious: false, pageSize: 0, totalItems: 0, totalPages: 0 });
+    const [data, setData] = useState<PaginatedResponse<any>>({ currentPage: 0, data: [], hasNext: false, hasPrevious: false, pageSize: 0, totalItems: 0, totalPages: 0 });
 
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
@@ -41,10 +37,7 @@ export default function Paginator({ onChange, contextData }: Props) {
     };
 
     useEffect(() => {
-        const added = contextData.filter(x => !data.data.some(y => y.id === x.id));
-        const removed = data.data.filter(y => !contextData.some(x => x.id === y.id));
-
-        if (added.length > 0 || removed.length > 0) {
+        if (data.data.length != contextData.length) {
             change();
         }
     }, [contextData]);

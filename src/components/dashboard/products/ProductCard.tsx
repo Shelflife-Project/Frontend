@@ -121,7 +121,7 @@ export default function ProductCard({ product }: Props) {
                                 </button>
                             }
                         >
-                            <EditProductForm productId={product.id} />
+                            <EditProductForm product={product} />
                         </FormPopUp>
 
                         <button
