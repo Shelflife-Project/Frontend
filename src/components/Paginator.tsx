@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import type { PaginatedResponse } from "shelflife-react-hooks"
 
 type Props = {
@@ -8,6 +8,7 @@ type Props = {
 
 export default function Paginator({ onChange, contextData }: Props) {
     const [data, setData] = useState<PaginatedResponse<any>>({ currentPage: 0, data: [], hasNext: false, hasPrevious: false, pageSize: 0, totalItems: 0, totalPages: 0 });
+    const [scheduledByThis, setScheduledByThis] = useState(true);
 
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
@@ -16,6 +17,7 @@ export default function Paginator({ onChange, contextData }: Props) {
     const [isLoading, setIsLoading] = useState(false);
 
     const change = async () => {
+        setScheduledByThis(true);
         setIsLoading(true);
         const res = await onChange(search, page, pageSize);
 
@@ -24,8 +26,8 @@ export default function Paginator({ onChange, contextData }: Props) {
             return;
         }
 
-        setIsLoading(false);
         setData(res);
+        setIsLoading(false);
     }
 
     const nextPage = () => {
@@ -37,12 +39,20 @@ export default function Paginator({ onChange, contextData }: Props) {
     };
 
     useEffect(() => {
+        if (isLoading)
+            return;
+
+        if (scheduledByThis) {
+            setScheduledByThis(false);
+            return;
+        }
+
         if (data.data.length != contextData.length) {
             change();
         }
     }, [contextData]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         change();
     }, [search, page, pageSize]);
 
