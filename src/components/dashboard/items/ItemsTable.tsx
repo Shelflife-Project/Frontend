@@ -11,8 +11,9 @@ type Props = {
 };
 
 export default function ItemsTable({ storage }: Props) {
-    const { items, fetchItems, isLoading } = useStorageItems();
+    const { items, fetchItems } = useStorageItems();
     const [itemsTable, setItemsTable] = useState<Map<number, StorageItem[]>>(new Map<number, StorageItem[]>());
+    const [isLoading, setIsLoading] = useState(true);
 
     const groupItems = async () => {
         let table = new Map<number, StorageItem[]>();
@@ -32,12 +33,18 @@ export default function ItemsTable({ storage }: Props) {
         setItemsTable(table);
     };
 
+    const getItems = async () => {
+        setIsLoading(true);
+        await fetchItems(storage.id);
+        setIsLoading(false);
+    }
+
     useEffect(() => {
         groupItems();
     }, [items])
 
     useEffect(() => {
-        fetchItems(storage.id);
+        getItems();
     }, [storage]);
 
     if (isLoading)

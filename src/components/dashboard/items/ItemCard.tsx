@@ -65,10 +65,7 @@ export default function ItemCard({ items }: Props) {
                                         </button>
                                     }
                                 >
-                                    <EditStorageItemsForm
-                                        storageId={item.storage.id}
-                                        itemId={item.id}
-                                    />
+                                    <EditStorageItemsForm item={item} />
                                 </FormPopUp>
 
                                 <button

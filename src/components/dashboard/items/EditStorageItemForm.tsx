@@ -1,33 +1,26 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useStorageItems } from "shelflife-react-hooks";
+import { useStorageItems, type StorageItem } from "shelflife-react-hooks";
 
 type Props = {
-    storageId: number;
-    itemId: number;
+    item: StorageItem;
 }
 
-export default function EditStorageItemsForm({ storageId, itemId }: Props) {
-    const { fetchItems, items, editItem } = useStorageItems();
-    const [expirationDate, setExpirationDate] = useState<string>("");
+export default function EditStorageItemsForm({ item }: Props) {
+    const { editItem } = useStorageItems();
+    const [expirationDate, setExpirationDate] = useState<string>(item.expiresAt);
 
     useEffect(() => {
-        fetchItems(storageId);
-
-        const item = items.find(x => x.id === itemId);
-        if (item)
-            setExpirationDate(item.expiresAt);
-    }, []);
-
+        setExpirationDate(item.expiresAt);
+    }, [item])
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (expirationDate) {
             try {
-                const edit = await editItem(storageId, itemId, { expiresAt: expirationDate });
+                const edit = await editItem(item.storage.id, item.id, { expiresAt: expirationDate });
                 if (edit)
                     toast.success("Changes saved successfully");
-
             }
             catch (err) {
                 toast.error("An error occured while saving your changes");
@@ -60,7 +53,7 @@ export default function EditStorageItemsForm({ storageId, itemId }: Props) {
                     />
                 </div>
                 <div>
-                    <button type="submit" className="btn btn-primary w-full">Save Changes</button>
+                    <button type="submit" disabled={expirationDate === item.expiresAt} className="btn btn-primary w-full">Save Changes</button>
                 </div>
             </form>
         </div>
