@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useShoppingList } from "shelflife-react-hooks";
 import ShoppingCard from "./ShoppingCard";
 import { CreateButtonCard } from "../CreateButton";
@@ -7,10 +7,17 @@ import CreateShoppingListItemForm from "./CreateShoppingListItemForm";
 import EmptyList from "../../EmptyList";
 
 export default function ShoppingListTable() {
-    const { fetchAggregated, items, isLoading } = useShoppingList()
+    const { fetchAggregated, items } = useShoppingList()
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const getItems = async () => {
+        setIsLoading(true);
+        await fetchAggregated();
+        setIsLoading(false);
+    }
 
     useEffect(() => {
-        fetchAggregated();
+        getItems();
     }, [])
 
     if (isLoading)

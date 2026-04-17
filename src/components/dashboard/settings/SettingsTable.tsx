@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRunningLow } from "shelflife-react-hooks";
 import FormPopUp from "../../FormPopUp";
@@ -11,7 +11,8 @@ type Props = {
 };
 
 export default function SettingsTable({ storageId }: Props) {
-    const { settings, fetchSettings, deleteSetting, isLoading } = useRunningLow();
+    const { settings, fetchSettings, deleteSetting } = useRunningLow();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const deleteSettingHandler = async (id: number) => {
         if (confirm("Are you sure you want to remove this rule?")) {
@@ -21,8 +22,14 @@ export default function SettingsTable({ storageId }: Props) {
         }
     };
 
+    const getSettings = async () => {
+        setIsLoading(true);
+        await fetchSettings(storageId);
+        setIsLoading(false);
+    }
+
     useEffect(() => {
-        fetchSettings(storageId);
+        getSettings();
     }, []);
 
     if (isLoading)
