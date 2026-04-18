@@ -28,7 +28,7 @@ export default function ProductCard({ product }: Props) {
     };
 
     const deleteProductHandler = async (id: number) => {
-        const confirmDelete = confirm("Are you sure you want to delete this product?");
+        const confirmDelete = confirm("Are you sure you want to delete this product? If this is used somewhere it will also get deleted!");
         if (confirmDelete) {
             await deleteProduct(id);
             toast.success("Product removed");
