@@ -8,13 +8,13 @@ type Props = {
 
 export default function EditSettingForm({ setting }: Props) {
     const { editSetting } = useRunningLow();
-    const [runsLowAt, setRunsLowAt] = useState<number>(setting.runningLow);
+    const [runsLowAt, setRunsLowAt] = useState<number>(setting.runningLow + 1);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try {
-            await editSetting(setting.storage.id, setting.id, { runningLow: runsLowAt });
+            await editSetting(setting.storage.id, setting.id, { runningLow: runsLowAt - 1 });
 
         } catch (err: any) {
             const error = err as EditRunningLowSettingError;
@@ -40,16 +40,15 @@ export default function EditSettingForm({ setting }: Props) {
                     </div>
                     <input
                         type="number"
-                        maxLength={40}
                         className="input w-full input-bordered mr-2"
                         value={runsLowAt}
-                        min={0}
+                        min={1}
                         onChange={(e) => setRunsLowAt(Number(e.target.value))}
                         required
                     />
                 </div>
                 <div>
-                    <button type="submit" disabled={setting?.runningLow === runsLowAt} className="btn btn-primary w-full">Save Changes</button>
+                    <button type="submit" disabled={setting?.runningLow + 1 === runsLowAt} className="btn btn-primary w-full">Save Changes</button>
                 </div>
             </form>
         </div>

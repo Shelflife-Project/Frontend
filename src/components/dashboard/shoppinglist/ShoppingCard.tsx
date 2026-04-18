@@ -41,7 +41,7 @@ export default function ShoppingCard({ item }: Props) {
 
             <div className="grid grid-cols-3 gap-2">
                 <button
-                    title={"Remove this item and add it to " + item.storage.name}
+                    title={"I've bought this – add to " + item.storage.name + " and remove it from the list"}
                     onClick={() => onChecked(item)}
                     className="btn btn-success"
                 >

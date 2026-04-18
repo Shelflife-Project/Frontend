@@ -63,7 +63,7 @@ export default function Settings() {
             <div className="card shadow-md">
                 <div className="card-body">
                     <h2 className="text-sm font-semibold">
-                        Low Stock Alert Rules
+                        Minimum Stock Settings
                     </h2>
 
                     <SettingsTable storageId={Number(id)} />

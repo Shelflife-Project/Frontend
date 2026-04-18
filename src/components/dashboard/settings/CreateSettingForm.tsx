@@ -11,7 +11,7 @@ export default function CreateSettingForm({ storageId }: Props) {
     const { fetchSettings, createSetting, settings } = useRunningLow();
 
     const [addProduct, setAddProduct] = useState<number>(0);
-    const [runsLowAt, setRunsLowAt] = useState<number>(0);
+    const [runsLowAt, setRunsLowAt] = useState<number>(1);
 
     const onSelectProduct = (productId: number) => {
         if (addProduct === 0) setAddProduct(productId);
@@ -25,7 +25,7 @@ export default function CreateSettingForm({ storageId }: Props) {
         try {
             await createSetting(storageId, {
                 productId: addProduct,
-                runningLow: runsLowAt,
+                runningLow: runsLowAt - 1,
             });
 
             setAddProduct(0);
@@ -59,10 +59,9 @@ export default function CreateSettingForm({ storageId }: Props) {
                     </div>
                     <input
                         type="number"
-                        maxLength={40}
                         className="input w-full input-bordered mr-2"
                         value={runsLowAt}
-                        min={0}
+                        min={1}
                         onChange={(e) => setRunsLowAt(Number(e.target.value))}
                         required
                     />
