@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useProducts, type Product } from "shelflife-react-hooks";
 
 type Props = {
@@ -22,11 +22,13 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
 
         setProducts(filtered);
 
-        if(filtered.length === 1)
+        if (filtered.length === 1)
             onSelect(filtered[0].id);
+        else
+            onSelect(0);
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         searchProducts();
     }, [search, predicate]);
 
@@ -51,8 +53,7 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
                 value={search || selected?.name || ""}
                 onFocus={() => setSearch("")}
                 onChange={(e) => {
-                    setSearch(e.target.value);
-                    onSelect(0);
+                    setSearch(e.target.value || "");
                 }}
             />
 
