@@ -15,20 +15,20 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
 
     const searchProducts = async () => {
         const res = await fetchProducts(search, 10, 0);
+        let filtered = res.data;
 
         if (predicate)
-            setProducts(res.data.filter(predicate));
-        else
-            setProducts(res.data);
+            filtered = res.data.filter(predicate);
+
+        setProducts(filtered);
+
+        if(filtered.length === 1)
+            onSelect(filtered[0].id);
     }
 
     useEffect(() => {
         searchProducts();
     }, [search, predicate]);
-
-    useEffect(() => {
-        setSearch("");
-    }, [selectedProductId])
 
     const selected = products.find((p) => p.id === selectedProductId);
 

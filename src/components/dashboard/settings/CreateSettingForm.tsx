@@ -13,11 +13,6 @@ export default function CreateSettingForm({ storageId }: Props) {
     const [addProduct, setAddProduct] = useState<number>(0);
     const [runsLowAt, setRunsLowAt] = useState<number>(1);
 
-    const onSelectProduct = (productId: number) => {
-        if (addProduct === 0) setAddProduct(productId);
-        else setAddProduct(0);
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!addProduct) return;
@@ -29,7 +24,7 @@ export default function CreateSettingForm({ storageId }: Props) {
             });
 
             setAddProduct(0);
-            setRunsLowAt(0);
+            setRunsLowAt(1);
 
             toast.success("Rule added successfully")
         } catch (err: any) {
@@ -49,12 +44,12 @@ export default function CreateSettingForm({ storageId }: Props) {
             </div>
             <form onSubmit={handleSubmit}>
 
-                <ProductSelector selectedProductId={addProduct} onSelect={(id: number) => onSelectProduct(id)} predicate={(p) => !settings.find((s) => s.product.id === p.id)} />
+                <ProductSelector selectedProductId={addProduct} onSelect={(id: number) => setAddProduct(id)} predicate={(p) => !settings.find((s) => s.product.id === p.id)} />
 
                 <div className="form-control">
                     <div className="w-full flex flex-row items-center">
                         <label className="label">
-                            <span className="label-text font-semibold me-2">Runs low at</span>
+                            <span className="label-text font-semibold me-2">Minimum Stock Required</span>
                         </label>
                     </div>
                     <input

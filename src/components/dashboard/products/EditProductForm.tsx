@@ -128,7 +128,7 @@ export default function EditProductForm({ product }: Props) {
                         type="number"
                         maxLength={40}
                         name="expiration"
-                        placeholder="e.g., Bread"
+                        placeholder="1"
                         className={"input input-bordered w-auto" + (fieldErrors.expirationDaysDelta ? " input-error" : "")}
                         value={expirationDaysDelta}
                         onChange={(e) => setExpirationDaysDelta(parseInt(e.target.value))}
@@ -174,7 +174,7 @@ export default function EditProductForm({ product }: Props) {
                     <button
                         type="submit"
                         disabled={
-                            (!name || !category) ||
+                            (!name || !category || !expirationDaysDelta) ||
                             (
                                 name === product.name &&
                                 barcode === product.barcode &&

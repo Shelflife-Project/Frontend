@@ -80,12 +80,12 @@ export default function ProductCard({ product }: Props) {
             <div className="p-4 flex flex-col gap-3 flex-grow">
 
                 <div>
-                    <h2 className="font-semibold text-lg leading-tight">
+                    <h2 className="font-semibold text-lg leading-tight break-all">
                         {product.name}
                     </h2>
 
                     {product.description && (
-                        <p className="text-sm opacity-70 line-clamp-2">
+                        <p className="text-sm opacity-70 line-clamp-2 break-all">
                             {product.description}
                         </p>
                     )}
