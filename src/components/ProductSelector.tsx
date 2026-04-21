@@ -83,7 +83,7 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
                 ))}
 
                 {!isLoading && products.length === 0 && (
-                    <li className="p-2 text-sm opacity-60">No results</li>
+                    <li className="p-2 text-sm text-base-content/60">No results</li>
                 )}
             </ul>
         </div>

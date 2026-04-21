@@ -40,7 +40,7 @@ export default function StorageCard({ storage }: { storage: Storage; }) {
                         {storage.name}
                     </h2>
 
-                    <p className="text-left text-xs break-all text-left opacity-60">
+                    <p className="text-left text-xs break-all text-left text-base-content/60">
                         Owned by {storage.owner.username}
                     </p>
                 </div>

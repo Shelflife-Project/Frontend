@@ -20,7 +20,7 @@ export default function ProductTable() {
 
     return (
         <>
-            <p className="text-xs opacity-60 mb-1">Search by name, category or barcode</p>
+            <p className="text-xs text-base-content/60 mb-1">Search by name, category or barcode</p>
             <Paginator onChange={handleOnChange} contextData={products} />
 
             {

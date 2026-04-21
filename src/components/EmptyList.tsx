@@ -15,7 +15,7 @@ export default function EmptyList({ title, description }: Props) {
 
             <p className="text-lg font-medium">{title}</p>
 
-            <p className="opacity-60 text-sm mt-2">{description}</p>
+            <p className="text-base-content/60 text-sm mt-2">{description}</p>
         </div>
     );
 }

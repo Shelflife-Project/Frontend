@@ -36,7 +36,7 @@ export default function ShoppingCard({ item }: Props) {
             <img className="size-10 rounded-box" src={`${import.meta.env.VITE_BACKEND_BASE_URL}/api/products/${item.product.id}/icon/small`} />
             <div>
                 <p>{item.product.name}</p>
-                <div className="text-xs uppercase font-semibold opacity-60">Amount to buy in {item.storage.name}: {item.amountToBuy}</div>
+                <div className="text-xs uppercase font-semibold text-base-content/60">Amount to buy in {item.storage.name}: {item.amountToBuy}</div>
             </div>
 
             <div className="grid grid-cols-3 gap-2">

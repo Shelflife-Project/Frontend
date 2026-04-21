@@ -61,7 +61,7 @@ export default function SettingsTable({ storageId }: Props) {
                             {s.product.name}
                         </h3>
 
-                        <p className="text-xs opacity-60 mt-1">
+                        <p className="text-xs text-base-content/60 mt-1">
                             Alert when stock drops below:
                         </p>
 
