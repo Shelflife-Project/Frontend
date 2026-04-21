@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useProducts, type ProductCreateError, type UpdateProductRequest } from "shelflife-react-hooks";
+import { useProducts, type Product, type ProductCreateError, type UpdateProductRequest } from "shelflife-react-hooks";
 
 type Props = {
-    productId: number
+    product: Product
 };
 
-export default function EditProductForm({ productId }: Props) {
-    const { product, fetchProduct, updateProduct } = useProducts();
+export default function EditProductForm({ product }: Props) {
+    const { updateProduct } = useProducts();
 
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [category, setCategory] = useState("");
-    const [barcode, setBarcode] = useState("");
-    const [expirationDaysDelta, setExpirationDaysDelta] = useState(1);
+    const [name, setName] = useState(product.name);
+    const [description, setDescription] = useState(product.description);
+    const [category, setCategory] = useState(product.category);
+    const [barcode, setBarcode] = useState(product.barcode);
+    const [expirationDaysDelta, setExpirationDaysDelta] = useState(product.expirationDaysDelta);
 
     const [fieldErrors, setFieldErrors] = useState<ProductCreateError>({});
     const [generalError, setGeneralError] = useState("");
@@ -33,7 +33,7 @@ export default function EditProductForm({ productId }: Props) {
         }
 
         if (description !== product.description) {
-            updateDto.description = description;
+            updateDto.description = description ? description : "";
         }
 
         if (category !== product.category) {
@@ -41,7 +41,7 @@ export default function EditProductForm({ productId }: Props) {
         }
 
         if (barcode !== product.barcode) {
-            updateDto.barcode = barcode;
+            updateDto.barcode = barcode ? barcode : "";
         }
 
         if (expirationDaysDelta !== product.expirationDaysDelta) {
@@ -49,7 +49,7 @@ export default function EditProductForm({ productId }: Props) {
         }
 
         try {
-            await updateProduct(productId, updateDto);
+            await updateProduct(product.id, updateDto);
             toast.success("The changes have been successfully saved");
         } catch (err: any) {
             const product = err as ProductCreateError
@@ -61,22 +61,20 @@ export default function EditProductForm({ productId }: Props) {
         }
     };
 
-    const getProduct = async () => {
-        const p = await fetchProduct(productId);
-
-        if (!p)
+    const setState = async () => {
+        if (!product)
             return;
 
-        setName(p.name);
-        setDescription(p.description ? p.description : "");
-        setCategory(p.category);
-        setBarcode(p.barcode ? p.barcode : "");
-        setExpirationDaysDelta(p.expirationDaysDelta);
+        setName(product.name);
+        setDescription(product.description);
+        setCategory(product.category);
+        setBarcode(product.barcode);
+        setExpirationDaysDelta(product.expirationDaysDelta);
     };
 
     useEffect(() => {
-        getProduct();
-    }, [productId])
+        setState();
+    }, [product])
 
     return (
         <>
@@ -88,6 +86,7 @@ export default function EditProductForm({ productId }: Props) {
                 <div className="form-control grid sm:grid-cols-2">
                     <label className="label">
                         <span className="label-text font-semibold me-2">Product Name</span>
+                        <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -104,21 +103,8 @@ export default function EditProductForm({ productId }: Props) {
 
                 <div className="form-control grid sm:grid-cols-2">
                     <label className="label">
-                        <span className="label-text font-semibold me-2">Product Description</span>
-                    </label>
-                    <textarea
-                        maxLength={255}
-                        placeholder="Description (optional)"
-                        className={"textarea w-auto" + (fieldErrors.description ? " input-error" : "")}
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                    {fieldErrors.description && <p className="text-red-500 text-sm mt-1">{fieldErrors.description}</p>}
-                </div>
-
-                <div className="form-control grid sm:grid-cols-2">
-                    <label className="label">
                         <span className="label-text font-semibold me-2">Category</span>
+                        <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -135,29 +121,14 @@ export default function EditProductForm({ productId }: Props) {
 
                 <div className="form-control grid sm:grid-cols-2">
                     <label className="label">
-                        <span className="label-text font-semibold me-2">Barcode</span>
-                    </label>
-                    <input
-                        type="text"
-                        maxLength={40}
-                        name="barcode"
-                        placeholder="12345 (optional)"
-                        className={"input input-bordered w-auto" + (fieldErrors.barcode ? " input-error" : "")}
-                        value={barcode}
-                        onChange={(e) => setBarcode(e.target.value)}
-                    />
-                    {fieldErrors.barcode && <p className="text-red-500 text-sm mt-1">{fieldErrors.barcode}</p>}
-                </div>
-
-                <div className="form-control grid sm:grid-cols-2">
-                    <label className="label">
                         <span className="label-text font-semibold me-2">Expires In (Days)</span>
+                        <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="number"
                         maxLength={40}
                         name="expiration"
-                        placeholder="e.g., Bread"
+                        placeholder="1"
                         className={"input input-bordered w-auto" + (fieldErrors.expirationDaysDelta ? " input-error" : "")}
                         value={expirationDaysDelta}
                         onChange={(e) => setExpirationDaysDelta(parseInt(e.target.value))}
@@ -167,12 +138,51 @@ export default function EditProductForm({ productId }: Props) {
                     {fieldErrors.expirationDaysDelta && <p className="text-red-500 text-sm mt-1">{fieldErrors.expirationDaysDelta}</p>}
                 </div>
 
+                <div className="form-control grid sm:grid-cols-2">
+                    <label className="label">
+                        <span className="label-text font-semibold me-2">Product Description</span>
+                    </label>
+                    <textarea
+                        maxLength={255}
+                        placeholder="Description (optional)"
+                        className={"textarea w-auto" + (fieldErrors.description ? " input-error" : "")}
+                        value={description ? description : ""}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                    {fieldErrors.description && <p className="text-red-500 text-sm mt-1">{fieldErrors.description}</p>}
+                </div>
+
+                <div className="form-control grid sm:grid-cols-2">
+                    <label className="label">
+                        <span className="label-text font-semibold me-2">Barcode</span>
+                    </label>
+                    <input
+                        type="text"
+                        maxLength={40}
+                        name="barcode"
+                        placeholder="12345 (optional)"
+                        className={"input input-bordered w-auto" + (fieldErrors.barcode ? " input-error" : "")}
+                        value={barcode ? barcode : ""}
+                        onChange={(e) => setBarcode(e.target.value)}
+                    />
+                    {fieldErrors.barcode && <p className="text-red-500 text-sm mt-1">{fieldErrors.barcode}</p>}
+                </div>
+
                 {generalError && <p className="text-red-500 mt-2">{generalError}</p>}
 
                 <div className="flex gap-3 mt-6">
                     <button
                         type="submit"
-                        disabled={!name || !category}
+                        disabled={
+                            (!name || !category || !expirationDaysDelta) ||
+                            (
+                                name === product.name &&
+                                barcode === product.barcode &&
+                                category === product.category &&
+                                description === product.description &&
+                                expirationDaysDelta === product.expirationDaysDelta
+                            )
+                        }
                         className={`btn flex-1 ${name ? 'btn-success' : 'btn-disabled'}`}
                     >
                         Save changes

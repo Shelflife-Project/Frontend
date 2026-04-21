@@ -62,15 +62,12 @@ export default function SettingsTable({ storageId }: Props) {
                         </h3>
 
                         <p className="text-xs opacity-60 mt-1">
-                            Alert when stock reaches:
+                            Alert when stock drops below:
                         </p>
 
                         <p className="text-sm font-semibold">
                             {
-                                s.runningLow === 0 ?
-                                    "Out of stock"
-                                    :
-                                    `${s.runningLow} Item(s)`
+                                `${s.runningLow + 1} Item(s)`
                             }
                         </p>
 

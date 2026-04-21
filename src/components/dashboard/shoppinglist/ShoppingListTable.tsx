@@ -30,7 +30,7 @@ export default function ShoppingListTable() {
     return (
         <>
             {
-                items.length === 0 && <EmptyList />
+                items.length === 0 && <EmptyList title="Your Shopping List is empty" description="Start by adding something to it" />
             }
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 <FormPopUp button={<CreateButtonCard text="Add Item" />} >

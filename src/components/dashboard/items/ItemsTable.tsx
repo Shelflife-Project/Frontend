@@ -11,8 +11,9 @@ type Props = {
 };
 
 export default function ItemsTable({ storage }: Props) {
-    const { items, fetchItems, isLoading } = useStorageItems();
+    const { items, fetchItems } = useStorageItems();
     const [itemsTable, setItemsTable] = useState<Map<number, StorageItem[]>>(new Map<number, StorageItem[]>());
+    const [isLoading, setIsLoading] = useState(true);
 
     const groupItems = async () => {
         let table = new Map<number, StorageItem[]>();
@@ -32,12 +33,18 @@ export default function ItemsTable({ storage }: Props) {
         setItemsTable(table);
     };
 
+    const getItems = async () => {
+        setIsLoading(true);
+        await fetchItems(storage.id);
+        setIsLoading(false);
+    }
+
     useEffect(() => {
         groupItems();
     }, [items])
 
     useEffect(() => {
-        fetchItems(storage.id);
+        getItems();
     }, [storage]);
 
     if (isLoading)
@@ -50,7 +57,7 @@ export default function ItemsTable({ storage }: Props) {
     return (
         <>
             {
-                [...itemsTable].length === 0 && <EmptyList />
+                [...itemsTable].length === 0 && <EmptyList title="Your Storage is empty" description="Start by adding your first item" />
             }
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">

@@ -2,6 +2,7 @@ import { useAuth, useStorages, type Storage } from "shelflife-react-hooks";
 import FormPopUp from "../../FormPopUp";
 import MembersPopUp from "../storage/MembersPopUp";
 import { Link } from "react-router";
+import { toast } from "react-toastify";
 
 export default function StorageCard({ storage }: { storage: Storage; }) {
     const { user } = useAuth();
@@ -14,7 +15,18 @@ export default function StorageCard({ storage }: { storage: Storage; }) {
     const handleDelete = async () => {
         const confirmDelete = window.confirm("Are you sure you want to " + deleteButtonValue + " this storage?");
         if (confirmDelete) {
-            await deleteStorage(storage.id);
+            try {
+                await deleteStorage(storage.id);
+
+                if (canEdit)
+                    toast.success("Storage deleted successfully");
+                else
+                    toast.success("Storage left successfully");
+
+            } catch {
+                toast.error("Couldn't delete storage");
+            }
+
         }
     };
 

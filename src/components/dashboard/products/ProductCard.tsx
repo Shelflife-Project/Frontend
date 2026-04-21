@@ -28,7 +28,7 @@ export default function ProductCard({ product }: Props) {
     };
 
     const deleteProductHandler = async (id: number) => {
-        const confirmDelete = confirm("Are you sure you want to delete this product?");
+        const confirmDelete = confirm("Are you sure you want to delete this product? If this is used somewhere it will also get deleted!");
         if (confirmDelete) {
             await deleteProduct(id);
             toast.success("Product removed");
@@ -80,12 +80,12 @@ export default function ProductCard({ product }: Props) {
             <div className="p-4 flex flex-col gap-3 flex-grow">
 
                 <div>
-                    <h2 className="font-semibold text-lg leading-tight">
+                    <h2 className="font-semibold text-lg leading-tight break-all">
                         {product.name}
                     </h2>
 
                     {product.description && (
-                        <p className="text-sm opacity-70 line-clamp-2">
+                        <p className="text-sm opacity-70 line-clamp-2 break-all">
                             {product.description}
                         </p>
                     )}
@@ -121,7 +121,7 @@ export default function ProductCard({ product }: Props) {
                                 </button>
                             }
                         >
-                            <EditProductForm productId={product.id} />
+                            <EditProductForm product={product} />
                         </FormPopUp>
 
                         <button

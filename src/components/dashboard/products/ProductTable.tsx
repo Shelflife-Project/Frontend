@@ -10,9 +10,9 @@ export default function ProductTable() {
     const { products, fetchProducts } = useProducts();
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const handleOnChange = (search: string, page: number, size: number) => {
+    const handleOnChange = async (search: string, page: number, size: number) => {
         setIsLoading(true);
-        const res = fetchProducts(search, size, page);
+        const res = await fetchProducts(search, size, page);
         setIsLoading(false);
 
         return res;

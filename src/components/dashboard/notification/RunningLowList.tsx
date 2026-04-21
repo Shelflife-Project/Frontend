@@ -19,10 +19,10 @@ export default function RunningLowList() {
                 amountToBuy: item.runningLowAt - item.amount + 1,
             });
 
-            toast.success("Successfully added item to shopping list");
+            toast.success("Successfully added item to the shopping list");
             getItems();
         } catch (e: any) {
-            toast.error("Couldn't add item to shopping list");
+            toast.error("Couldn't add item to the shopping list");
         }
     }
 

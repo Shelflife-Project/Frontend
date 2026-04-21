@@ -109,7 +109,7 @@ export default function CreateProductForm() {
                         type="number"
                         maxLength={40}
                         name="expiration"
-                        placeholder="e.g., Bread"
+                        placeholder="1"
                         className={"input input-bordered w-auto" + (fieldErrors.expirationDaysDelta ? " input-error" : "")}
                         value={expirationDaysDelta}
                         onChange={(e) => setExpirationDaysDelta(parseInt(e.target.value))}
@@ -154,7 +154,7 @@ export default function CreateProductForm() {
                 <div className="flex gap-3 mt-6">
                     <button
                         type="submit"
-                        disabled={!name || !category}
+                        disabled={!name || !category || !expirationDaysDelta}
                         className={`btn flex-1 ${name ? 'btn-success' : 'btn-disabled'}`}
                     >
                         Create Product

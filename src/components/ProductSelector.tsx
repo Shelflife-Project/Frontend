@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useProducts, type Product } from "shelflife-react-hooks";
 
 type Props = {
@@ -15,20 +15,22 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
 
     const searchProducts = async () => {
         const res = await fetchProducts(search, 10, 0);
+        let filtered = res.data;
 
         if (predicate)
-            setProducts(res.data.filter(predicate));
+            filtered = res.data.filter(predicate);
+
+        setProducts(filtered);
+
+        if (filtered.length === 1)
+            onSelect(filtered[0].id);
         else
-            setProducts(res.data);
+            onSelect(0);
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         searchProducts();
     }, [search, predicate]);
-
-    useEffect(() => {
-        setSearch("");
-    }, [selectedProductId])
 
     const selected = products.find((p) => p.id === selectedProductId);
 
@@ -51,8 +53,7 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
                 value={search || selected?.name || ""}
                 onFocus={() => setSearch("")}
                 onChange={(e) => {
-                    setSearch(e.target.value);
-                    onSelect(0);
+                    setSearch(e.target.value || "");
                 }}
             />
 
