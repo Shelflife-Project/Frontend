@@ -108,6 +108,12 @@ export default function Paginator({ onChange, contextData }: Props) {
 
             <div className="join">
                 <button
+                    className="join-item btn btn-ghost"
+                    onClick={() => setPage(0)}
+                    disabled={data.currentPage === 0}>
+                    {"<<"}
+                </button>
+                <button
                     onClick={prevPage}
                     disabled={!data.hasPrevious || isLoading}
                     className="join-item btn btn-ghost">
@@ -130,6 +136,12 @@ export default function Paginator({ onChange, contextData }: Props) {
                     onClick={nextPage}
                     disabled={!data.hasNext || isLoading}>
                     {">"}
+                </button>
+                <button
+                    className="join-item btn btn-ghost"
+                    onClick={() => setPage(data.totalPages - 1)}
+                    disabled={data.currentPage + 1 === data.totalPages}>
+                    {">>"}
                 </button>
             </div>
         </div>
