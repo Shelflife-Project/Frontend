@@ -13,6 +13,7 @@ export default function Paginator({ onChange, contextData }: Props) {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
+    const [pages, setPages] = useState<number[]>([]);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -38,6 +39,25 @@ export default function Paginator({ onChange, contextData }: Props) {
         if (page > 0) setPage((p) => p - 1);
     };
 
+    const getPages = (currentPage: number, totalPages: number, pagesShown: number) => {
+        const arr: number[] = [];
+
+        let i = currentPage;
+        i += Math.floor(pagesShown / 2);
+        i = i > totalPages ? totalPages : i;
+
+        i -= pagesShown - 1;
+
+        if (i < 1)
+            i = 1;
+
+        while (arr.length != pagesShown && arr.length != totalPages) {
+            arr.push(i++);
+        }
+
+        return arr;
+    }
+
     useEffect(() => {
         if (isLoading)
             return;
@@ -55,6 +75,10 @@ export default function Paginator({ onChange, contextData }: Props) {
     useLayoutEffect(() => {
         change();
     }, [search, page, pageSize]);
+
+    useLayoutEffect(() => {
+        setPages(getPages(data.currentPage + 1, data.totalPages, 5));
+    }, [data]);
 
     return <div className="text-left">
         <input
@@ -86,21 +110,26 @@ export default function Paginator({ onChange, contextData }: Props) {
                 <button
                     onClick={prevPage}
                     disabled={!data.hasPrevious || isLoading}
-                    className="join-item btn">
-                    «
+                    className="join-item btn btn-ghost">
+                    {"<"}
                 </button>
 
-                <button
-                    onClick={() => change()}
-                    className="join-item btn">
-                    {page + 1}
-                </button>
+                {
+                    pages.map((i) =>
+                        <button
+                            key={i}
+                            onClick={() => setPage(i - 1)}
+                            className={`join-item btn ${i === data.currentPage + 1 ? "btn-primary" : "btn-ghost"}`}>
+                            {i}
+                        </button>
+                    )
+                }
 
                 <button
-                    className="join-item btn"
+                    className="join-item btn btn-ghost"
                     onClick={nextPage}
                     disabled={!data.hasNext || isLoading}>
-                    »
+                    {">"}
                 </button>
             </div>
         </div>
