@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRunningLow } from "shelflife-react-hooks";
-import ProductSelector from "../items/ProductSelector";
+import ProductSelector from "../../ProductSelector";
 import { toast } from "react-toastify";
 
 type Props = {
