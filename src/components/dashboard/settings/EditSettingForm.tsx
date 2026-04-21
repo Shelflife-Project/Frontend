@@ -35,7 +35,7 @@ export default function EditSettingForm({ setting }: Props) {
                 <div className="form-control">
                     <div className="w-full flex flex-row items-center">
                         <label className="label">
-                            <span className="label-text font-semibold me-2">Runs low at</span>
+                            <span className="label-text font-semibold me-2">Minimum Stock Required</span>
                         </label>
                     </div>
                     <input
