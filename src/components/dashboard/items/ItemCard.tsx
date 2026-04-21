@@ -2,13 +2,14 @@ import type { ReactElement } from "react";
 import { useStorageItems, type StorageItem } from "shelflife-react-hooks";
 import FormPopUp from "../../FormPopUp";
 import EditStorageItemsForm from "./EditStorageItemForm";
+import { toast } from "react-toastify";
 
 type Props = {
     items: StorageItem[];
 }
 
 export default function ItemCard({ items }: Props) {
-    const { deleteItem } = useStorageItems();
+    const { addItem, deleteItem } = useStorageItems();
 
     const daysToExpire = (item: StorageItem) => {
         var diff = new Date(item.expiresAt).getTime() - new Date().getTime();
@@ -25,10 +26,33 @@ export default function ItemCard({ items }: Props) {
 
     const deleteItemHandler = async (item: StorageItem) => {
         const confirmDelete = confirm("Are you sure you want to remove this item?");
-        if (confirmDelete) {
-            deleteItem(item.storage.id, item.id);
+
+        if (!confirmDelete)
+            return;
+
+        try {
+            await deleteItem(item.storage.id, item.id);
+            toast.success("Item removed successfully");
+        } catch {
+            toast.error("Couldn't remove item");
         }
     };
+
+    const addOneExtra = async () => {
+        const template = items[0];
+
+        const calc = new Date();
+        calc.setDate(calc.getDate() + template.product.expirationDaysDelta!);
+        const expiresAt = calc.toISOString().split('T')[0];
+
+        try {
+            await addItem(template.storage.id, { productId: template.product.id, expiresAt })
+            toast.success("Item added successfully");
+        } catch {
+            toast.error("Couldn't add item");
+        }
+
+    }
 
     return (
         <div className="card bg-base-100 shadow-sm hover:shadow-lg transition overflow-hidden">
@@ -38,7 +62,7 @@ export default function ItemCard({ items }: Props) {
                     className="object-contain"
                 />
             </figure>
-            <div className="card-body bg-base-200">
+            <div className="card-body pb-4 bg-base-200">
                 <h2 className="card-title">{items[0].product.name}</h2>
                 <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
                     {items.map((item) =>
@@ -80,8 +104,9 @@ export default function ItemCard({ items }: Props) {
                         </div>
                     )}
                 </div>
-                <div className="card-actions mt-auto justify-end">
+                <div className="card-actions mt-auto">
                     <p className="text-xs opacity-80">{items.length} Item(s)</p>
+                    <button className="btn btn-xs font-normal shadow-sm" onClick={addOneExtra}>Add +1</button>
                 </div>
             </div>
         </div>
