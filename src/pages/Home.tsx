@@ -8,7 +8,7 @@ export default function Home() {
             <main className="min-h-screen flex flex-col">
                 <section className="hero py-16">
                     <div className="hero-content flex-col text-center max-w-2xl mx-auto">
-                        <img src="shelflife.svg" className="w-48" />
+                        <img src="/shelflife.svg" className="w-48" />
                         <h1 className="text-5xl md:text-6xl font-extrabold mb-4">Welcome to ShelfLife</h1>
                         <p className="text-lg md:text-xl text-base-content/80 mb-6">
                             The all-in-one app to track, manage, and optimize your food and household inventory. Reduce waste, save money, and simplify your life.
