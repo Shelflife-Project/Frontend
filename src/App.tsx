@@ -8,6 +8,7 @@ import { useLayoutEffect, useState } from "react";
 import About from "./pages/About";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Help from "./pages/Help";
 import { ToastContainer } from "react-toastify";
 import { useTheme } from "./providers/ThemeProvider";
 
@@ -33,6 +34,7 @@ export default function App() {
                 <Route path='/about' element={<UnProtectedRoute user={user} element={<About />} />} />
                 <Route path='/login' element={<UnProtectedRoute user={user} element={<Login />} />} />
                 <Route path='/signup' element={<UnProtectedRoute user={user} element={<SignUp />} />} />
+                <Route path='/help' element={<ProtectedRoute isLoading={isLoading} user={user} element={<Help />} />} />
                 <Route path='/dashboard/*' element={<ProtectedRoute isLoading={isLoading} user={user} element={<Dashboard />} />} />
             </Routes>
             <ToastContainer
