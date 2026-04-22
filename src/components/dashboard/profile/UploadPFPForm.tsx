@@ -41,7 +41,7 @@ export default function UploadPFPForm() {
                     </div>
                 </label>
             </div>
-                <p className="text-xs text-center mt-2 opacity-60 group-hover:opacity-100">
+                <p className="text-xs text-center mt-2 text-base-content/60 group-hover:opacity-100">
                     Change photo
                 </p>
         </label>
