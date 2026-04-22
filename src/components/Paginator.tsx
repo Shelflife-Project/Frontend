@@ -80,70 +80,88 @@ export default function Paginator({ onChange, contextData }: Props) {
         setPages(getPages(data.currentPage + 1, data.totalPages, 5));
     }, [data]);
 
-    return <div className="text-left">
-        <input
-            className="input input-bordered mb-4"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => {
-                setSearch(e.target.value);
-                setPage(0);
-            }}
-        />
-
-        <div className="flex items-center gap-4 mb-4">
-            <p className="text-xs">Show items: </p>
-            <select
-                className="select w-min"
+    return <div className="text-left space-y-4">
+        <div>
+            <input
+                className="input input-bordered w-full sm:w-64"
+                placeholder="Search..."
+                value={search}
                 onChange={(e) => {
-                    setPageSize(Number(e.target.value));
+                    setSearch(e.target.value);
                     setPage(0);
                 }}
-            >
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={15}>15</option>
-                <option value={20}>20</option>
-            </select>
+            />
+        </div>
 
-            <div className="join">
+        <div className="sm:flex">
+            <div className="flex gap-3 mb-4">
+                <label htmlFor="pageSize" className="text-sm font-medium">
+                    Items<br />per page:
+                </label>
+                <select
+                    id="pageSize"
+                    className="select select-bordered w-min"
+                    onChange={(e) => {
+                        setPageSize(Number(e.target.value));
+                        setPage(0);
+                    }}
+                >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                    <option value={20}>20</option>
+                </select>
+            </div>
+
+            <div className="flex flex-wrap gap-1 justify-center sm:justify-start">
                 <button
-                    className="join-item btn btn-ghost"
+                    className="btn btn-sm sm:btn-md btn-ghost flex-shrink-0"
                     onClick={() => setPage(0)}
-                    disabled={data.currentPage === 0}>
+                    disabled={data.currentPage === 0}
+                    title="Go to first page">
                     {"<<"}
                 </button>
                 <button
                     onClick={prevPage}
                     disabled={!data.hasPrevious || isLoading}
-                    className="join-item btn btn-ghost">
+                    className="btn btn-sm sm:btn-md btn-ghost flex-shrink-0"
+                    title="Previous page">
                     {"<"}
                 </button>
 
-                {
-                    pages.map((i) =>
-                        <button
-                            key={i}
-                            onClick={() => setPage(i - 1)}
-                            className={`join-item btn ${i === data.currentPage + 1 ? "btn-primary" : "btn-ghost"}`}>
-                            {i}
-                        </button>
-                    )
-                }
+                <div className="flex flex-wrap gap-1">
+                    {
+                        pages.map((i) =>
+                            <button
+                                key={i}
+                                onClick={() => setPage(i - 1)}
+                                className={`btn btn-sm sm:btn-md flex-shrink-0 ${i === data.currentPage + 1 ? "btn-primary" : "btn-ghost"}`}
+                                title={`Go to page ${i}`}>
+                                {i}
+                            </button>
+                        )
+                    }
+                </div>
 
                 <button
-                    className="join-item btn btn-ghost"
+                    className="btn btn-sm sm:btn-md btn-ghost flex-shrink-0"
                     onClick={nextPage}
-                    disabled={!data.hasNext || isLoading}>
+                    disabled={!data.hasNext || isLoading}
+                    title="Next page">
                     {">"}
                 </button>
                 <button
-                    className="join-item btn btn-ghost"
+                    className="btn btn-sm sm:btn-md btn-ghost flex-shrink-0"
                     onClick={() => setPage(data.totalPages - 1)}
-                    disabled={data.currentPage + 1 === data.totalPages}>
+                    disabled={data.currentPage + 1 === data.totalPages}
+                    title="Go to last page">
                     {">>"}
                 </button>
             </div>
+        </div>
+
+        <div className="text-xs md:text-sm text-gray-500">
+            Page {data.currentPage + 1} of {data.totalPages} • {data.totalItems} total items
         </div>
     </div>
 }
