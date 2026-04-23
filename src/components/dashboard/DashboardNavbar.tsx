@@ -7,7 +7,7 @@ export default function DashboardNavbar() {
         <>
             <div className="navbar bg-base-100 shadow-sm">
                 <div className="navbar-start">
-                    <Link to={"/dashboard"}><img src="shelflife.svg" className="w-8 me-2" /></Link>
+                    <Link to={"/dashboard"}><img src="/shelflife.svg" className="w-8 me-2" /></Link>
                     
                 </div>
                 <div className="navbar-end">
