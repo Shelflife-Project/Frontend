@@ -21,18 +21,11 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
             filtered = res.data.filter(predicate);
 
         setProducts(filtered);
-
-        if (filtered.length === 1)
-            onSelect(filtered[0].id);
-        else
-            onSelect(0);
     }
 
     useLayoutEffect(() => {
         searchProducts();
     }, [search, predicate]);
-
-    const selected = products.find((p) => p.id === selectedProductId);
 
     return (
         <div className="dropdown w-full">
@@ -50,10 +43,11 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
                 type="text"
                 className="input input-bordered w-full"
                 placeholder="Search product..."
-                value={search || selected?.name || ""}
-                onFocus={() => setSearch("")}
+                value={search}
                 onChange={(e) => {
-                    setSearch(e.target.value || "");
+                    const value = e.target.value || "";
+                    setSearch(value);
+                    onSelect(0);
                 }}
             />
 
@@ -75,6 +69,7 @@ export default function ProductSelector({ predicate, selectedProductId, onSelect
                             onClick={() => {
                                 onSelect(p.id);
                                 setSearch(p.name);
+                                document.activeElement instanceof HTMLElement && document.activeElement.blur();
                             }}
                         >
                             {p.name}

@@ -9,7 +9,7 @@ type Props = {
 
 export default function ItemsPopUp({ storage }: Props) {
     const { addItem } = useStorageItems();
-    const { fetchProduct } = useProducts();
+    const { products } = useProducts();
 
     const [selectedProductId, setSelectedProductId] = useState<number>(0);
     const [expiresAt, setExpiresAt] = useState<string>("");
@@ -19,15 +19,13 @@ export default function ItemsPopUp({ storage }: Props) {
         if (productId === 0)
             return;
 
-        try {
-            const p = await fetchProduct(productId);
+        const p = products.find(x => x.id === productId);
+        if (!p)
+            return;
 
-            const calc = new Date();
-            calc.setDate(calc.getDate() + p?.expirationDaysDelta!);
-            setExpiresAt(calc.toISOString().split('T')[0]);
-        } catch (err: any) {
-            toast.error("An error occured while fetching products");
-        }
+        const calc = new Date();
+        calc.setDate(calc.getDate() + p?.expirationDaysDelta!);
+        setExpiresAt(calc.toISOString().split('T')[0]);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
